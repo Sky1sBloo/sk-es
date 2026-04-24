@@ -1,0 +1,255 @@
+[gd_scene format=3 uid="uid://silxonupiov8"]
+
+[ext_resource type="Script" uid="uid://rskra322byro" path="res://GameObjects/Jani/jani.gd" id="1_4gaxf"]
+[ext_resource type="Texture2D" uid="uid://cctr48khg4og3" path="res://Sprites/Jani.png" id="1_mw1xl"]
+[ext_resource type="Script" uid="uid://c5hvmq0u0hwgf" path="res://GameObjects/Jani/jani_state_handler.gd" id="3_maids"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4gaxf"]
+size = Vector2(16, 12)
+
+[sub_resource type="Animation" id="Animation_of830"]
+resource_name = "jani_back"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [9]
+}
+
+[sub_resource type="Animation" id="Animation_uru5j"]
+resource_name = "jani_front"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_dyf8x"]
+resource_name = "jani_left"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+
+[sub_resource type="Animation" id="Animation_wpv1w"]
+resource_name = "jani_back"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [9, 10, 9, 11]
+}
+
+[sub_resource type="Animation" id="Animation_eacc6"]
+resource_name = "jani_front"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 4, 0, 8]
+}
+
+[sub_resource type="Animation" id="Animation_4gaxf"]
+resource_name = "jani_left"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [5, 6, 5, 7]
+}
+
+[sub_resource type="Animation" id="Animation_maids"]
+resource_name = "jani_right"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 1, 3]
+}
+
+[sub_resource type="Animation" id="Animation_usmph"]
+resource_name = "jani_right"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_ll3ot"]
+resource_name = "loop_transition"
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_maids"]
+_data = {
+&"jani_back": SubResource("Animation_of830"),
+&"jani_front": SubResource("Animation_uru5j"),
+&"jani_left": SubResource("Animation_dyf8x"),
+&"jani_move_back": SubResource("Animation_wpv1w"),
+&"jani_move_front": SubResource("Animation_eacc6"),
+&"jani_move_left": SubResource("Animation_4gaxf"),
+&"jani_move_right": SubResource("Animation_maids"),
+&"jani_right": SubResource("Animation_usmph"),
+&"loop_transition": SubResource("Animation_ll3ot")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_uru5j"]
+animation = &"jani_front"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_of830"]
+animation = &"jani_back"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dyf8x"]
+animation = &"jani_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_usmph"]
+animation = &"jani_right"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_4gaxf"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_uru5j")
+blend_point_0/pos = Vector2(0, 0.8)
+blend_point_1/node = SubResource("AnimationNodeAnimation_of830")
+blend_point_1/pos = Vector2(0, -1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_dyf8x")
+blend_point_2/pos = Vector2(-1, 0)
+blend_point_3/node = SubResource("AnimationNodeAnimation_usmph")
+blend_point_3/pos = Vector2(1, 0)
+blend_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4gaxf"]
+animation = &"jani_move_front"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_maids"]
+animation = &"jani_move_back"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_eacc6"]
+animation = &"jani_move_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wpv1w"]
+animation = &"jani_move_right"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_maids"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_4gaxf")
+blend_point_0/pos = Vector2(0, 0.8)
+blend_point_1/node = SubResource("AnimationNodeAnimation_maids")
+blend_point_1/pos = Vector2(0, -1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_eacc6")
+blend_point_2/pos = Vector2(-1, 0)
+blend_point_3/node = SubResource("AnimationNodeAnimation_wpv1w")
+blend_point_3/pos = Vector2(1, 0)
+blend_mode = 1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4gaxf"]
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"is_moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_eacc6"]
+advance_mode = 2
+advance_condition = &"not_moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_maids"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_eacc6"]
+states/Idle/node = SubResource("AnimationNodeBlendSpace2D_4gaxf")
+states/Idle/position = Vector2(396, 100)
+states/Moving/node = SubResource("AnimationNodeBlendSpace2D_maids")
+states/Moving/position = Vector2(639, 100)
+transitions = ["Idle", "Moving", SubResource("AnimationNodeStateMachineTransition_4gaxf"), "Moving", "Idle", SubResource("AnimationNodeStateMachineTransition_eacc6"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_maids")]
+
+[node name="Jani" type="CharacterBody2D" unique_id=1675082522]
+script = ExtResource("1_4gaxf")
+wasd_control = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=526904159]
+position = Vector2(16, 24)
+shape = SubResource("RectangleShape2D_4gaxf")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1278673287]
+root_node = NodePath("../JaniAnimationTree")
+libraries/ = SubResource("AnimationLibrary_maids")
+
+[node name="JaniAnimationTree" type="AnimationTree" parent="." unique_id=295365447]
+root_node = NodePath(".")
+tree_root = SubResource("AnimationNodeStateMachine_eacc6")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/is_moving = false
+parameters/conditions/not_moving = true
+parameters/Idle/blend_position = Vector2(0, 0)
+parameters/Moving/blend_position = Vector2(0, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1436005115]
+position = Vector2(16, 16)
+scale = Vector2(2, 2)
+texture = ExtResource("1_mw1xl")
+hframes = 4
+vframes = 3
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="StateHandler" type="Node" parent="." unique_id=1946377402 node_paths=PackedStringArray("jani")]
+script = ExtResource("3_maids")
+jani = NodePath("..")

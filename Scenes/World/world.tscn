@@ -1,0 +1,182 @@
+[gd_scene format=3 uid="uid://ddjs2congt1xt"]
+
+[ext_resource type="PackedScene" uid="uid://silxonupiov8" path="res://GameObjects/Jani/jani.tscn" id="1_a02cp"]
+[ext_resource type="Script" uid="uid://bb583xfii63f" path="res://Scenes/World/world.gd" id="1_go701"]
+[ext_resource type="Script" uid="uid://b4y6v2kv55w11" path="res://Scenes/World/room.gd" id="2_8j60k"]
+[ext_resource type="Texture2D" uid="uid://ddcghq7cuk2tn" path="res://Sprites/Environment.png" id="3_5a7ea"]
+[ext_resource type="Texture2D" uid="uid://cqu1ei31uspcj" path="res://Sprites/Placeholder.png" id="5_7staa"]
+[ext_resource type="Script" uid="uid://b2d2mtpmypsea" path="res://Scenes/World/room_reader.gd" id="5_fo5ed"]
+[ext_resource type="Script" uid="uid://dhwdvu74kjrex" path="res://Scenes/World/path_finder.gd" id="6_adcqc"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8j60k"]
+texture = ExtResource("3_5a7ea")
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+0:0/0/terrains_peering_bit/bottom_side = 0
+1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 0
+1:0/0/terrains_peering_bit/right_side = 0
+1:0/0/terrains_peering_bit/bottom_side = 0
+2:0/0 = 0
+2:0/0/terrain_set = 0
+2:0/0/terrain = 0
+2:0/0/terrains_peering_bit/right_side = 0
+2:0/0/terrains_peering_bit/left_side = 0
+3:0/0 = 0
+3:0/0/terrain_set = 0
+3:0/0/terrain = 0
+3:0/0/terrains_peering_bit/bottom_side = 0
+3:0/0/terrains_peering_bit/left_side = 0
+0:1/0 = 0
+0:1/0/terrain_set = 0
+0:1/0/terrain = 0
+0:1/0/terrains_peering_bit/bottom_side = 0
+0:1/0/terrains_peering_bit/top_side = 0
+1:1/0 = 0
+1:1/0/terrain_set = 0
+1:1/0/terrain = 0
+1:1/0/terrains_peering_bit/bottom_side = 0
+1:1/0/terrains_peering_bit/top_side = 0
+3:1/0 = 0
+3:1/0/terrain_set = 0
+3:1/0/terrain = 0
+3:1/0/terrains_peering_bit/bottom_side = 0
+3:1/0/terrains_peering_bit/top_side = 0
+0:2/0 = 0
+0:2/0/terrain_set = 0
+0:2/0/terrain = 0
+0:2/0/terrains_peering_bit/top_side = 0
+1:2/0 = 0
+1:2/0/terrain_set = 0
+1:2/0/terrain = 0
+1:2/0/terrains_peering_bit/right_side = 0
+1:2/0/terrains_peering_bit/top_side = 0
+2:2/0 = 0
+2:2/0/terrain_set = 0
+2:2/0/terrain = 0
+2:2/0/terrains_peering_bit/right_side = 0
+2:2/0/terrains_peering_bit/left_side = 0
+2:2/0/terrains_peering_bit/top_side = 0
+3:2/0 = 0
+3:2/0/terrain_set = 0
+3:2/0/terrain = 0
+3:2/0/terrains_peering_bit/left_side = 0
+3:2/0/terrains_peering_bit/top_side = 0
+0:3/0 = 0
+0:3/0/terrain_set = 0
+0:3/0/terrain = 0
+1:3/0 = 0
+1:3/0/terrain_set = 0
+1:3/0/terrain = 0
+1:3/0/terrains_peering_bit/right_side = 0
+2:3/0 = 0
+2:3/0/terrain_set = 0
+2:3/0/terrain = 0
+2:3/0/terrains_peering_bit/right_side = 0
+2:3/0/terrains_peering_bit/left_side = 0
+3:3/0 = 0
+3:3/0/terrain_set = 0
+3:3/0/terrain = 0
+3:3/0/terrains_peering_bit/left_side = 0
+4:0/0 = 0
+4:0/0/terrain_set = 0
+4:0/0/terrain = 0
+4:0/0/terrains_peering_bit/right_side = 0
+4:0/0/terrains_peering_bit/bottom_side = 0
+4:0/0/terrains_peering_bit/top_side = 0
+4:1/0 = 0
+4:1/0/terrain_set = 0
+4:1/0/terrain = 0
+4:1/0/terrains_peering_bit/bottom_side = 0
+4:1/0/terrains_peering_bit/left_side = 0
+4:1/0/terrains_peering_bit/top_side = 0
+5:0/0 = 0
+5:0/0/terrain_set = 0
+5:0/0/terrain = 0
+5:0/0/terrains_peering_bit/right_side = 0
+5:0/0/terrains_peering_bit/bottom_side = 0
+5:0/0/terrains_peering_bit/left_side = 0
+5:1/0 = 0
+5:1/0/terrain_set = 0
+5:1/0/terrain = 0
+5:1/0/terrains_peering_bit/right_side = 0
+5:1/0/terrains_peering_bit/bottom_side = 0
+5:1/0/terrains_peering_bit/left_side = 0
+5:1/0/terrains_peering_bit/top_side = 0
+6:0/0 = 0
+6:0/0/terrain_set = 0
+6:0/0/terrain = 1
+6:0/0/terrains_peering_bit/right_side = 0
+6:0/0/terrains_peering_bit/left_side = 0
+7:0/0 = 0
+7:1/0 = 0
+6:1/0 = 0
+6:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_fo5ed"]
+terrain_set_0/mode = 2
+terrain_set_0/terrain_0/name = "Walls"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+terrain_set_0/terrain_1/name = "Doors"
+terrain_set_0/terrain_1/color = Color(0.5, 0.4375, 0.25, 1)
+sources/0 = SubResource("TileSetAtlasSource_8j60k")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fcotr"]
+texture = ExtResource("5_7staa")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_y0d6x"]
+sources/0 = SubResource("TileSetAtlasSource_fcotr")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7staa"]
+texture = ExtResource("5_7staa")
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_fcotr"]
+sources/0 = SubResource("TileSetAtlasSource_7staa")
+
+[node name="World" type="Node" unique_id=28969131]
+script = ExtResource("1_go701")
+
+[node name="Room" type="Node2D" parent="." unique_id=1047963504 node_paths=PackedStringArray("composition_map", "details_map")]
+position = Vector2(64, 128)
+script = ExtResource("2_8j60k")
+composition_map = NodePath("TileMap/TileMapRoomComposition")
+details_map = NodePath("TileMap/TileMapDetails")
+
+[node name="OldTilemap" type="TileMapLayer" parent="Room" unique_id=1815452842]
+visible = false
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_fo5ed")
+
+[node name="Jani" parent="Room" unique_id=1675082522 instance=ExtResource("1_a02cp")]
+wasd_control = false
+
+[node name="TileMap" type="Node" parent="Room" unique_id=609749231]
+
+[node name="TileMapRoomComposition" type="TileMapLayer" parent="Room/TileMap" unique_id=1096967341]
+position = Vector2(64, 128)
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_y0d6x")
+
+[node name="TileMapDetails" type="TileMapLayer" parent="Room/TileMap" unique_id=723559531]
+position = Vector2(64, 128)
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_fcotr")
+
+[node name="RoomReader" type="Node" parent="." unique_id=1029788623]
+script = ExtResource("5_fo5ed")
+
+[node name="PathFinder" type="Node" parent="." unique_id=270573895]
+script = ExtResource("6_adcqc")
