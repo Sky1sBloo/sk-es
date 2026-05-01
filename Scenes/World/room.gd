@@ -36,13 +36,13 @@ func load_composition_map() -> void:
 		composition_map.set_cell(door.grid_pos, 0, composition_atlas[RoomDetails.TileType.DOOR])
 
 func load_details_map() -> void:
-	_load_keys()
+	_load_locks()
 
 # Connected to doors signal
 func _unlock_door(pos: Vector2i) -> void:
 	details_map.set_cell(pos, 0, details_atlas[DoorsData.LockTypes.NONE])
 
-func _load_keys() -> void:
+func _load_locks() -> void:
 	for door in room_details.doors:
 		details_map.set_cell(door.grid_pos, 0, details_atlas[door.lock_type])
 
