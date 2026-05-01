@@ -15,15 +15,15 @@
   ],
 
   "doors": [
-	{ "x": 5, "y": 4, "lock_type": 1 }
+	{ "x": 5, "y": 4, "lock_type": "RED" }
   ],
 
   "containers": [
-	{ "type": 0, "x": 2, "y": 2, "contains": 1 },
-	{ "type": 0, "x": 4, "y": 2, "contains": 0 },
-	{ "type": 0, "x": 2, "y": 6, "contains": 2 },
-	{ "type": 0, "x": 4, "y": 6, "contains": 0 },
-	{ "type": 0, "x": 2, "y": 8, "contains": 3 },
-	{ "type": 0, "x": 6, "y": 8, "contains": 0 }
+	{ "type": "DRAWER", "x": 2, "y": 2, "contains": ["RED_KEY"] },
+	{ "type": "DRAWER", "x": 4, "y": 2, "contains": [] },
+	{ "type": "DRAWER", "x": 2, "y": 6, "contains": ["GREEN_KEY"] },
+	{ "type": "DRAWER", "x": 4, "y": 6, "contains": [] },
+	{ "type": "DRAWER", "x": 2, "y": 8, "contains": ["YELLOW_KEY"] },
+	{ "type": "DRAWER", "x": 6, "y": 8, "contains": [] }
   ]
 }

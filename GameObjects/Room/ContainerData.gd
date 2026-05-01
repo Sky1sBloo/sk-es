@@ -3,6 +3,9 @@ class_name ContainerData
 enum Types {
 	DRAWER
 }
+var str_to_container_type: Dictionary[String, Types] = {
+	"DRAWER": Types.DRAWER
+}
 
 enum ItemType {
 	NONE,
@@ -13,9 +16,12 @@ enum ItemType {
 
 var grid_pos: Vector2i
 var type: Types
-var contains: ItemType
+var contains: Array[ItemType]
 
-func initialize(pos: Vector2i, cont_type: Types, item: ItemType) -> void:
+func initialize(pos: Vector2i, cont_type: String, items: Array[ItemType]) -> void:
 	grid_pos = pos
-	type = cont_type
-	contains = item
+	if str_to_container_type.has(cont_type):
+		type = str_to_container_type[cont_type]
+	else:
+		type = Types.DRAWER
+	contains = items

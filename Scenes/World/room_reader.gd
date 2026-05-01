@@ -67,7 +67,7 @@ func _load_doors(data: Dictionary) -> Array[DoorsData]:
 		var door_data: = DoorsData.new()
 		var x: int = door["x"]
 		var y: int = door["y"]
-		var lock_type: DoorsData.LockTypes = int(door["lock_type"]) as DoorsData.LockTypes
+		var lock_type: String = door["lock_type"]
 		if x == null or y == null or lock_type == null:
 			printerr("JSON format error: Door isn't defined correctly")
 			continue
@@ -84,8 +84,8 @@ func _load_containers(data: Dictionary) -> Array[ContainerData]:
 		var container_data: = ContainerData.new()
 		var x: int = container["x"]
 		var y: int = container["y"]
-		var type: ContainerData.Types = container["type"]
-		var item_type: ContainerData.ItemType = container["contains"]
+		var type: String = container["type"]
+		var item_type: Array[ContainerData.ItemType] = container["contains"]
 		if x == null or y == null or type == null or item_type == null:
 			printerr("JSON format error: Door isn't defined correctly")
 			continue
