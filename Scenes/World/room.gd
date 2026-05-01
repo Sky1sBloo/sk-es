@@ -20,9 +20,12 @@ var details_atlas: Dictionary[DoorsData.LockTypes, Vector2i] = {
 
 func initialize(details: RoomDetails) -> void:
 	composition_map.clear()
-	self.room_details = details
+	room_details = details
 	load_composition_map()
 	load_details_map()
+	
+	for door in room_details.doors:
+		door.unlocked.connect(_unlock_door)
 
 func load_composition_map() -> void:
 	var wall_positions: = _create_wall_positions()
@@ -34,6 +37,10 @@ func load_composition_map() -> void:
 
 func load_details_map() -> void:
 	_load_keys()
+
+# Connected to doors signal
+func _unlock_door(pos: Vector2i) -> void:
+	details_map.set_cell(pos, 0, details_atlas[DoorsData.LockTypes.NONE])
 
 func _load_keys() -> void:
 	for door in room_details.doors:

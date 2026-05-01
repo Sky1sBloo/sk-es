@@ -7,6 +7,8 @@ enum LockTypes {
 	YELLOW
 }
 
+signal unlocked(pos)
+
 var grid_pos: Vector2i
 var lock_type: LockTypes
 var is_locked: bool
@@ -18,3 +20,4 @@ func initialize(pos: Vector2i, lock: LockTypes) -> void:
 
 func unlock_door() -> void:
 	is_locked = false
+	unlocked.emit(grid_pos)
