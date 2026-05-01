@@ -4,6 +4,7 @@ class_name RoomDetails
 enum TileType {
 	EMPTY = 0,
 	WALL = 1,
+	DOOR = 2,
 	JANI = 99
 }
 

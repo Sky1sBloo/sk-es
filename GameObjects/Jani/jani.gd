@@ -29,8 +29,15 @@ func initialize(offset_position: Vector2, initial_grid_pos: Vector2i) -> void:
 	grid_position = initial_grid_pos
 	global_position = Vector2(initial_grid_pos) * GameConfiguration.GRID_SIZE +  _position_offset
 
+# Adds the movement direction to the queue
+# Direction clamps to 1
 func move_to(target_direction: Vector2i) -> void:
+	target_direction.x = clamp(target_direction.x, -1, 1)
+	target_direction.y = clamp(target_direction.y, -1, 1)
 	target_directions.push_back(target_direction)
+
+func clear_move_queue() -> void:
+	target_directions.clear()
 
 func _control_manually() -> void:
 	var input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
