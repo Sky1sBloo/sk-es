@@ -87,16 +87,27 @@ func _get_neighbors_pos(current_pos: Vector2i, room_details: RoomDetails) -> Arr
 	
 	for direction in directions:
 		var neighbor_pos: = current_pos + direction
-		if not position_in_bounds(neighbor_pos, room_details):
+		if not _position_in_bounds(neighbor_pos, room_details):
 			continue
-		if room_details.room_layout[neighbor_pos.y][neighbor_pos.x] != 0:
+		if _is_unpassable(room_details, neighbor_pos):
 			continue
 		
 		neighbors.push_back(neighbor_pos)
 	
 	return neighbors
 
-func position_in_bounds(pos: Vector2i, room_details: RoomDetails) -> bool:
+#TODO: Add support for locked doors
+func _is_unpassable(details: RoomDetails, pos: Vector2i) -> bool:
+	if details.room_layout[pos.y][pos.x] == RoomDetails.TileType.WALL:
+		return true
+	
+	# TODO: Make this more efficient
+	for door in details.doors:
+		if door.grid_pos == pos and door.is_locked:
+			return true
+	return false
+
+func _position_in_bounds(pos: Vector2i, room_details: RoomDetails) -> bool:
 	if room_details.room_layout.size() == 0:
 		return false
 	if room_details.room_layout.front().size() == 0:

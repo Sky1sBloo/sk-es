@@ -4,6 +4,7 @@ class_name RoomDetails
 enum TileType {
 	EMPTY = 0,
 	WALL = 1,
+	DOOR = 2,
 	JANI = 99
 }
 
@@ -11,3 +12,4 @@ enum TileType {
 var room_layout: Array
 var init_player_position: Vector2i
 var doors: Array[DoorsData]
+var containers: Array[ContainerData]

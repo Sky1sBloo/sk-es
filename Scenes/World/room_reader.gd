@@ -6,6 +6,7 @@ enum States {
 	LAYOUT = 1,
 	END = 2
 }
+
 func _open_level_file(path: String) -> String:
 	var file: = FileAccess.open(path, FileAccess.READ)
 	var text: = file.get_as_text()
@@ -24,6 +25,7 @@ func get_level(path: String) -> RoomDetails:
 	room_details.init_player_position = _get_start_pos(data)
 	room_details.room_layout = _room_layout(data)
 	room_details.doors = _load_doors(data)
+	room_details.containers = _load_containers(data)
 	return room_details
 
 func _get_start_pos(data: Dictionary) -> Vector2i:
@@ -66,7 +68,7 @@ func _load_doors(data: Dictionary) -> Array[DoorsData]:
 		var door_data: = DoorsData.new()
 		var x: int = door["x"]
 		var y: int = door["y"]
-		var lock_type: DoorsData.LockTypes = int(door["lock_type"]) as DoorsData.LockTypes
+		var lock_type: String = door["lock_type"]
 		if x == null or y == null or lock_type == null:
 			printerr("JSON format error: Door isn't defined correctly")
 			continue
@@ -83,8 +85,11 @@ func _load_containers(data: Dictionary) -> Array[ContainerData]:
 		var container_data: = ContainerData.new()
 		var x: int = container["x"]
 		var y: int = container["y"]
-		var type: ContainerData.Types = container["type"]
-		var item_type: ContainerData.ItemType = container["contains"]
+		var type: String = container["type"]
+		var item_type: Array[String] = []
+		for item in container["contains"]:
+			item_type.append(str(item))
+		
 		if x == null or y == null or type == null or item_type == null:
 			printerr("JSON format error: Door isn't defined correctly")
 			continue
