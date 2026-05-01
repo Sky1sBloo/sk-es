@@ -25,6 +25,7 @@ func get_level(path: String) -> RoomDetails:
 	room_details.init_player_position = _get_start_pos(data)
 	room_details.room_layout = _room_layout(data)
 	room_details.doors = _load_doors(data)
+	room_details.containers = _load_containers(data)
 	return room_details
 
 func _get_start_pos(data: Dictionary) -> Vector2i:
@@ -85,7 +86,10 @@ func _load_containers(data: Dictionary) -> Array[ContainerData]:
 		var x: int = container["x"]
 		var y: int = container["y"]
 		var type: String = container["type"]
-		var item_type: Array[ContainerData.ItemType] = container["contains"]
+		var item_type: Array[String] = []
+		for item in container["contains"]:
+			item_type.append(str(item))
+		
 		if x == null or y == null or type == null or item_type == null:
 			printerr("JSON format error: Door isn't defined correctly")
 			continue

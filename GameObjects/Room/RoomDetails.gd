@@ -12,3 +12,4 @@ enum TileType {
 var room_layout: Array
 var init_player_position: Vector2i
 var doors: Array[DoorsData]
+var containers: Array[ContainerData]

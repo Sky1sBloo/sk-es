@@ -11,11 +11,17 @@ var composition_atlas: Dictionary[RoomDetails.TileType, Vector2i] = {
 	RoomDetails.TileType.DOOR: Vector2i(1, 0)
 }
 
-var details_atlas: Dictionary[DoorsData.LockTypes, Vector2i] = {
-	DoorsData.LockTypes.RED: Vector2i(1, 1),
-	DoorsData.LockTypes.YELLOW: Vector2i(2, 1),
-	DoorsData.LockTypes.GREEN: Vector2i(3, 1),
-	DoorsData.LockTypes.NONE: Vector2i(0, 2)
+enum DetailType {
+	RED_LOCK,
+	YELLOW_LOCK,
+	GREEN_LOCK,
+	CONTAINER
+}
+var details_atlas: Dictionary[DetailType, Vector2i] = {
+	DetailType.RED_LOCK: Vector2i(1, 1),
+	DetailType.YELLOW_LOCK: Vector2i(2, 1),
+	DetailType.GREEN_LOCK: Vector2i(3, 1),
+	DetailType.CONTAINER: Vector2i(0, 1)
 }
 
 func initialize(details: RoomDetails) -> void:
@@ -38,14 +44,6 @@ func load_composition_map() -> void:
 func load_details_map() -> void:
 	_load_locks()
 
-# Connected to doors signal
-func _unlock_door(pos: Vector2i) -> void:
-	details_map.set_cell(pos, 0, details_atlas[DoorsData.LockTypes.NONE])
-
-func _load_locks() -> void:
-	for door in room_details.doors:
-		details_map.set_cell(door.grid_pos, 0, details_atlas[door.lock_type])
-
 func _create_wall_positions() -> Array[Vector2i]:
 	var wall_positions: Array[Vector2i]
 	for y in range(room_details.room_layout.size()):
@@ -53,3 +51,16 @@ func _create_wall_positions() -> Array[Vector2i]:
 			if room_details.room_layout[y][x] == 1:
 				wall_positions.push_back(Vector2i(x, y))
 	return wall_positions
+
+func _load_locks() -> void:
+	for door in room_details.doors:
+		details_map.set_cell(door.grid_pos, 0, details_atlas[door.lock_type])
+
+func _load_containers() -> void:
+	for container in room_details.containers:
+		details_map.set_cell(container.grid_pos, 0, 
+			details_atlas[DetailType.CONTAINER])
+
+# Connected to doors signal
+func _unlock_door(pos: Vector2i) -> void:
+	details_map.set_cell(pos, 0, details_atlas[DoorsData.LockTypes.NONE])

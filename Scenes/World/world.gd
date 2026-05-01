@@ -15,7 +15,6 @@ func _ready() -> void:
 		Vector2i(6, 8), room_details)
 	for dir in dirs:
 		jani.move_to(dir)
-	
 
 func test_unlock_door(room_details: RoomDetails) -> void:
 	await get_tree().create_timer(2).timeout

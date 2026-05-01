@@ -18,10 +18,10 @@ var grid_pos: Vector2i
 var type: Types
 var contains: Array[ItemType]
 
-func initialize(pos: Vector2i, cont_type: String, items: Array[ItemType]) -> void:
+func initialize(pos: Vector2i, cont_type: String, items: Array[String]) -> void:
 	grid_pos = pos
 	if str_to_container_type.has(cont_type):
 		type = str_to_container_type[cont_type]
 	else:
 		type = Types.DRAWER
-	contains = items
+	# contains = items
