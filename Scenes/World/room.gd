@@ -12,12 +12,14 @@ var composition_atlas: Dictionary[RoomDetails.TileType, Vector2i] = {
 }
 
 enum DetailType {
+	NONE,
 	RED_LOCK,
 	YELLOW_LOCK,
 	GREEN_LOCK,
 	CONTAINER
 }
 var details_atlas: Dictionary[DetailType, Vector2i] = {
+	DetailType.NONE: Vector2i(0, 2),
 	DetailType.RED_LOCK: Vector2i(1, 1),
 	DetailType.YELLOW_LOCK: Vector2i(2, 1),
 	DetailType.GREEN_LOCK: Vector2i(3, 1),
@@ -43,6 +45,7 @@ func load_composition_map() -> void:
 
 func load_details_map() -> void:
 	_load_locks()
+	_load_containers()
 
 func _create_wall_positions() -> Array[Vector2i]:
 	var wall_positions: Array[Vector2i]
