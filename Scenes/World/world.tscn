@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ddcghq7cuk2tn" path="res://Sprites/Environment.png" id="3_5a7ea"]
 [ext_resource type="Texture2D" uid="uid://cqu1ei31uspcj" path="res://Sprites/Placeholder.png" id="5_7staa"]
 [ext_resource type="Script" uid="uid://b2d2mtpmypsea" path="res://Scenes/World/room_reader.gd" id="5_fo5ed"]
-[ext_resource type="Script" uid="uid://dhwdvu74kjrex" path="res://Scenes/World/path_finder.gd" id="6_adcqc"]
+[ext_resource type="Script" uid="uid://b3lnwbdck10e5" path="res://Scenes/World/interaction_handler.gd" id="7_7staa"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8j60k"]
 texture = ExtResource("3_5a7ea")
@@ -136,12 +136,19 @@ texture = ExtResource("5_7staa")
 [sub_resource type="TileSet" id="TileSet_y0d6x"]
 sources/0 = SubResource("TileSetAtlasSource_fcotr")
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_adcqc"]
+texture = ExtResource("5_7staa")
+
+[sub_resource type="TileSet" id="TileSet_7staa"]
+sources/0 = SubResource("TileSetAtlasSource_adcqc")
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7staa"]
 texture = ExtResource("5_7staa")
 0:1/0 = 0
 1:1/0 = 0
 2:1/0 = 0
 3:1/0 = 0
+14:7/0 = 0
 0:2/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_fcotr"]
@@ -161,9 +168,6 @@ visible = false
 scale = Vector2(2, 2)
 tile_set = SubResource("TileSet_fo5ed")
 
-[node name="Jani" parent="Room" unique_id=1675082522 instance=ExtResource("1_a02cp")]
-wasd_control = false
-
 [node name="TileMap" type="Node" parent="Room" unique_id=609749231]
 
 [node name="TileMapRoomComposition" type="TileMapLayer" parent="Room/TileMap" unique_id=1096967341]
@@ -172,14 +176,20 @@ scale = Vector2(2, 2)
 tile_set = SubResource("TileSet_y0d6x")
 
 [node name="TileMapItems" type="TileMapLayer" parent="Room/TileMap" unique_id=614893973]
+tile_set = SubResource("TileSet_7staa")
 
 [node name="TileMapDetails" type="TileMapLayer" parent="Room/TileMap" unique_id=723559531]
 position = Vector2(64, 128)
 scale = Vector2(2, 2)
 tile_set = SubResource("TileSet_fcotr")
 
+[node name="Jani" parent="Room" unique_id=1675082522 instance=ExtResource("1_a02cp")]
+wasd_control = false
+
 [node name="RoomReader" type="Node" parent="." unique_id=1029788623]
 script = ExtResource("5_fo5ed")
 
-[node name="PathFinder" type="Node" parent="." unique_id=270573895]
-script = ExtResource("6_adcqc")
+[node name="InteractionHandler" type="Node" parent="." unique_id=575979488]
+script = ExtResource("7_7staa")
+
+[connection signal="move_finished" from="Room/Jani" to="InteractionHandler" method="_on_jani_move_finished"]

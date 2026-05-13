@@ -8,7 +8,8 @@ var room_details: RoomDetails
 
 var composition_atlas: Dictionary[RoomDetails.TileType, Vector2i] = {
 	RoomDetails.TileType.WALL: Vector2i(0, 0),
-	RoomDetails.TileType.DOOR: Vector2i(1, 0)
+	RoomDetails.TileType.DOOR: Vector2i(1, 0),
+	RoomDetails.TileType.SPIKE: Vector2i(3, 0)
 }
 
 enum DetailType {
@@ -16,14 +17,16 @@ enum DetailType {
 	RED_LOCK,
 	YELLOW_LOCK,
 	GREEN_LOCK,
-	CONTAINER
+	CONTAINER,
+	SPIKE_TRAP
 }
 var details_atlas: Dictionary[DetailType, Vector2i] = {
-	DetailType.NONE: Vector2i(0, 2),
+	DetailType.NONE: Vector2i(14, 7),
 	DetailType.RED_LOCK: Vector2i(1, 1),
 	DetailType.YELLOW_LOCK: Vector2i(2, 1),
 	DetailType.GREEN_LOCK: Vector2i(3, 1),
-	DetailType.CONTAINER: Vector2i(0, 1)
+	DetailType.CONTAINER: Vector2i(0, 1),
+	DetailType.SPIKE_TRAP: Vector2i(0, 2)
 }
 
 func initialize(details: RoomDetails) -> void:
@@ -42,10 +45,16 @@ func load_composition_map() -> void:
 	
 	for door in room_details.doors:
 		composition_map.set_cell(door.grid_pos, 0, composition_atlas[RoomDetails.TileType.DOOR])
+	
+	for trap in room_details.traps:
+		composition_map.set_cell(trap.grid_pos, 0, composition_atlas[RoomDetails.TileType.SPIKE])
 
 func load_details_map() -> void:
 	_load_locks()
 	_load_containers()
+	
+	for trap in room_details.traps:
+		details_map.set_cell(trap.grid_pos, 0, details_atlas[DetailType.SPIKE_TRAP])
 
 func _create_wall_positions() -> Array[Vector2i]:
 	var wall_positions: Array[Vector2i]

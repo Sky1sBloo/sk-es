@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://rskra322byro" path="res://GameObjects/Jani/jani.gd" id="1_4gaxf"]
 [ext_resource type="Texture2D" uid="uid://cctr48khg4og3" path="res://Sprites/Jani.png" id="1_mw1xl"]
 [ext_resource type="Script" uid="uid://c5hvmq0u0hwgf" path="res://GameObjects/Jani/jani_state_handler.gd" id="3_maids"]
+[ext_resource type="Script" uid="uid://cltvdsoqdmke4" path="res://GameObjects/Jani/memory.gd" id="4_1a1xc"]
+[ext_resource type="PackedScene" uid="uid://b6phdahmu6duh" path="res://GameObjects/path_finder.tscn" id="5_uwka1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gaxf"]
 size = Vector2(16, 12)
@@ -253,3 +255,8 @@ region_rect = Rect2(0, 0, 16, 16)
 [node name="StateHandler" type="Node" parent="." unique_id=1946377402 node_paths=PackedStringArray("jani")]
 script = ExtResource("3_maids")
 jani = NodePath("..")
+
+[node name="Memory" type="Node" parent="." unique_id=2126526760]
+script = ExtResource("4_1a1xc")
+
+[node name="PathFinder" parent="." unique_id=78415648 instance=ExtResource("5_uwka1")]
