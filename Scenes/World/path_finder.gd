@@ -4,9 +4,12 @@ class_name PathFinder
 @onready var min_heap: MinHeap = MinHeap.new()
 @export var enable_diagonals: bool = false
 
+func initialize() -> void:
+	min_heap = MinHeap.new()
+
 func find_path_as_directions(start_pos: Vector2i, end_pos: Vector2i, 
-		room_details: RoomDetails) -> Array[Vector2i]:
-	var path: = find_path(start_pos, end_pos, room_details)
+		memory: JaniMemory) -> Array[Vector2i]:
+	var path: = find_path(start_pos, end_pos, memory)
 	var directions: Array[Vector2i] = []
 	var prev: = start_pos
 	for node in path:
@@ -14,7 +17,7 @@ func find_path_as_directions(start_pos: Vector2i, end_pos: Vector2i,
 		prev = node
 	return directions
 
-func find_path(start_pos: Vector2i, end_pos: Vector2i, room_details: RoomDetails) -> Array[Vector2i]:
+func find_path(start_pos: Vector2i, end_pos: Vector2i, memory: JaniMemory) -> Array[Vector2i]:
 	var path: Array[Vector2i] = []
 	var start_node: = _create_a_star_node(start_pos, 0, end_pos)
 	var g_scores: Dictionary[Vector2i, float] = {}
@@ -35,7 +38,7 @@ func find_path(start_pos: Vector2i, end_pos: Vector2i, room_details: RoomDetails
 			found = true
 			break
 		
-		var neighbors_pos: = _get_neighbors_pos(current_node.position, room_details)
+		var neighbors_pos: = _get_neighbors_pos(current_node.position, memory)
 		for neighbor_pos in neighbors_pos:
 			var step_cost: = 1.0
 			var dir: = neighbor_pos - current_node.position
@@ -68,7 +71,7 @@ func _create_a_star_node(pos: Vector2i, cost: float, end_pos: Vector2i) -> AStar
 	return a_star_node
 
 # Gets neighbors excluding walls
-func _get_neighbors_pos(current_pos: Vector2i, room_details: RoomDetails) -> Array[Vector2i]:
+func _get_neighbors_pos(current_pos: Vector2i, memory: JaniMemory) -> Array[Vector2i]:
 	var neighbors: Array[Vector2i] = []
 	var directions: Array[Vector2i] = [
 		Vector2i(0, -1),
@@ -87,9 +90,9 @@ func _get_neighbors_pos(current_pos: Vector2i, room_details: RoomDetails) -> Arr
 	
 	for direction in directions:
 		var neighbor_pos: = current_pos + direction
-		if not _position_in_bounds(neighbor_pos, room_details):
+		if not _position_in_bounds(neighbor_pos, memory):
 			continue
-		if _is_unpassable(room_details, neighbor_pos):
+		if _is_unpassable(memory, neighbor_pos):
 			continue
 		
 		neighbors.push_back(neighbor_pos)
@@ -97,25 +100,25 @@ func _get_neighbors_pos(current_pos: Vector2i, room_details: RoomDetails) -> Arr
 	return neighbors
 
 #TODO: Add support for locked doors
-func _is_unpassable(details: RoomDetails, pos: Vector2i) -> bool:
-	if details.room_layout[pos.y][pos.x] == RoomDetails.TileType.WALL:
+func _is_unpassable(memory: JaniMemory, pos: Vector2i) -> bool:
+	if memory.env_layout[pos.y][pos.x] == RoomDetails.TileType.WALL:
 		return true
 	
 	# TODO: Make this more efficient
-	for door in details.doors:
+	for door in memory.doors:
 		if door.grid_pos == pos and door.is_locked:
 			return true
 	return false
 
-func _position_in_bounds(pos: Vector2i, room_details: RoomDetails) -> bool:
-	if room_details.room_layout.size() == 0:
+func _position_in_bounds(pos: Vector2i, memory: JaniMemory) -> bool:
+	if memory.env_layout.size() == 0:
 		return false
-	if room_details.room_layout.front().size() == 0:
+	if memory.env_layout.front().size() == 0:
 		return false
 	
-	if pos.y < 0 or pos.y >= room_details.room_layout.size():
+	if pos.y < 0 or pos.y >= memory.env_layout.size():
 		return false
-	if pos.x < 0 or pos.x >= room_details.room_layout.front().size():
+	if pos.x < 0 or pos.x >= memory.env_layout.front().size():
 		return false
 	
 	return true

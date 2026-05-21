@@ -26,6 +26,7 @@ func get_level(path: String) -> RoomDetails:
 	room_details.room_layout = _room_layout(data)
 	room_details.doors = _load_doors(data)
 	room_details.containers = _load_containers(data)
+	room_details.traps = _load_traps(data)
 	return room_details
 
 func _get_start_pos(data: Dictionary) -> Vector2i:
@@ -96,3 +97,16 @@ func _load_containers(data: Dictionary) -> Array[ContainerData]:
 		container_data.initialize(Vector2i(x, y), type, item_type)
 		containers.push_back(container_data)
 	return containers
+
+func _load_traps(data: Dictionary) -> Array[TrapData]:
+	if not data.has("traps"):
+		return []
+	var traps: Array[TrapData] = []
+	for trap in data["traps"]:
+		var trap_data: = TrapData.new()
+		var x: int = trap["x"]
+		var y: int = trap["y"]
+		var type: String = trap["type"]
+		trap_data.initialize(Vector2i(x, y), type)
+		traps.push_back(trap_data)
+	return traps

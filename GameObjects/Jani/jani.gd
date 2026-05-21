@@ -3,13 +3,15 @@ class_name Jani
 
 @onready var anim_tree : AnimationTree = $JaniAnimationTree
 @onready var state_machine : JaniStateHandler = $StateHandler
+@onready var memory : JaniMemory = $Memory
+@onready var path_finder : PathFinder = $PathFinder
 
 @export var wasd_control: bool
 
 # Used to set origin position for offset
 var _position_offset: Vector2 = Vector2.ZERO
 
-signal move_finished
+signal move_finished(pos: Vector2i)
 
 var speed: int = 64
 var direction: Vector2 = Vector2(0, 0)
@@ -24,10 +26,25 @@ var state: JaniStateHandler.States:
 		state_machine.set_state(value)
 
 # Position calculation
-func initialize(offset_position: Vector2, initial_grid_pos: Vector2i) -> void:
+func initialize(offset_position: Vector2, initial_grid_pos: Vector2i, 
+		room_details: RoomDetails) -> void:
+	memory.initialize(room_details)
+	path_finder.initialize()
 	_position_offset = offset_position
 	grid_position = initial_grid_pos
 	global_position = Vector2(initial_grid_pos) * GameConfiguration.GRID_SIZE +  _position_offset
+
+# Doesn't forget memory
+func reset(offset_position: Vector2, initial_grid_pos: Vector2i, ) -> void:
+	_position_offset = offset_position
+	path_finder.initialize()
+	grid_position = initial_grid_pos
+	global_position = Vector2(initial_grid_pos) * GameConfiguration.GRID_SIZE +  _position_offset
+
+func move_to_pos(target_position: Vector2i) -> void:
+	var path: = path_finder.find_path_as_directions(grid_position, target_position, memory)
+	for line in path:
+		move_to(line)
 
 # Adds the movement direction to the queue
 # Direction clamps to 1
@@ -73,6 +90,6 @@ func _move_to_position() -> void:
 		grid_position = target_position
 		target_directions.pop_front()
 		
-		move_finished.emit()
+		move_finished.emit(grid_position)
 	else:
 		direction = global_position.direction_to(target_position_grid)

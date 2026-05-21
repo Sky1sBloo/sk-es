@@ -25,5 +25,8 @@
 	{ "type": "DRAWER", "x": 4, "y": 6, "contains": [] },
 	{ "type": "DRAWER", "x": 2, "y": 8, "contains": ["YELLOW_KEY"] },
 	{ "type": "DRAWER", "x": 6, "y": 8, "contains": [] }
+  ],
+  "traps": [
+	  { "type": "SPIKED", "x": 4, "y": 3}
   ]
 }
