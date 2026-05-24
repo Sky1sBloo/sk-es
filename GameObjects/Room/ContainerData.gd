@@ -10,7 +10,11 @@ var str_to_container_type: Dictionary[String, Types] = {
 var str_to_item_type: Dictionary[String, Inventory.ItemType] = {
 	"RED_KEY": Inventory.ItemType.RED_KEY,
 	"YELLOW_KEY": Inventory.ItemType.YELLOW_KEY,
-	"GREEN_KEY": Inventory.ItemType.GREEN_KEY
+	"GREEN_KEY": Inventory.ItemType.GREEN_KEY,
+	"AXE": Inventory.ItemType.AXE,
+	"AXE_HEAD": Inventory.ItemType.AXE_HEAD,
+	"STICK": Inventory.ItemType.STICK,
+	"ROPE": Inventory.ItemType.ROPE
 }
 
 var grid_pos: Vector2i

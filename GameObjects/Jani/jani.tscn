@@ -279,7 +279,8 @@ script = ExtResource("8_f8re0")
 memory = NodePath("../../Memory")
 inventory = NodePath("../../Inventory")
 
-[node name="Inventory" type="Node" parent="." unique_id=545721452]
+[node name="Inventory" type="Node" parent="." unique_id=545721452 node_paths=PackedStringArray("memory")]
 script = ExtResource("9_fuy07")
+memory = NodePath("../Memory")
 
 [connection signal="move_instruction_finished" from="." to="DecisionManager" method="_on_jani_move_instruction_finished"]

@@ -19,9 +19,9 @@ var _position_offset: Vector2 = Vector2.ZERO
 signal move_finished(pos: Vector2i)
 # Triggers when end is reached
 signal move_instruction_finished(pos: Vector2i)
-signal interacted(pos: Vector2i)
+signal interacted(pos: Vector2i, args: Array)
 
-var speed: int = 64
+var speed: int = 128 # 64
 var direction: Vector2 = Vector2(0, 0)
 var facing_direction: Vector2 = Vector2(0, 0)  # Used for animation
 var target_directions: Array = []
@@ -40,6 +40,7 @@ func initialize(offset_position: Vector2, initial_grid_pos: Vector2i) -> void:
 	global_position = Vector2(initial_grid_pos) * GameConfiguration.GRID_SIZE +  _position_offset
 	memory.initialize(world.room.room_details)
 	path_finder.initialize()
+	decision_manager.clear_actions()
 	decision_manager.tick()
 
 # Doesn't forget memory
@@ -47,6 +48,8 @@ func reset(offset_position: Vector2, initial_grid_pos: Vector2i, ) -> void:
 	_position_offset = offset_position
 	target_directions.clear()
 	path_finder.initialize()
+	decision_manager.clear_actions()
+	decision_manager.tick()
 	grid_position = initial_grid_pos
 	global_position = Vector2(initial_grid_pos) * GameConfiguration.GRID_SIZE +  _position_offset
 	direction = Vector2.ZERO
@@ -78,8 +81,8 @@ func move_to(target_direction: Vector2i) -> void:
 func clear_move_queue() -> void:
 	target_directions.clear()
 
-func interact(pos: Vector2i = grid_position) -> void:
-	interacted.emit(pos)
+func interact(pos: Vector2i = grid_position, args: Array = []) -> void:
+	interacted.emit(pos, args)
 
 func _control_manually() -> void:
 	var input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()

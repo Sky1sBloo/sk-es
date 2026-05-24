@@ -11,10 +11,7 @@ func tick() -> void:
 	perceptor.percept_room()
 	inference.load_facts()
 	fact_to_action()
-	print("======")
-	for type in inference.facts:
-		for fact in inference.facts[type]:
-			print("Fact: ", Fact.type_to_string(fact.type), fact.args)
+	
 	decide()
 
 func fact_to_action() ->  void:
@@ -25,11 +22,9 @@ func fact_to_action() ->  void:
 		action.interaction_pos = fact.args[0]
 		action_queue.push(action)
 	
-	for fact in inference.facts[Fact.Type.NEED_ITEM]:
-		# loop through unvisited containers and interact, only until it gets the item will we remove that fact
+	if not inference.facts[Fact.Type.NEED_ITEM].is_empty():
 		if inference.facts[Fact.Type.UNVISITED_CONTAINER_AT].is_empty():
-			print("Cannot escape")
-			continue
+			print("No container left")
 		else:
 			var action = Action.new()
 			var container_fact = inference.facts[Fact.Type.UNVISITED_CONTAINER_AT][0]
@@ -45,6 +40,19 @@ func fact_to_action() ->  void:
 		action.interaction_pos = fact.args[0]
 		action_queue.push(action)
 	
+	for fact in inference.facts[Fact.Type.NEED_CRAFT]:
+		# Todo support nearest furniture
+		for furniture in inference.facts[Fact.Type.FURNITURE_AT]:
+			var furniture_data: FurnitureData = furniture.args[0]
+			if furniture.args[0].type != FurnitureData.Types.TABLE:
+				continue
+			var action = Action.new()
+			action.type = Action.Types.CRAFT_ITEM
+			action.grid_pos = furniture_data.grid_pos
+			action.interaction_pos = furniture_data.grid_pos
+			action.args = [fact.args[0]]
+			action_queue.push(action)
+	
 	for fact in inference.facts[Fact.Type.FOUND_EXIT]:
 		var action = Action.new()
 		action.type = Action.Types.GO_TO_EXIT
@@ -56,8 +64,6 @@ func decide() -> void:
 	if action_queue.is_empty():
 		print("nothing to do")
 		return
-	print("Action size: ", action_queue.size())
-	print(Action.type_to_string(next_action.type))
 	match next_action.type:
 		Action.Types.VISIT_DOOR:
 			jani.move_to_pos(next_action.grid_pos)
@@ -67,21 +73,30 @@ func decide() -> void:
 			jani.move_to_pos(next_action.grid_pos)
 		Action.Types.GO_TO_EXIT:
 			jani.move_to_pos(next_action.grid_pos)
+		Action.Types.CRAFT_ITEM:
+			jani.move_to_pos(next_action.grid_pos)
 		_:
 			print("Unknown action type")
+
+func log_facts() -> void:
+	print("======")
+	for type in inference.facts:
+		for fact in inference.facts[type]:
+			print("Fact: ", Fact.type_to_string(fact.type), fact.args)
+
 
 func _on_jani_move_instruction_finished(_pos: Vector2i) -> void:
 	# To do filter by action
 	if action_queue.is_empty():
 		return
 	var action = action_queue.peek()
-	# Defensive: ensure action is valid
+	action_queue.pop()
 	if action == null:
 		tick()
 		return
-	action_queue.pop()
+	
 	if action.interaction_pos != Vector2i(-1, -1):
-		jani.interact(action.interaction_pos)
+		jani.interact(action.interaction_pos, action.args)
 	tick()
 
 func cancel_current_action() -> void:

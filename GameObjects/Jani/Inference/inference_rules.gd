@@ -10,12 +10,15 @@ var facts: Dictionary[Fact.Type, Array] = {
 	Fact.Type.HAS_ITEM : [],
 	Fact.Type.NEED_ITEM : [],
 	Fact.Type.ITEM_STORED_AT : [],
+	Fact.Type.CRAFTABLE_ITEM: [],
+	Fact.Type.NEED_CRAFT: [],
 	Fact.Type.LOCKED_DOOR_AT : [],
 	Fact.Type.UNLOCKABLE_DOOR_AT : [],
 	Fact.Type.DOOR_KEY_TYPE_IS : [],
 	Fact.Type.UNVISITED_DOOR_AT : [],
 	Fact.Type.UNVISITED_CONTAINER_AT: [],
 	Fact.Type.GET_OPEN_CONTAINER_AT : [],
+	Fact.Type.FURNITURE_AT : [],
 	Fact.Type.FOUND_EXIT: []
 }
 
@@ -34,6 +37,7 @@ func load_facts() -> void:
 	
 	load_inventory_facts()
 	load_container_facts()
+	load_furniture_facts()
 	load_item_facts()
 	load_door_facts()
 	chain_facts()
@@ -44,6 +48,8 @@ func chain_facts() -> void:
 		new_facts_added = false
 		unvisited_door()
 		check_item_for_locked_door()
+		craftable_items()
+		need_craft()
 
 func load_inventory_facts() -> void:
 	for item in inventory.contents:
@@ -52,6 +58,10 @@ func load_inventory_facts() -> void:
 func load_container_facts() -> void:
 	for container in memory.unopened_container_locations:
 		_create_fact(Fact.Type.UNVISITED_CONTAINER_AT, [container])
+
+func load_furniture_facts() -> void:
+	for furniture in memory.furnitures:
+		_create_fact(Fact.Type.FURNITURE_AT, [furniture])
 
 func load_item_facts() -> void:
 	for item in memory.item_locations:
@@ -89,6 +99,8 @@ func check_item_for_locked_door() -> void:
 				item_needed = Inventory.ItemType.GREEN_KEY
 			DoorsData.LockTypes.YELLOW:
 				item_needed = Inventory.ItemType.YELLOW_KEY
+			DoorsData.LockTypes.BOARDED:
+				item_needed = Inventory.ItemType.AXE
 		if _has_fact(Fact.Type.HAS_ITEM, [item_needed]):
 			if _create_fact(Fact.Type.UNLOCKABLE_DOOR_AT, [fact.args[0]]):
 				new_facts_added = true
@@ -96,6 +108,46 @@ func check_item_for_locked_door() -> void:
 			if _create_fact(Fact.Type.NEED_ITEM, [item_needed]):
 				new_facts_added = true
 
+
+func craftable_items() -> void:
+	_craftable_axe()
+
+func _craftable_axe() -> void:
+	_craftable(Inventory.ItemType.AXE, [
+		Inventory.ItemType.AXE_HEAD,
+		Inventory.ItemType.STICK,
+		Inventory.ItemType.ROPE
+	])
+
+func _craftable(item: Inventory.ItemType, requirements: Array[Inventory.ItemType]) -> void:
+	var requirements_achieved: Array[bool] = []
+	for requirement in requirements:
+		requirements_achieved.push_back(false)
+	
+	for fact in facts[Fact.Type.HAS_ITEM]:
+		for i in range(requirements.size()):
+			if fact.args[0] == requirements[i]:
+				requirements_achieved[i] = true
+	
+	var not_enough_items: bool = false
+	for requirement in requirements_achieved:
+		if not requirement:
+			not_enough_items = true
+	
+	if not not_enough_items:
+		if _create_fact(Fact.Type.CRAFTABLE_ITEM, [item]):
+			new_facts_added = true
+
+func need_craft() -> void:
+	_need_craft(Inventory.ItemType.AXE)
+
+func _need_craft(item: Inventory.ItemType) -> void:
+	var craftable: = _has_fact(Fact.Type.CRAFTABLE_ITEM, [item])
+	var need: = _has_fact(Fact.Type.NEED_ITEM, [item])
+	
+	if craftable and need:
+		if _create_fact(Fact.Type.NEED_CRAFT, [item]):
+			new_facts_added = true
 
 ## Helpers
 # Returns if successful

@@ -23,6 +23,10 @@ func percept_room() -> void:
 		if not memory.unopened_container_locations.has(locked_cont_pos):
 			memory.unopened_container_locations.push_back(locked_cont_pos)
 	
+	for furniture in result.furnitures:
+		if not memory.furnitures.has(furniture):
+			memory.furnitures.push_back(furniture)
+	
 	for exit_pos in result.exit_locations:
 		if not memory.exit_locations.has(exit_pos):
 			memory.exit_locations.push_back(exit_pos)
@@ -74,6 +78,11 @@ func _check_cell(grid_pos: Vector2i, scan_result: ScanResult) -> bool:
 		scan_result.container_locations.push_back(container.grid_pos)
 		if not container.is_opened:
 			scan_result.unopened_container_locations.push_back(container.grid_pos)
+		return true
+	
+	var furniture: = room_details.get_cell_furniture(grid_pos)
+	if furniture != null:
+		scan_result.furnitures.push_back(furniture)
 		return true
 	
 	var door: = room_details.get_cell_door(grid_pos)

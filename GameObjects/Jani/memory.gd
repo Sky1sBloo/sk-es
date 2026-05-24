@@ -13,9 +13,15 @@ var door_lock_type: Dictionary[Vector2i, DoorsData.LockTypes]
 var trap_locations: Array[Vector2i] = []
 
 var container_locations: Array[Vector2i] = []
+var furnitures: Array[FurnitureData] = []
 var unopened_container_locations: Array[Vector2i] = []
 
 var item_locations: Array[Array] = [] # Inside array contains item type, and Vector2i gridpos
+
+var recipes: Dictionary[Inventory.ItemType, Recipe]
+
+func _ready() -> void:
+	load_recipes()
 
 func initialize(details: RoomDetails) -> void:
 	# Initialize memory from RoomDetails (overwrites any existing env_layout)
@@ -46,3 +52,18 @@ func rebind(details: RoomDetails) -> void:
 func add_trap(pos: Vector2i) -> void:
 	env_layout[pos.y][pos.x] = 1
 	trap_locations.push_back(pos)
+
+func load_recipes() -> void:
+	var axe_recipe: = Recipe.new()
+	axe_recipe.define(Inventory.ItemType.AXE, [
+		Inventory.ItemType.AXE_HEAD,
+		Inventory.ItemType.STICK,
+		Inventory.ItemType.ROPE
+	])
+	recipes[Inventory.ItemType.AXE] = axe_recipe
+
+func get_recipe(item: Inventory.ItemType) -> Recipe:
+	if not recipes.has(item):
+		return null
+	
+	return recipes[item]

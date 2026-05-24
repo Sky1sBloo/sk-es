@@ -27,6 +27,7 @@ func get_level(path: String) -> RoomDetails:
 	room_details.doors = _load_doors(data)
 	room_details.containers = _load_containers(data)
 	room_details.traps = _load_traps(data)
+	room_details.furnitures = _load_furniture(data)
 	return room_details
 
 func _get_start_pos(data: Dictionary) -> Vector2i:
@@ -94,11 +95,29 @@ func _load_containers(data: Dictionary) -> Array[ContainerData]:
 			item_type.append(str(item))
 		
 		if x == null or y == null or type == null or item_type == null:
-			printerr("JSON format error: Door isn't defined correctly")
+			printerr("JSON format error: Container isn't defined correctly")
 			continue
 		container_data.initialize(Vector2i(x, y), type, item_type)
 		containers.push_back(container_data)
 	return containers
+
+func _load_furniture(data: Dictionary) -> Array[FurnitureData]:
+	if not data.has("furnitures"):
+		return []
+	var furnitures: Array[FurnitureData] = []
+	
+	for furniture in data["furnitures"]:
+		var furniture_data: = FurnitureData.new()
+		var x: int = furniture["x"]
+		var y: int = furniture["y"]
+		
+		var type: String = furniture["type"]
+		if x == null or y == null or type == null:
+			printerr("JSON format error: Furniture isn't defined correctly")
+			continue
+		furniture_data.initialize(Vector2i(x, y), type)
+		furnitures.push_back(furniture_data)
+	return furnitures
 
 func _load_traps(data: Dictionary) -> Array[TrapData]:
 	if not data.has("traps"):

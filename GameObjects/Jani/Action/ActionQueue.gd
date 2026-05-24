@@ -3,8 +3,14 @@ class_name ActionQueue
 
 var _heap: Array = []
 
-
+# 
 func push(value: Action) -> void:
+	for node in _heap:
+		var existing: Action = node["value"]
+	
+		if _actions_equal(existing, value):
+			return
+	
 	var node = {
 		"value": value,
 		"priority": value.priority
@@ -12,6 +18,25 @@ func push(value: Action) -> void:
 	_heap.append(node)
 	_heapify_up(_heap.size() - 1)
 
+func _actions_equal(a: Action, b: Action) -> bool:
+	if a.type != b.type:
+		return false
+
+	if a.grid_pos != b.grid_pos:
+		return false
+
+	if a.interaction_pos != b.interaction_pos:
+		return false
+
+	# optional: include args if needed
+	if a.args.size() != b.args.size():
+		return false
+
+	for i in range(a.args.size()):
+		if a.args[i] != b.args[i]:
+			return false
+
+	return true
 
 func pop():
 	if _heap.is_empty():

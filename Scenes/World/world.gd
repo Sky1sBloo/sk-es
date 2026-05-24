@@ -23,6 +23,4 @@ func start(keep_memory: bool = false) -> void:
 	else:
 		jani.initialize($Room.global_position, room_details.init_player_position)
 	interaction_handler.initialize(jani, room)
-	# Ensure decision manager evaluates after world (re)start
-	if jani.has_node("DecisionManager"):
-		jani.decision_manager.tick()
+	

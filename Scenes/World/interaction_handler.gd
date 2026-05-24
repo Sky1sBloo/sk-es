@@ -18,19 +18,20 @@ func _on_jani_move_finished(pos: Vector2i) -> void:
 		world.reset()
 		room.details_map.set_cell(pos, 0, room.details_atlas[room.DetailType.NONE])
 
-func _on_jani_interacted(pos: Vector2i) -> void:
+func _on_jani_interacted(pos: Vector2i, args: Array) -> void:
 	var container: = room.room_details.get_cell_container(pos) 
 	if container != null and not container.is_opened:
 		container.is_opened = true
 		jani.memory.unopened_container_locations.erase(container.grid_pos)
 		for item in container.contains:
 			jani.inventory.push_item(item)
-	
+	_furniture_interaction(pos, args)
 	_door_interaction(pos)
 
+# TODO: Use this i nthe future
 func _container_interaction(pos: Vector2i) -> void:
 	var container: = room.room_details.get_cell_container(pos) 
-	if container != null:
+	if container == null:
 		return
 	
 	if container.is_opened:
@@ -41,6 +42,19 @@ func _container_interaction(pos: Vector2i) -> void:
 		jani.memory.unopened_container_locations.erase(container.grid_pos)
 		for item in container.contains:
 			jani.memory.item_locations.push_back([item, pos])
+
+func _furniture_interaction(pos: Vector2i, args: Array) -> void:
+	var furniture: = room.room_details.get_cell_furniture(pos)
+	if furniture == null:
+		return
+	
+	# Crafting able
+	if furniture.type == FurnitureData.Types.TABLE:
+		if args.is_empty():
+			print("cannot craft args is empty")
+			return
+		
+		jani.inventory.craft_item(args[0])
 
 func _door_interaction(pos: Vector2i) -> void:
 	var door: = room.room_details.get_cell_door(pos)
@@ -59,6 +73,8 @@ func _door_interaction(pos: Vector2i) -> void:
 			needed_item = Inventory.ItemType.GREEN_KEY
 		DoorsData.LockTypes.YELLOW:
 			needed_item = Inventory.ItemType.YELLOW_KEY
+		DoorsData.LockTypes.BOARDED:
+			needed_item = Inventory.ItemType.AXE
 		_:
 			# Unknown lock type; do not unlock
 			return

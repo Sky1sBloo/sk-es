@@ -21,13 +21,16 @@
   ],
 
   "containers": [
-	{ "type": "DRAWER", "x": 2, "y": 2, "contains": [] },
+	{ "type": "DRAWER", "x": 2, "y": 2, "contains": ["AXE_HEAD"] },
 	{ "type": "DRAWER", "x": 6, "y": 3, "contains": ["RED_KEY"] },
 	{ "type": "DRAWER", "x": 2, "y": 6, "contains": ["GREEN_KEY"] },
-	{ "type": "DRAWER", "x": 4, "y": 6, "contains": [] },
-	{ "type": "DRAWER", "x": 2, "y": 8, "contains": ["YELLOW_KEY"] },
-	{ "type": "DRAWER", "x": 6, "y": 8, "contains": [] }
+	{ "type": "DRAWER", "x": 4, "y": 6, "contains": ["STICK"] },
+	{ "type": "DRAWER", "x": 2, "y": 8, "contains": ["YELLOW_KEY", "ROPE"] },
+	{ "type": "DRAWER", "x": 5, "y": 8, "contains": [] }
   ],
+"furnitures": [
+	{ "type": "TABLE", "x": 7, "y": 5 }
+],
   "traps": [
 	  { "type": "SPIKED", "x": 9, "y": 9}
   ]

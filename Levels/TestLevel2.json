@@ -1,0 +1,38 @@
+{
+  "start": { "x": 1, "y": 1 },
+
+  "layout": [
+	"1111111111111111",
+	"1000000001000001",
+	"1011110001011101",
+	"1000010001000101",
+	"1111010001110101",
+	"1000011111110101",
+	"1000000000010101",
+	"1011111111010101",
+	"1000000000000X11",
+    "1111111111111111"
+  ],
+
+  "doors": [
+	{ "x": 5, "y": 4, "lock_type": "RED" },
+	{ "x": 9, "y": 2, "lock_type": "GREEN" },
+	{ "x": 13, "y": 7, "lock_type": "BOARDED" }
+  ],
+
+  "containers": [
+	{ "type": "DRAWER", "x": 2, "y": 1, "contains": ["STICK"] },
+	{ "type": "DRAWER", "x": 7, "y": 2, "contains": ["AXE_HEAD"] },
+	{ "type": "DRAWER", "x": 2, "y": 6, "contains": ["RED_KEY"] },
+	{ "type": "DRAWER", "x": 10, "y": 6, "contains": ["GREEN_KEY"] },
+	{ "type": "DRAWER", "x": 4, "y": 8, "contains": ["ROPE"] },
+	{ "type": "DRAWER", "x": 11, "y": 8, "contains": [] }
+  ],
+
+  "furnitures": [
+	{ "type": "TABLE", "x": 6, "y": 4 },
+	{ "type": "TABLE", "x": 9, "y": 6 }
+  ],
+
+  "traps": []
+}

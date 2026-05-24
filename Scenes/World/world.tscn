@@ -145,6 +145,7 @@ texture = ExtResource("5_7staa")
 14:7/0 = 0
 0:2/0 = 0
 2:0/0 = 0
+4:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_fcotr"]
 sources/0 = SubResource("TileSetAtlasSource_7staa")
@@ -193,6 +194,23 @@ offset_right = 640.0
 offset_bottom = 96.0
 script = ExtResource("8_fcotr")
 
+[node name="ActionHeading" type="Label" parent="HUD" unique_id=1283752672]
+layout_mode = 0
+offset_left = 528.0
+offset_top = 16.0
+offset_right = 608.0
+offset_bottom = 28.0
+theme_override_font_sizes/font_size = 8
+text = "Action:"
+
+[node name="Actions" type="RichTextLabel" parent="HUD" unique_id=1847753273]
+layout_mode = 0
+offset_left = 528.0
+offset_top = 32.0
+offset_right = 624.0
+offset_bottom = 112.0
+theme_override_font_sizes/normal_font_size = 8
+
 [node name="InventoryHeading" type="Label" parent="HUD" unique_id=2120830503]
 layout_mode = 0
 offset_left = 400.0
@@ -206,7 +224,7 @@ text = "Inventory:"
 layout_mode = 0
 offset_left = 400.0
 offset_top = 32.0
-offset_right = 624.0
+offset_right = 496.0
 offset_bottom = 112.0
 theme_override_font_sizes/normal_font_size = 8
 
