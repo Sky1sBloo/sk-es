@@ -14,7 +14,7 @@ func reset() -> void:
 	start(true)
 
 func start(keep_memory: bool = false) -> void:
-	var room_details: = room_reader.get_level("res://Levels/TestLevel.json")
+	var room_details: = room_reader.get_level("res://Levels/TestLevel2.json")
 	room.initialize(room_details)
 	if keep_memory:
 		# Update memory to reference the new room details while keeping learned data
