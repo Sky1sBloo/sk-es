@@ -34,6 +34,7 @@ func load_facts() -> void:
 	
 	load_inventory_facts()
 	load_container_facts()
+	load_item_facts()
 	load_door_facts()
 	chain_facts()
 

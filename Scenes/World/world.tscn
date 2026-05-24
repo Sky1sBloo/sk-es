@@ -128,7 +128,6 @@ sources/0 = SubResource("TileSetAtlasSource_8j60k")
 texture = ExtResource("5_7staa")
 0:0/0 = 0
 1:0/0 = 0
-2:0/0 = 0
 3:0/0 = 0
 1:2/0 = 0
 2:2/0 = 0
@@ -145,6 +144,7 @@ texture = ExtResource("5_7staa")
 3:1/0 = 0
 14:7/0 = 0
 0:2/0 = 0
+2:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_fcotr"]
 sources/0 = SubResource("TileSetAtlasSource_7staa")
@@ -201,6 +201,14 @@ offset_right = 480.0
 offset_bottom = 28.0
 theme_override_font_sizes/font_size = 8
 text = "Inventory:"
+
+[node name="Inventory" type="RichTextLabel" parent="HUD" unique_id=133921665]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 32.0
+offset_right = 624.0
+offset_bottom = 112.0
+theme_override_font_sizes/normal_font_size = 8
 
 [node name="FactsHeading" type="Label" parent="HUD" unique_id=1045521919]
 layout_mode = 0
