@@ -3,7 +3,9 @@ class_name Fact
 enum Type {
 	HAS_ITEM,
 	NEED_ITEM, # Inventory.ItemType
-	ITEM_STORED_AT,
+	MISSING_CRAFTABLE_ITEM, # [item, missing item]
+	ITEM_STORED_AT, # [Vector2i, item
+	ITEM_NEEDED_AT, # [Vector2i, Item]
 	CRAFTABLE_ITEM, # Inventory.ItemType
 	NEED_CRAFT, # Inventory.ItemType
 	LOCKED_DOOR_AT,
@@ -26,7 +28,9 @@ func initialize(new_type: Type, arg: Array) -> void:
 static var _type_names := {
 	Type.HAS_ITEM: "HAS_ITEM",
 	Type.NEED_ITEM: "NEED_ITEM",
+	Type.MISSING_CRAFTABLE_ITEM: "MISSING_CRAFTABLE_ITEM",
 	Type.ITEM_STORED_AT: "ITEM_STORED_AT",
+	Type.ITEM_NEEDED_AT: "ITEM_NEEDED_AT",
 	Type.CRAFTABLE_ITEM: "CRAFTABLE_ITEM",
 	Type.NEED_CRAFT: "NEED_CRAFT",
 	Type.LOCKED_DOOR_AT: "LOCKED_DOOR_AT",

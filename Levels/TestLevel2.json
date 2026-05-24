@@ -21,7 +21,7 @@
 
   "containers": [
 	{ "type": "DRAWER", "x": 2, "y": 3, "contains": ["GREEN_KEY"] },
-	{ "type": "DRAWER", "x": 6, "y": 3, "contains": [] },
+	{ "type": "DRAWER", "x": 6, "y": 2, "contains": [] },
 
 	{ "type": "DRAWER", "x": 2, "y": 6, "contains": ["RED_KEY"] },
 	{ "type": "DRAWER", "x": 9, "y": 6, "contains": [] }

@@ -9,7 +9,9 @@ var new_facts_added: = true
 var facts: Dictionary[Fact.Type, Array] = {
 	Fact.Type.HAS_ITEM : [],
 	Fact.Type.NEED_ITEM : [],
+	Fact.Type.MISSING_CRAFTABLE_ITEM : [],
 	Fact.Type.ITEM_STORED_AT : [],
+	Fact.Type.ITEM_NEEDED_AT : [],
 	Fact.Type.CRAFTABLE_ITEM: [],
 	Fact.Type.NEED_CRAFT: [],
 	Fact.Type.LOCKED_DOOR_AT : [],
@@ -48,8 +50,10 @@ func chain_facts() -> void:
 		new_facts_added = false
 		unvisited_door()
 		check_item_for_locked_door()
+		item_needed_at()
 		craftable_items()
 		need_craft()
+		missing_requirements()
 
 func load_inventory_facts() -> void:
 	for item in inventory.contents:
@@ -78,6 +82,15 @@ func load_door_facts() -> void:
 		_create_fact(Fact.Type.FOUND_EXIT, [pos])
 
 ## Rules
+func item_needed_at() -> void:
+	for fact in facts[Fact.Type.NEED_ITEM]:
+		for item_stored_fact in facts[Fact.Type.ITEM_STORED_AT]:
+			if item_stored_fact.args[1] == fact.args[0]:
+				if _create_fact(Fact.Type.ITEM_NEEDED_AT, 
+					[item_stored_fact.args[0], fact.args[0]]):
+					new_facts_added = true
+				break
+	
 func unvisited_door() -> void:
 	for fact in facts[Fact.Type.LOCKED_DOOR_AT]:
 		var found: = false
@@ -109,6 +122,7 @@ func check_item_for_locked_door() -> void:
 				new_facts_added = true
 
 
+
 func craftable_items() -> void:
 	_craftable_axe()
 
@@ -121,6 +135,7 @@ func _craftable_axe() -> void:
 
 func _craftable(item: Inventory.ItemType, requirements: Array[Inventory.ItemType]) -> void:
 	var requirements_achieved: Array[bool] = []
+	
 	for requirement in requirements:
 		requirements_achieved.push_back(false)
 	
@@ -129,14 +144,22 @@ func _craftable(item: Inventory.ItemType, requirements: Array[Inventory.ItemType
 			if fact.args[0] == requirements[i]:
 				requirements_achieved[i] = true
 	
-	var not_enough_items: bool = false
-	for requirement in requirements_achieved:
-		if not requirement:
-			not_enough_items = true
+	var missings: Array[Inventory.ItemType] = []
+	for i in range(requirements_achieved.size()):
+		if not requirements_achieved[i]:
+			missings.push_back(requirements[i])
 	
-	if not not_enough_items:
+	if missings.is_empty():
 		if _create_fact(Fact.Type.CRAFTABLE_ITEM, [item]):
 			new_facts_added = true
+	else:
+		# Only get it if item is needed
+		if not _has_fact(Fact.Type.NEED_ITEM, [item]):
+			return
+		for missing in missings:
+			if _create_fact(Fact.Type.MISSING_CRAFTABLE_ITEM, [item, missing]):
+				new_facts_added = true
+
 
 func need_craft() -> void:
 	_need_craft(Inventory.ItemType.AXE)
@@ -148,6 +171,22 @@ func _need_craft(item: Inventory.ItemType) -> void:
 	if craftable and need:
 		if _create_fact(Fact.Type.NEED_CRAFT, [item]):
 			new_facts_added = true
+
+func missing_requirements() -> void:
+	for fact in facts[Fact.Type.MISSING_CRAFTABLE_ITEM]:
+		for item_loc in facts[Fact.Type.ITEM_STORED_AT]:
+			var requirement_item: Inventory.ItemType = fact.args[1]
+			var stored_item: Inventory.ItemType = item_loc.args[1]
+			if requirement_item == stored_item:
+				if _create_fact(Fact.Type.ITEM_NEEDED_AT, [item_loc.args[0], requirement_item]):
+					new_facts_added = true
+
+func _item_is_recipe_of(item: Inventory.ItemType, to_craft: Inventory.ItemType) -> bool:
+	var recipe: Recipe = memory.get_recipe(to_craft)
+	if recipe == null:
+		return false
+	
+	return item in recipe.requirements
 
 ## Helpers
 # Returns if successful

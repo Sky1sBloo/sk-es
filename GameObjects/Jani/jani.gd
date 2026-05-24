@@ -19,7 +19,7 @@ var _position_offset: Vector2 = Vector2.ZERO
 signal move_finished(pos: Vector2i)
 # Triggers when end is reached
 signal move_instruction_finished(pos: Vector2i)
-signal interacted(pos: Vector2i, args: Array)
+signal interacted(action: Action, pos: Vector2i, args: Array)
 
 var speed: int = 128 # 64
 var direction: Vector2 = Vector2(0, 0)
@@ -81,8 +81,8 @@ func move_to(target_direction: Vector2i) -> void:
 func clear_move_queue() -> void:
 	target_directions.clear()
 
-func interact(pos: Vector2i = grid_position, args: Array = []) -> void:
-	interacted.emit(pos, args)
+func interact(action: Action, pos: Vector2i = grid_position, args: Array = []) -> void:
+	interacted.emit(action, pos, args)
 
 func _control_manually() -> void:
 	var input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()

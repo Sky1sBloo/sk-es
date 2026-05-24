@@ -18,30 +18,42 @@ func _on_jani_move_finished(pos: Vector2i) -> void:
 		world.reset()
 		room.details_map.set_cell(pos, 0, room.details_atlas[room.DetailType.NONE])
 
-func _on_jani_interacted(pos: Vector2i, args: Array) -> void:
+func _on_jani_interacted(action: Action, pos: Vector2i, args: Array) -> void:
+	_container_interaction(action)
+	_furniture_interaction(pos, args)
+	_door_interaction(pos)
+
+func _old_container_interaction(pos: Vector2i) -> void:
 	var container: = room.room_details.get_cell_container(pos) 
 	if container != null and not container.is_opened:
 		container.is_opened = true
 		jani.memory.unopened_container_locations.erase(container.grid_pos)
 		for item in container.contains:
 			jani.inventory.push_item(item)
-	_furniture_interaction(pos, args)
-	_door_interaction(pos)
 
-# TODO: Use this i nthe future
-func _container_interaction(pos: Vector2i) -> void:
+# args: Array[Items]
+func _container_interaction(action: Action) -> void:
+	var pos: = action.grid_pos
 	var container: = room.room_details.get_cell_container(pos) 
 	if container == null:
 		return
 	
 	if container.is_opened:
-		for item in container.contains:
-			jani.inventory.push_item(item)
+		var to_delete_item: Array[Inventory.ItemType] = []
+		if action.type == Action.Types.GET_ITEM_FROM_CONTAINER:
+			for item in action.args:
+				if not container.contains.has(item):
+					print("container doesn't have item")
+					continue
+				jani.inventory.push_item(item)
+				to_delete_item.push_back(item)
+			for item in to_delete_item:
+				container.contains.erase(item)
 	else:
 		container.is_opened = true
 		jani.memory.unopened_container_locations.erase(container.grid_pos)
 		for item in container.contains:
-			jani.memory.item_locations.push_back([item, pos])
+			jani.memory.item_locations.push_back([pos, item])
 
 func _furniture_interaction(pos: Vector2i, args: Array) -> void:
 	var furniture: = room.room_details.get_cell_furniture(pos)

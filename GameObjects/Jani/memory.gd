@@ -16,7 +16,7 @@ var container_locations: Array[Vector2i] = []
 var furnitures: Array[FurnitureData] = []
 var unopened_container_locations: Array[Vector2i] = []
 
-var item_locations: Array[Array] = [] # Inside array contains item type, and Vector2i gridpos
+var item_locations: Array[Array] = [] # Inside array contains [Vector2i gridpos, item type]
 
 var recipes: Dictionary[Inventory.ItemType, Recipe]
 
