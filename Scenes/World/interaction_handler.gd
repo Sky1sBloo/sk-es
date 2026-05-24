@@ -4,6 +4,7 @@ class_name InteractionHandler
 var jani: Jani
 var room: Room
 @onready var world: World = get_parent()
+@onready var inventory_collection_anim: = $InventoryCollectionAnimation
 
 func initialize(jani_node: Jani, room_node: Room) -> void:
 	jani = jani_node
@@ -45,6 +46,7 @@ func _container_interaction(action: Action) -> void:
 				if not container.contains.has(item):
 					print("container doesn't have item")
 					continue
+				inventory_collection_anim.play(jani.global_position, item)
 				jani.inventory.push_item(item)
 				to_delete_item.push_back(item)
 			for item in to_delete_item:

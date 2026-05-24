@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://b2d2mtpmypsea" path="res://Scenes/World/room_reader.gd" id="5_fo5ed"]
 [ext_resource type="Script" uid="uid://b3lnwbdck10e5" path="res://Scenes/World/interaction_handler.gd" id="7_7staa"]
 [ext_resource type="Script" uid="uid://c7l1rwd2ncfg0" path="res://Scenes/World/hud.gd" id="8_fcotr"]
+[ext_resource type="PackedScene" uid="uid://c4ptu88aurk7j" path="res://GameObjects/Details/inventory_collection_animation.tscn" id="9_y0d6x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8j60k"]
 texture = ExtResource("3_5a7ea")
@@ -188,6 +189,8 @@ script = ExtResource("5_fo5ed")
 
 [node name="InteractionHandler" type="Node" parent="." unique_id=575979488]
 script = ExtResource("7_7staa")
+
+[node name="InventoryCollectionAnimation" parent="InteractionHandler" unique_id=930793992 instance=ExtResource("9_y0d6x")]
 
 [node name="HUD" type="Control" parent="." unique_id=1025702629]
 layout_mode = 3

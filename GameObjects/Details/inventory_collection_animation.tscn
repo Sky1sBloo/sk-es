@@ -1,0 +1,178 @@
+[gd_scene format=3 uid="uid://c4ptu88aurk7j"]
+
+[ext_resource type="Script" uid="uid://d0v5avdqhgt3m" path="res://GameObjects/Details/inventory_collection_animation.gd" id="1_h2fuy"]
+[ext_resource type="Texture2D" uid="uid://cqu1ei31uspcj" path="res://Sprites/Placeholder.png" id="1_wsi0a"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bugln"]
+atlas = ExtResource("1_wsi0a")
+region = Rect2(64, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xsb6j"]
+atlas = ExtResource("1_wsi0a")
+region = Rect2(80, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4axe7"]
+atlas = ExtResource("1_wsi0a")
+region = Rect2(48, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2fuy"]
+atlas = ExtResource("1_wsi0a")
+region = Rect2(224, 112, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jahu3"]
+atlas = ExtResource("1_wsi0a")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k1xqo"]
+atlas = ExtResource("1_wsi0a")
+region = Rect2(80, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jpo0n"]
+atlas = ExtResource("1_wsi0a")
+region = Rect2(64, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_63s8t"]
+atlas = ExtResource("1_wsi0a")
+region = Rect2(32, 32, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wkg6p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bugln")
+}],
+"loop": true,
+"name": &"axe",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xsb6j")
+}],
+"loop": true,
+"name": &"axe_head",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4axe7")
+}],
+"loop": true,
+"name": &"green_key",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h2fuy")
+}],
+"loop": true,
+"name": &"none",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jahu3")
+}],
+"loop": true,
+"name": &"red_key",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k1xqo")
+}],
+"loop": true,
+"name": &"rope",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jpo0n")
+}],
+"loop": true,
+"name": &"stick",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_63s8t")
+}],
+"loop": true,
+"name": &"yellow_key",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_wsi0a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_h2fuy"]
+resource_name = "display"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -5)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2009598, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tfqvk"]
+_data = {
+&"RESET": SubResource("Animation_wsi0a"),
+&"display": SubResource("Animation_h2fuy")
+}
+
+[node name="InventoryCollectionAnimation" type="Node2D" unique_id=930793992]
+position = Vector2(0, -5)
+script = ExtResource("1_h2fuy")
+
+[node name="Offset" type="Node2D" parent="." unique_id=1798808014]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Offset" unique_id=678298066]
+position = Vector2(16, -16)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_wkg6p")
+animation = &"none"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1876371674]
+libraries/ = SubResource("AnimationLibrary_tfqvk")
