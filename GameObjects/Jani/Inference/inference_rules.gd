@@ -28,7 +28,7 @@ func get_facts_as_str() -> Array[String]:
 	var fact_str: Array[String] = []
 	for type in facts:
 		for fact in facts[type]:
-			fact_str.append(Fact.type_to_string(fact.type) + str(fact.args))
+			fact_str.append(fact.fact_to_string())
 	return fact_str
 
 # Used in perception

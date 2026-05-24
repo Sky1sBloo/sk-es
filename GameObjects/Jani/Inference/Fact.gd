@@ -45,3 +45,39 @@ static var _type_names := {
 
 static func type_to_string(t: Type) -> String:
 	return _type_names.get(t, "UNKNOWN_TYPE")
+
+func fact_to_string() -> String:
+	var out: String = type_to_string(type) + " "
+	match type:
+		Type.HAS_ITEM, Type.NEED_ITEM, Type.CRAFTABLE_ITEM, Type.NEED_CRAFT:
+			out += Inventory.type_to_string(args[0])
+		Type.MISSING_CRAFTABLE_ITEM:
+			out += Inventory.type_to_string(args[0]) + " missing " + Inventory.type_to_string(args[1])
+		Type.ITEM_STORED_AT, Type.ITEM_NEEDED_AT:
+			# [Vector2i, Item]
+			out += str(args[0]) + ": " + Inventory.type_to_string(args[1])
+		Type.DOOR_KEY_TYPE_IS:
+			var lock = args[1]
+			var lock_str := "UNKNOWN_LOCK"
+			match lock:
+				DoorsData.LockTypes.RED:
+					lock_str = "RED"
+				DoorsData.LockTypes.YELLOW:
+					lock_str = "YELLOW"
+				DoorsData.LockTypes.GREEN:
+					lock_str = "GREEN"
+				DoorsData.LockTypes.BOARDED:
+					lock_str = "BOARDED"
+				_:
+					lock_str = str(lock)
+			out += str(args[0]) + ": " + lock_str
+		Type.FURNITURE_AT:
+			var f: FurnitureData = args[0]
+			var f_str := "UNKNOWN_FURNITURE"
+			match f.type:
+				FurnitureData.Types.TABLE:
+					f_str = "TABLE"
+			out += str(f.grid_pos) + ": " + f_str
+		_:
+			out += str(args)
+	return out

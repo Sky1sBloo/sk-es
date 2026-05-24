@@ -95,7 +95,7 @@ func log_facts() -> void:
 	print("======")
 	for type in inference.facts:
 		for fact in inference.facts[type]:
-			print("Fact: ", Fact.type_to_string(fact.type), fact.args)
+			print("Fact: ", fact.to_string())
 
 
 func _on_jani_move_instruction_finished(_pos: Vector2i) -> void:
