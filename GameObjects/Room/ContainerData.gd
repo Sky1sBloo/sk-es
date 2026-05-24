@@ -22,6 +22,8 @@ var type: Types
 var contains: Array[Inventory.ItemType] = []
 var is_opened: bool = false
 
+signal opened(pos: Vector2i)
+
 func initialize(pos: Vector2i, cont_type: String, items: Array[String]) -> void:
 	is_opened = false
 	grid_pos = pos
@@ -34,3 +36,7 @@ func initialize(pos: Vector2i, cont_type: String, items: Array[String]) -> void:
 			contains.push_back(str_to_item_type[item])
 		else:
 			printerr("Unkown item: ", item)
+
+func open() -> void:
+	is_opened = true
+	opened.emit(grid_pos)

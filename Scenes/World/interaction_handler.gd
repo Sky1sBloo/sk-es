@@ -50,7 +50,7 @@ func _container_interaction(action: Action) -> void:
 			for item in to_delete_item:
 				container.contains.erase(item)
 	else:
-		container.is_opened = true
+		container.open()
 		jani.memory.unopened_container_locations.erase(container.grid_pos)
 		for item in container.contains:
 			jani.memory.item_locations.push_back([pos, item])

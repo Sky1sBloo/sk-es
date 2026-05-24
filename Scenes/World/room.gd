@@ -27,6 +27,7 @@ enum DetailType {
 	BOARDED_DOOR,
 	TABLE,
 	CONTAINER,
+	CONTAINER_OPENED,
 	SPIKE_TRAP
 }
 var details_atlas: Dictionary[DetailType, Vector2i] = {
@@ -36,7 +37,8 @@ var details_atlas: Dictionary[DetailType, Vector2i] = {
 	DetailType.GREEN_LOCK: Vector2i(3, 1),
 	DetailType.BOARDED_DOOR: Vector2i(2, 0),
 	DetailType.TABLE: Vector2i(4, 0),
-	DetailType.CONTAINER: Vector2i(0, 1),
+	DetailType.CONTAINER: Vector2i(5, 0),
+	DetailType.CONTAINER_OPENED: Vector2i(6, 0),
 	DetailType.SPIKE_TRAP: Vector2i(0, 2)
 }
 
@@ -83,6 +85,7 @@ func _load_locks() -> void:
 
 func _load_containers() -> void:
 	for container in room_details.containers:
+		container.opened.connect(_opened_chest)
 		details_map.set_cell(container.grid_pos, 0, 
 			details_atlas[DetailType.CONTAINER])
 
@@ -93,6 +96,10 @@ func _load_furnitures() -> void:
 			FurnitureData.Types.TABLE:
 				atlas = details_atlas[DetailType.TABLE]
 		details_map.set_cell(furniture.grid_pos, 0, atlas)
+
 # Connected to doors signal
 func _unlock_door(pos: Vector2i) -> void:
-	details_map.set_cell(pos, 0, details_atlas[DoorsData.LockTypes.NONE])
+	details_map.set_cell(pos, 0, details_atlas[DetailType.NONE])
+
+func _opened_chest(pos: Vector2i) -> void:
+	details_map.set_cell(pos, 0, details_atlas[DetailType.CONTAINER_OPENED])
