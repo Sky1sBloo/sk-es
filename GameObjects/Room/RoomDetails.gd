@@ -16,8 +16,20 @@ var doors: Array[DoorsData]
 var containers: Array[ContainerData]
 var traps: Array[TrapData]
 
-func is_cell_trap(pos: Vector2i) -> bool:
+func get_cell_trap(pos: Vector2i) -> TrapData:
 	for trap in traps:
 		if trap.grid_pos == pos:
-			return true
-	return false
+			return  trap
+	return null
+
+func get_cell_door(pos: Vector2i) -> DoorsData:
+	for door in doors:
+		if door.grid_pos == pos:
+			return door
+	return null
+
+func get_cell_container(pos: Vector2i) -> ContainerData:
+	for container in containers:
+		if container.grid_pos == pos:
+			return container
+	return null

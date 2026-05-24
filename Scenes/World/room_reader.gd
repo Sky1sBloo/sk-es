@@ -57,6 +57,8 @@ func _room_layout(data: Dictionary) -> Array:
 				cell_type = 0
 			elif cell == "1":
 				cell_type = 1
+			elif cell == "X":
+				cell_type = 9
 			room_layout.back().push_back(cell_type)
 	return room_layout
 

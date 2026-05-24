@@ -3,6 +3,7 @@ class_name Room
 
 @export var composition_map: TileMapLayer
 @export var details_map: TileMapLayer
+@export var items_map: TileMapLayer
 
 var room_details: RoomDetails
 
@@ -10,6 +11,12 @@ var composition_atlas: Dictionary[RoomDetails.TileType, Vector2i] = {
 	RoomDetails.TileType.WALL: Vector2i(0, 0),
 	RoomDetails.TileType.DOOR: Vector2i(1, 0),
 	RoomDetails.TileType.SPIKE: Vector2i(3, 0)
+}
+
+var item_atlas: Dictionary[Inventory.ItemType, Vector2i] = {
+	Inventory.ItemType.RED_KEY: Vector2i(1, 2),
+	Inventory.ItemType.YELLOW_KEY: Vector2i(2, 2),
+	Inventory.ItemType.GREEN_KEY: Vector2i(3, 2)
 }
 
 enum DetailType {

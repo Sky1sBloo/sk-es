@@ -26,6 +26,7 @@ func initialize(pos: Vector2i, lock: String) -> void:
 		lock_type = LockTypes.NONE
 	is_locked = true
 
-func unlock_door() -> void:
+func unlock() -> void:
 	is_locked = false
+	lock_type = LockTypes.NONE
 	unlocked.emit(grid_pos)

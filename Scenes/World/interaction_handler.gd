@@ -10,7 +10,59 @@ func initialize(jani_node: Jani, room_node: Room) -> void:
 	room = room_node
 
 func _on_jani_move_finished(pos: Vector2i) -> void:
-	if room.room_details.is_cell_trap(pos):
-		world.reset()
+	if room.room_details.get_cell_trap(pos) != null:
 		jani.memory.add_trap(pos)
-		print("stood on trap", pos)
+		# Cancel the current action so the decision manager doesn't get out of sync
+		if jani.has_node("DecisionManager"):
+			jani.decision_manager.cancel_current_action()
+		world.reset()
+		room.details_map.set_cell(pos, 0, room.details_atlas[room.DetailType.NONE])
+
+func _on_jani_interacted(pos: Vector2i) -> void:
+	var container: = room.room_details.get_cell_container(pos) 
+	if container != null and not container.is_opened:
+		container.is_opened = true
+		jani.memory.unopened_container_locations.erase(container.grid_pos)
+		for item in container.contains:
+			jani.inventory.push_item(item)
+	
+	_door_interaction(pos)
+
+func _container_interaction(pos: Vector2i) -> void:
+	var container: = room.room_details.get_cell_container(pos) 
+	if container != null:
+		return
+	
+	if container.is_opened:
+		for item in container.contains:
+			jani.inventory.push_item(item)
+	else:
+		container.is_opened = true
+		jani.memory.unopened_container_locations.erase(container.grid_pos)
+		for item in container.contains:
+			jani.memory.item_locations.push_back([item, pos])
+
+func _door_interaction(pos: Vector2i) -> void:
+	var door: = room.room_details.get_cell_door(pos)
+	if door == null or not door.is_locked:
+		return
+	# First interaction: record lock type in memory
+	if not jani.memory.door_lock_type.has(door.grid_pos):
+		jani.memory.door_lock_type[door.grid_pos] = door.lock_type
+		return
+	# Second interaction: only unlock if Jani has the corresponding key
+	var needed_item: Inventory.ItemType
+	match door.lock_type:
+		DoorsData.LockTypes.RED:
+			needed_item = Inventory.ItemType.RED_KEY
+		DoorsData.LockTypes.GREEN:
+			needed_item = Inventory.ItemType.GREEN_KEY
+		DoorsData.LockTypes.YELLOW:
+			needed_item = Inventory.ItemType.YELLOW_KEY
+		_:
+			# Unknown lock type; do not unlock
+			return
+	if jani.inventory.contents.has(needed_item):
+		jani.memory.locked_door_locations.erase(pos)
+		jani.memory.door_lock_type.erase(pos)
+		door.unlock()

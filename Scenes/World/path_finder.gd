@@ -9,7 +9,18 @@ func initialize() -> void:
 
 func find_path_as_directions(start_pos: Vector2i, end_pos: Vector2i, 
 		memory: JaniMemory) -> Array[Vector2i]:
+	
 	var path: = find_path(start_pos, end_pos, memory)
+	if path.is_empty():
+		# Get neighbors
+		var neighbors: = _get_neighboring_pos(end_pos)
+		var min_len: int = -1
+		for neighbor in neighbors:
+			var neighbor_path: = find_path(start_pos, neighbor, memory)
+			if neighbor_path.size() > 0 and (min_len < 0 or neighbor_path.size() < min_len):
+				path = neighbor_path
+				min_len = neighbor_path.size()
+		
 	var directions: Array[Vector2i] = []
 	var prev: = start_pos
 	for node in path:
@@ -17,7 +28,16 @@ func find_path_as_directions(start_pos: Vector2i, end_pos: Vector2i,
 		prev = node
 	return directions
 
+func _get_neighboring_pos(pos: Vector2i) -> Array[Vector2i]:
+	var left: = Vector2i(pos.x - 1, pos.y)
+	var right: = Vector2i(pos.x + 1, pos.y)
+	var up: = Vector2i(pos.x, pos.y - 1)
+	var down: = Vector2i(pos.x, pos.y + 1)
+	
+	return [left, right, up, down]
+
 func find_path(start_pos: Vector2i, end_pos: Vector2i, memory: JaniMemory) -> Array[Vector2i]:
+	min_heap = MinHeap.new()
 	var path: Array[Vector2i] = []
 	var start_node: = _create_a_star_node(start_pos, 0, end_pos)
 	var g_scores: Dictionary[Vector2i, float] = {}
@@ -90,7 +110,7 @@ func _get_neighbors_pos(current_pos: Vector2i, memory: JaniMemory) -> Array[Vect
 	
 	for direction in directions:
 		var neighbor_pos: = current_pos + direction
-		if not _position_in_bounds(neighbor_pos, memory):
+		if not _position_in_bounds(memory, neighbor_pos):
 			continue
 		if _is_unpassable(memory, neighbor_pos):
 			continue
@@ -99,18 +119,16 @@ func _get_neighbors_pos(current_pos: Vector2i, memory: JaniMemory) -> Array[Vect
 	
 	return neighbors
 
-#TODO: Add support for locked doors
 func _is_unpassable(memory: JaniMemory, pos: Vector2i) -> bool:
 	if memory.env_layout[pos.y][pos.x] == RoomDetails.TileType.WALL:
 		return true
 	
-	# TODO: Make this more efficient
-	for door in memory.doors:
+	for door in memory.room_details.doors:
 		if door.grid_pos == pos and door.is_locked:
 			return true
 	return false
 
-func _position_in_bounds(pos: Vector2i, memory: JaniMemory) -> bool:
+func _position_in_bounds(memory: JaniMemory, pos: Vector2i) -> bool:
 	if memory.env_layout.size() == 0:
 		return false
 	if memory.env_layout.front().size() == 0:

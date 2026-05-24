@@ -5,6 +5,10 @@
 [ext_resource type="Script" uid="uid://c5hvmq0u0hwgf" path="res://GameObjects/Jani/jani_state_handler.gd" id="3_maids"]
 [ext_resource type="Script" uid="uid://cltvdsoqdmke4" path="res://GameObjects/Jani/memory.gd" id="4_1a1xc"]
 [ext_resource type="PackedScene" uid="uid://b6phdahmu6duh" path="res://GameObjects/path_finder.tscn" id="5_uwka1"]
+[ext_resource type="Script" uid="uid://bs3meqdelkl6q" path="res://GameObjects/Jani/decision_manager.gd" id="6_41ick"]
+[ext_resource type="Script" uid="uid://2krtybufkc8w" path="res://GameObjects/Jani/Perceptor/perceptor.gd" id="7_fpm1p"]
+[ext_resource type="Script" uid="uid://0ojyt1slilkk" path="res://GameObjects/Jani/Inference/inference_rules.gd" id="8_f8re0"]
+[ext_resource type="Script" uid="uid://17wo0ak07udg" path="res://GameObjects/Jani/inventory.gd" id="9_fuy07"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gaxf"]
 size = Vector2(16, 12)
@@ -260,3 +264,22 @@ jani = NodePath("..")
 script = ExtResource("4_1a1xc")
 
 [node name="PathFinder" parent="." unique_id=78415648 instance=ExtResource("5_uwka1")]
+
+[node name="Perceptor" type="Node" parent="." unique_id=599784553 node_paths=PackedStringArray("jani", "memory")]
+script = ExtResource("7_fpm1p")
+jani = NodePath("..")
+memory = NodePath("../Memory")
+
+[node name="DecisionManager" type="Node" parent="." unique_id=877039322 node_paths=PackedStringArray("perceptor")]
+script = ExtResource("6_41ick")
+perceptor = NodePath("../Perceptor")
+
+[node name="Inference" type="Node" parent="DecisionManager" unique_id=1451796091 node_paths=PackedStringArray("memory", "inventory")]
+script = ExtResource("8_f8re0")
+memory = NodePath("../../Memory")
+inventory = NodePath("../../Inventory")
+
+[node name="Inventory" type="Node" parent="." unique_id=545721452]
+script = ExtResource("9_fuy07")
+
+[connection signal="move_instruction_finished" from="." to="DecisionManager" method="_on_jani_move_instruction_finished"]
