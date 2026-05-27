@@ -23,4 +23,3 @@ func start(keep_memory: bool = false) -> void:
 	else:
 		jani.initialize($Room.global_position, room_details.init_player_position)
 	interaction_handler.initialize(jani, room)
-	

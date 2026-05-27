@@ -69,6 +69,8 @@ func _get_nearest_crafting_table() -> Fact:
 func _handle_items() -> void:
 	if not inference.facts[Fact.Type.ITEM_NEEDED_AT].is_empty():
 		var fact: = _get_nearest_fact_pos(Fact.Type.ITEM_NEEDED_AT, 0)
+		if fact == null:
+			return
 		_create_action(Action.Types.GET_ITEM_FROM_CONTAINER, fact.args[0], 
 			fact.args[0], [fact.args[1]])
 
@@ -141,10 +143,15 @@ func _get_nearest_fact_pos(type: Fact.Type, arg_pos_idx: int) -> Fact:
 	var shortest_length: int = -1
 	
 	for fact in inference.facts[type]:
-		var path: = path_finder.find_path_as_directions(fact.args[arg_pos_idx])
-		if shortest_length == -1 or path.size() < shortest_length:
+		var path: = path_finder.find_path_as_directions(fact.args[arg_pos_idx], true)
+		
+		if path.is_empty():
+			continue
+		
+		if shortest_length < 0 or path.size() < shortest_length:
 			shortest_length = path.size()
 			shortest = fact
+	
 	return shortest
 
 func log_facts() -> void:

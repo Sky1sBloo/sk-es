@@ -72,7 +72,8 @@ func load_details_map() -> void:
 	_load_furnitures()
 	
 	for trap in room_details.traps:
-		details_map.set_cell(trap.grid_pos, 0, details_atlas[DetailType.SPIKE_TRAP])
+		if not trap.is_triggered:
+			details_map.set_cell(trap.grid_pos, 0, details_atlas[DetailType.SPIKE_TRAP])
 
 func _create_wall_positions() -> Array[Vector2i]:
 	var wall_positions: Array[Vector2i]

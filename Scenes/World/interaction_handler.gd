@@ -11,7 +11,9 @@ func initialize(jani_node: Jani, room_node: Room) -> void:
 	room = room_node
 
 func _on_jani_move_finished(pos: Vector2i) -> void:
-	if room.room_details.get_cell_trap(pos) != null:
+	var trap: = room.room_details.get_cell_trap(pos)
+	if trap != null:
+		trap.trigger()
 		jani.memory.add_trap(pos)
 		# Cancel the current action so the decision manager doesn't get out of sync
 		if jani.has_node("DecisionManager"):

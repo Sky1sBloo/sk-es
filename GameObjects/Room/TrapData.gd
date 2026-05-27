@@ -9,6 +9,9 @@ var str_to_trap_type : Dictionary[String, Types] = {
 
 var grid_pos: Vector2i
 var type: Types
+var is_triggered: bool = false
+
+signal triggered(grid_pos: Vector2i, type: Types)
 
 func initialize(pos: Vector2i, trap_type: String) -> void:
 	grid_pos = pos
@@ -16,3 +19,7 @@ func initialize(pos: Vector2i, trap_type: String) -> void:
 		type = str_to_trap_type[trap_type]
 	else:
 		type = Types.SPIKED
+
+func trigger() -> void:
+	is_triggered = true
+	triggered.emit(grid_pos, type)

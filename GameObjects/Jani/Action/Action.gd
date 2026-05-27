@@ -26,7 +26,7 @@ var _action_priority: Dictionary[Types, float] = {
 	Types.OPEN_DOOR: 15,
 	Types.OPEN_CONTAINER: 5,
 	Types.CRAFT_ITEM: 8,
-	Types.GET_ITEM_FROM_CONTAINER: 7,
+	Types.GET_ITEM_FROM_CONTAINER: 20,
 	Types.GO_TO_EXIT: 99
 }
 
