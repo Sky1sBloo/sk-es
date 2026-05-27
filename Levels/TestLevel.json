@@ -33,6 +33,6 @@
 	{ "type": "TABLE", "x": 7, "y": 5 }
 ],
   "traps": [
-	  { "type": "SPIKED", "x": 9, "y": 9}
+	  { "type": "SPIKED", "x": 5, "y": 6}
   ]
 }

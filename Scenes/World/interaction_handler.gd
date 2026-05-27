@@ -39,23 +39,30 @@ func _container_interaction(action: Action) -> void:
 	if container == null:
 		return
 	
-	if container.is_opened:
-		var to_delete_item: Array[Inventory.ItemType] = []
-		if action.type == Action.Types.GET_ITEM_FROM_CONTAINER:
-			for item in action.args:
-				if not container.contains.has(item):
-					print("container doesn't have item")
-					continue
-				inventory_collection_anim.play(jani.global_position, item)
-				jani.inventory.push_item(item)
-				to_delete_item.push_back(item)
-			for item in to_delete_item:
-				container.contains.erase(item)
-	else:
+	if action.type == Action.Types.GET_ITEM_FROM_CONTAINER:
+		_get_item_from_container(action, container)
+		if not container.is_opened:
+			container.open()
+			jani.memory.unopened_container_locations.erase(container.grid_pos)
+			for item in container.contains:
+				jani.memory.item_locations.push_back([pos, item])
+	elif action.type == Action.Types.OPEN_CONTAINER:
 		container.open()
 		jani.memory.unopened_container_locations.erase(container.grid_pos)
 		for item in container.contains:
 			jani.memory.item_locations.push_back([pos, item])
+
+func _get_item_from_container(action: Action, container: ContainerData) -> void:
+	var to_delete_item: Array[Inventory.ItemType] = []
+	for item in action.args:
+		if not container.contains.has(item):
+			print("container doesn't have item")
+			continue
+		inventory_collection_anim.play(jani.global_position, item)
+		jani.inventory.push_item(item)
+		to_delete_item.push_back(item)
+	for item in to_delete_item:
+		container.contains.erase(item)
 
 func _furniture_interaction(pos: Vector2i, args: Array) -> void:
 	var furniture: = room.room_details.get_cell_furniture(pos)

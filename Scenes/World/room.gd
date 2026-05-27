@@ -3,7 +3,6 @@ class_name Room
 
 @export var composition_map: TileMapLayer
 @export var details_map: TileMapLayer
-@export var items_map: TileMapLayer
 
 var room_details: RoomDetails
 
@@ -45,6 +44,7 @@ var details_atlas: Dictionary[DetailType, Vector2i] = {
 
 func initialize(details: RoomDetails) -> void:
 	composition_map.clear()
+	details_map.clear()
 	room_details = details
 	load_composition_map()
 	load_details_map()
@@ -89,8 +89,10 @@ func _load_locks() -> void:
 func _load_containers() -> void:
 	for container in room_details.containers:
 		container.opened.connect(_opened_chest)
-		details_map.set_cell(container.grid_pos, 0, 
-			details_atlas[DetailType.CONTAINER])
+		var atlas: = details_atlas[DetailType.CONTAINER]
+		if container.is_opened:
+			atlas = details_atlas[DetailType.CONTAINER_OPENED]
+		details_map.set_cell(container.grid_pos, 0, atlas)
 
 func _load_furnitures() -> void:
 	for furniture in room_details.furnitures:

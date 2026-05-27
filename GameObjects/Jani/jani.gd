@@ -47,13 +47,13 @@ func initialize(offset_position: Vector2, initial_grid_pos: Vector2i) -> void:
 func reset(offset_position: Vector2, initial_grid_pos: Vector2i, ) -> void:
 	_position_offset = offset_position
 	target_directions.clear()
-	path_finder.initialize()
-	decision_manager.clear_actions()
-	decision_manager.tick()
 	grid_position = initial_grid_pos
 	global_position = Vector2(initial_grid_pos) * GameConfiguration.GRID_SIZE +  _position_offset
 	direction = Vector2.ZERO
 	state = JaniStateHandler.States.IDLE
+	path_finder.initialize()
+	decision_manager.clear_actions()
+	decision_manager.tick()
 
 func move_to_pos(target_position: Vector2i) -> void:
 	clear_move_queue()
