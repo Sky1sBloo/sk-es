@@ -270,9 +270,10 @@ script = ExtResource("7_fpm1p")
 jani = NodePath("..")
 memory = NodePath("../Memory")
 
-[node name="DecisionManager" type="Node" parent="." unique_id=877039322 node_paths=PackedStringArray("perceptor")]
+[node name="DecisionManager" type="Node" parent="." unique_id=877039322 node_paths=PackedStringArray("perceptor", "path_finder")]
 script = ExtResource("6_41ick")
 perceptor = NodePath("../Perceptor")
+path_finder = NodePath("../PathFinder")
 
 [node name="Inference" type="Node" parent="DecisionManager" unique_id=1451796091 node_paths=PackedStringArray("memory", "inventory")]
 script = ExtResource("8_f8re0")

@@ -2,6 +2,7 @@ extends Node
 class_name JaniDecisionManager
 
 @export var perceptor: Perceptor
+@export var path_finder: PathFinder
 @onready var jani: Jani = get_parent()
 @onready var inference: Inference = $Inference
 
@@ -16,21 +17,13 @@ func tick() -> void:
 
 func fact_to_action() ->  void:
 	for fact in inference.facts[Fact.Type.UNVISITED_DOOR_AT]:
-		var action = Action.new()
-		action.type = Action.Types.VISIT_DOOR
-		action.grid_pos = fact.args[0]
-		action.interaction_pos = fact.args[0]
-		action_queue.push(action)
+		_create_action(Action.Types.VISIT_DOOR, fact.args[0], fact.args[0])
 		
 	# retrieve already-known needed items
 	for fact in inference.facts[Fact.Type.ITEM_NEEDED_AT]:
 		# ITEM_NEEDED_AT = [pos, item]
-		var action = Action.new()
-		action.type = Action.Types.GET_ITEM_FROM_CONTAINER
-		action.grid_pos = fact.args[0]
-		action.interaction_pos = fact.args[0]
-		action.args = [fact.args[1]]
-		action_queue.push(action)
+		_create_action(Action.Types.GET_ITEM_FROM_CONTAINER, fact.args[0], 
+			fact.args[0], [fact.args[1]])
 	
 	# If we still need items but don't know where they are,
 	# continue exploring unopened containers
@@ -51,18 +44,11 @@ func fact_to_action() ->  void:
 				print("No container left")
 			else:
 				var container_fact = inference.facts[Fact.Type.UNVISITED_CONTAINER_AT][0]
-				var action = Action.new()
-				action.type = Action.Types.OPEN_CONTAINER
-				action.grid_pos = container_fact.args[0]
-				action.interaction_pos = container_fact.args[0]
-				action_queue.push(action)
+				_create_action(Action.Types.OPEN_CONTAINER, container_fact.args[0],
+					container_fact.args[0])
 				
 	for fact in inference.facts[Fact.Type.UNLOCKABLE_DOOR_AT]:
-		var action = Action.new()
-		action.type = Action.Types.OPEN_DOOR
-		action.grid_pos = fact.args[0]
-		action.interaction_pos = fact.args[0]
-		action_queue.push(action)
+		_create_action(Action.Types.OPEN_DOOR, fact.args[0], fact.args[0])
 	
 	for fact in inference.facts[Fact.Type.NEED_CRAFT]:
 		# Todo support nearest furniture
@@ -70,21 +56,23 @@ func fact_to_action() ->  void:
 			var furniture_data: FurnitureData = furniture.args[0]
 			if furniture.args[0].type != FurnitureData.Types.TABLE:
 				continue
-			var action = Action.new()
-			action.type = Action.Types.CRAFT_ITEM
-			action.grid_pos = furniture_data.grid_pos
-			action.interaction_pos = furniture_data.grid_pos
-			action.args = [fact.args[0]]
-			action_queue.push(action)
+			_create_action(Action.Types.CRAFT_ITEM, furniture_data.grid_pos,
+				furniture_data.grid_pos, [fact.args[0]])
 	
 	for fact in inference.facts[Fact.Type.FOUND_EXIT]:
-		var action = Action.new()
-		action.type = Action.Types.GO_TO_EXIT
-		action.grid_pos = fact.args[0]
-		action.interaction_pos = fact.args[0]
-		action_queue.push(action)
+		_create_action(Action.Types.GO_TO_EXIT, fact.args[0], fact.args[0])
 
-
+func _create_action(type: Action.Types, walk_pos: Vector2i, 
+		interaction_pos: Vector2i = Vector2i(-1, -1),
+		args: Array = []):
+	if not _is_reachable(walk_pos):
+		return
+	var action = Action.new()
+	action.type = type
+	action.grid_pos = walk_pos
+	action.interaction_pos = interaction_pos
+	action.args = args
+	action_queue.push(action)
 
 func decide() -> void:
 	var next_action: Action = action_queue.peek()
@@ -107,12 +95,16 @@ func decide() -> void:
 		_:
 			print("Unknown action type")
 
+func _is_reachable(pos: Vector2i) -> bool:
+	var path: = path_finder.find_path_as_directions(jani.grid_position, pos, jani.memory)
+	
+	return not path.is_empty()
+
 func log_facts() -> void:
 	print("======")
 	for type in inference.facts:
 		for fact in inference.facts[type]:
 			print("Fact: ", fact.to_string())
-
 
 func _on_jani_move_instruction_finished(_pos: Vector2i) -> void:
 	# To do filter by action
