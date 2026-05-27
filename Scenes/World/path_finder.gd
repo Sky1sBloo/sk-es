@@ -8,17 +8,16 @@ class_name PathFinder
 func initialize() -> void:
 	min_heap = MinHeap.new()
 
-func find_path_as_directions(end_pos: Vector2i, 
-		memory: JaniMemory, 
+func find_path_as_directions(end_pos: Vector2i,
 		allow_neighbor_if_unpassable: bool = false) -> Array[Vector2i]:
 	
-	var path: = find_path(jani.grid_position, end_pos, memory)
+	var path: = find_path(jani.grid_position, end_pos, jani.memory)
 	if path.is_empty() and allow_neighbor_if_unpassable:
 		# Get neighbors
 		var neighbors: = _get_neighboring_pos(end_pos)
 		var min_len: int = -1
 		for neighbor in neighbors:
-			var neighbor_path: = find_path(jani.grid_position, neighbor, memory)
+			var neighbor_path: = find_path(jani.grid_position, neighbor, jani.memory)
 			if neighbor_path.size() > 0 and (min_len < 0 or neighbor_path.size() < min_len):
 				path = neighbor_path
 				min_len = neighbor_path.size()

@@ -15,17 +15,66 @@ func tick() -> void:
 	decide()
 
 func fact_to_action() ->  void:
-	for fact in inference.facts[Fact.Type.UNVISITED_DOOR_AT]:
-		_create_action(Action.Types.VISIT_DOOR, fact.args[0], fact.args[0])
+	_handle_unvisited_doors()
+	_handle_unlockable_doors()
+	_handle_items()
+	_handle_expoloration_for_items()
+	_handle_crafting()
 	
-	# retrieve already-known needed items
-	for fact in inference.facts[Fact.Type.ITEM_NEEDED_AT]:
-		# ITEM_NEEDED_AT = [pos, item]
+	for fact in inference.facts[Fact.Type.FOUND_EXIT]:
+		_create_action(Action.Types.GO_TO_EXIT, fact.args[0], fact.args[0])
+
+func _handle_unvisited_doors() -> void:
+	var nearest_unvisited_door: = _get_nearest_fact_pos(Fact.Type.UNVISITED_DOOR_AT, 0)
+	if nearest_unvisited_door == null:
+		return
+	
+	_create_action(Action.Types.VISIT_DOOR, nearest_unvisited_door.args[0], nearest_unvisited_door.args[0])
+
+func _handle_unlockable_doors() -> void:
+	var nearest_unlockable_door: = _get_nearest_fact_pos(Fact.Type.UNLOCKABLE_DOOR_AT, 0)
+	
+	if nearest_unlockable_door == null:
+		return
+	
+	_create_action(Action.Types.OPEN_DOOR, nearest_unlockable_door.args[0], nearest_unlockable_door.args[0])
+
+func _handle_crafting() -> void:
+	for fact in inference.facts[Fact.Type.NEED_CRAFT]:
+		var furniture_fact: = _get_nearest_crafting_table()
+		if furniture_fact == null:
+			return
+		
+		var furniture_data: FurnitureData = furniture_fact.args[0]
+		_create_action(Action.Types.CRAFT_ITEM, furniture_data.grid_pos,
+			furniture_data.grid_pos, [fact.args[0]])
+
+func _get_nearest_crafting_table() -> Fact:
+	var tables: Array[Fact] = []
+	for furniture in inference.facts[Fact.Type.FURNITURE_AT]:
+		var furniture_data: FurnitureData = furniture.args[0]
+		if furniture_data.type != FurnitureData.Types.TABLE:
+			continue
+		tables.push_back(furniture)
+	
+	var nearest_fact = null
+	var nearest_dist: int = -1
+	for table in tables:
+		var path: = path_finder.find_path_as_directions(table.args[0].grid_pos)
+		if nearest_dist < 0 or path.size() < nearest_dist:
+			nearest_dist = path.size()
+			nearest_fact = table
+	return nearest_fact
+
+func _handle_items() -> void:
+	if not inference.facts[Fact.Type.ITEM_NEEDED_AT].is_empty():
+		var fact: = _get_nearest_fact_pos(Fact.Type.ITEM_NEEDED_AT, 0)
 		_create_action(Action.Types.GET_ITEM_FROM_CONTAINER, fact.args[0], 
 			fact.args[0], [fact.args[1]])
-	
-	# If we still need items but don't know where they are,
-	# continue exploring unopened containers
+
+# If we still need items but don't know where they are,
+# continue exploring unopened containers
+func _handle_expoloration_for_items() -> void:
 	if not inference.facts[Fact.Type.NEED_ITEM].is_empty():
 		var unresolved_need := false
 		for need_fact in inference.facts[Fact.Type.NEED_ITEM]:
@@ -45,21 +94,7 @@ func fact_to_action() ->  void:
 				var container_fact = _get_nearest_fact_pos(Fact.Type.UNVISITED_CONTAINER_AT, 0)
 				_create_action(Action.Types.OPEN_CONTAINER, container_fact.args[0],
 					container_fact.args[0])
-	
-	for fact in inference.facts[Fact.Type.UNLOCKABLE_DOOR_AT]:
-		_create_action(Action.Types.OPEN_DOOR, fact.args[0], fact.args[0])
-	
-	for fact in inference.facts[Fact.Type.NEED_CRAFT]:
-		# Todo support nearest furniture
-		for furniture in inference.facts[Fact.Type.FURNITURE_AT]:
-			var furniture_data: FurnitureData = furniture.args[0]
-			if furniture.args[0].type != FurnitureData.Types.TABLE:
-				continue
-			_create_action(Action.Types.CRAFT_ITEM, furniture_data.grid_pos,
-				furniture_data.grid_pos, [fact.args[0]])
-	
-	for fact in inference.facts[Fact.Type.FOUND_EXIT]:
-		_create_action(Action.Types.GO_TO_EXIT, fact.args[0], fact.args[0])
+
 
 func decide() -> void:
 	var next_action: Action = action_queue.peek()
@@ -95,7 +130,7 @@ func _create_action(type: Action.Types, walk_pos: Vector2i,
 	action_queue.push(action)
 
 func _is_reachable(pos: Vector2i) -> bool:
-	var path: = path_finder.find_path_as_directions(pos, jani.memory, true)
+	var path: = path_finder.find_path_as_directions(pos, true)
 	
 	return not path.is_empty()
 
@@ -106,7 +141,7 @@ func _get_nearest_fact_pos(type: Fact.Type, arg_pos_idx: int) -> Fact:
 	var shortest_length: int = -1
 	
 	for fact in inference.facts[type]:
-		var path: = path_finder.find_path_as_directions(fact.args[arg_pos_idx], jani.memory)
+		var path: = path_finder.find_path_as_directions(fact.args[arg_pos_idx])
 		if shortest_length == -1 or path.size() < shortest_length:
 			shortest_length = path.size()
 			shortest = fact
