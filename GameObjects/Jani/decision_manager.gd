@@ -20,9 +20,8 @@ func fact_to_action() ->  void:
 	_handle_items()
 	_handle_expoloration_for_items()
 	_handle_crafting()
+	_handle_found_exit()
 	
-	for fact in inference.facts[Fact.Type.FOUND_EXIT]:
-		_create_action(Action.Types.GO_TO_EXIT, fact.args[0], fact.args[0])
 
 func _handle_unvisited_doors() -> void:
 	var nearest_unvisited_door: = _get_nearest_fact_pos(Fact.Type.UNVISITED_DOOR_AT, 0)
@@ -73,6 +72,12 @@ func _handle_items() -> void:
 			return
 		_create_action(Action.Types.GET_ITEM_FROM_CONTAINER, fact.args[0], 
 			fact.args[0], [fact.args[1]])
+
+func _handle_found_exit() -> void:
+	var fact: = _get_nearest_fact_pos(Fact.Type.FOUND_EXIT, 0)
+	if fact == null:
+		return
+	_create_action(Action.Types.GO_TO_EXIT, fact.args[0], fact.args[0])
 
 # If we still need items but don't know where they are,
 # continue exploring unopened containers
