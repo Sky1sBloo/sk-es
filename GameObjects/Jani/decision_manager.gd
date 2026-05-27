@@ -17,7 +17,7 @@ func tick() -> void:
 func fact_to_action() ->  void:
 	for fact in inference.facts[Fact.Type.UNVISITED_DOOR_AT]:
 		_create_action(Action.Types.VISIT_DOOR, fact.args[0], fact.args[0])
-		
+	
 	# retrieve already-known needed items
 	for fact in inference.facts[Fact.Type.ITEM_NEEDED_AT]:
 		# ITEM_NEEDED_AT = [pos, item]
@@ -42,7 +42,7 @@ func fact_to_action() ->  void:
 			if inference.facts[Fact.Type.UNVISITED_CONTAINER_AT].is_empty():
 				print("No container left")
 			else:
-				var container_fact = inference.facts[Fact.Type.UNVISITED_CONTAINER_AT][0]
+				var container_fact = _get_nearest_fact_pos(Fact.Type.UNVISITED_CONTAINER_AT, 0)
 				_create_action(Action.Types.OPEN_CONTAINER, container_fact.args[0],
 					container_fact.args[0])
 	
@@ -60,18 +60,6 @@ func fact_to_action() ->  void:
 	
 	for fact in inference.facts[Fact.Type.FOUND_EXIT]:
 		_create_action(Action.Types.GO_TO_EXIT, fact.args[0], fact.args[0])
-
-func _create_action(type: Action.Types, walk_pos: Vector2i, 
-		interaction_pos: Vector2i = Vector2i(-1, -1),
-		args: Array = []):
-	if not _is_reachable(walk_pos):
-		return
-	var action = Action.new()
-	action.type = type
-	action.grid_pos = walk_pos
-	action.interaction_pos = interaction_pos
-	action.args = args
-	action_queue.push(action)
 
 func decide() -> void:
 	var next_action: Action = action_queue.peek()
@@ -94,10 +82,35 @@ func decide() -> void:
 		_:
 			print("Unknown action type")
 
+func _create_action(type: Action.Types, walk_pos: Vector2i, 
+		interaction_pos: Vector2i = Vector2i(-1, -1),
+		args: Array = []):
+	if not _is_reachable(walk_pos):
+		return
+	var action = Action.new()
+	action.type = type
+	action.grid_pos = walk_pos
+	action.interaction_pos = interaction_pos
+	action.args = args
+	action_queue.push(action)
+
 func _is_reachable(pos: Vector2i) -> bool:
-	var path: = path_finder.find_path_as_directions(jani.grid_position, pos, jani.memory)
+	var path: = path_finder.find_path_as_directions(pos, jani.memory, true)
 	
 	return not path.is_empty()
+
+# Gets the nearest fact to the player
+# @arg_pos_idx represents which argument idx represents the position
+func _get_nearest_fact_pos(type: Fact.Type, arg_pos_idx: int) -> Fact:
+	var shortest = null
+	var shortest_length: int = -1
+	
+	for fact in inference.facts[type]:
+		var path: = path_finder.find_path_as_directions(fact.args[arg_pos_idx], jani.memory)
+		if shortest_length == -1 or path.size() < shortest_length:
+			shortest_length = path.size()
+			shortest = fact
+	return shortest
 
 func log_facts() -> void:
 	print("======")

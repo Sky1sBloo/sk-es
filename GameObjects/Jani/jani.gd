@@ -58,7 +58,7 @@ func reset(offset_position: Vector2, initial_grid_pos: Vector2i, ) -> void:
 
 func move_to_pos(target_position: Vector2i) -> void:
 	clear_move_queue()
-	var directions: = path_finder.find_path_as_directions(grid_position, target_position, memory)
+	var directions: = path_finder.find_path_as_directions(target_position, memory, true)
 	var pos: Vector2i = Vector2i(grid_position)
 	for dir in directions:
 		pos += dir

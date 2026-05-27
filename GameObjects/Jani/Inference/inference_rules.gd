@@ -3,6 +3,7 @@ class_name Inference
 
 @export var memory: JaniMemory
 @export var inventory: Inventory
+@export var path_finder: PathFinder
 
 var new_facts_added: = true
 
@@ -90,7 +91,7 @@ func item_needed_at() -> void:
 					[item_stored_fact.args[0], fact.args[0]]):
 					new_facts_added = true
 				break
-	
+
 func unvisited_door() -> void:
 	for fact in facts[Fact.Type.LOCKED_DOOR_AT]:
 		var found: = false

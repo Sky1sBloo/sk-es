@@ -2,27 +2,30 @@ extends Node
 class_name PathFinder
 
 @onready var min_heap: MinHeap = MinHeap.new()
+@onready var jani: Jani = get_parent()
 @export var enable_diagonals: bool = false
 
 func initialize() -> void:
 	min_heap = MinHeap.new()
 
-func find_path_as_directions(start_pos: Vector2i, end_pos: Vector2i, 
-		memory: JaniMemory) -> Array[Vector2i]:
+func find_path_as_directions(end_pos: Vector2i, 
+		memory: JaniMemory, 
+		allow_neighbor_if_unpassable: bool = false) -> Array[Vector2i]:
 	
-	var path: = find_path(start_pos, end_pos, memory)
-	if path.is_empty():
+	var path: = find_path(jani.grid_position, end_pos, memory)
+	if path.is_empty() and allow_neighbor_if_unpassable:
 		# Get neighbors
 		var neighbors: = _get_neighboring_pos(end_pos)
 		var min_len: int = -1
 		for neighbor in neighbors:
-			var neighbor_path: = find_path(start_pos, neighbor, memory)
+			var neighbor_path: = find_path(jani.grid_position, neighbor, memory)
 			if neighbor_path.size() > 0 and (min_len < 0 or neighbor_path.size() < min_len):
 				path = neighbor_path
 				min_len = neighbor_path.size()
 		
 	var directions: Array[Vector2i] = []
-	var prev: = start_pos
+	
+	var prev: Vector2i = jani.grid_position
 	for node in path:
 		directions.push_back(node - prev)
 		prev = node

@@ -13,7 +13,7 @@ enum Type {
 	DOOR_KEY_TYPE_IS, # [ Vector2i, LockType]
 	UNVISITED_DOOR_AT,
 	UNVISITED_CONTAINER_AT, # Vector2i
-	GET_OPEN_CONTAINER_AT, # Vector2i
+	GET_OPEN_CONTAINER_AT, # Vector2i,
 	FURNITURE_AT, # FurnitureData
 	FOUND_EXIT, # Vector2i
 }
