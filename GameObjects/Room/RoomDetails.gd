@@ -6,12 +6,14 @@ enum TileType {
 	WALL = 1,
 	DOOR = 2,
 	SPIKE = 3,
+	EXIT = 4,
 	JANI = 99
 }
 
 # 2D array of int
 var room_layout: Array
 var init_player_position: Vector2i
+var exit: Vector2i
 var doors: Array[DoorsData]
 var containers: Array[ContainerData]
 var furnitures: Array[FurnitureData]

@@ -67,7 +67,7 @@ func _furniture_interaction(pos: Vector2i, args: Array) -> void:
 		if args.is_empty():
 			print("cannot craft args is empty")
 			return
-		
+		inventory_collection_anim.play(jani.global_position, args[0])
 		jani.inventory.craft_item(args[0])
 
 func _door_interaction(pos: Vector2i) -> void:
@@ -96,3 +96,10 @@ func _door_interaction(pos: Vector2i) -> void:
 		jani.memory.locked_door_locations.erase(pos)
 		jani.memory.door_lock_type.erase(pos)
 		door.unlock()
+
+func _exit_interaction(pos: Vector2i) -> void:
+	if pos != room.room_details.exit:
+		return
+	
+	jani.clear_move_queue()
+	jani.decision_manager.clear_actions()

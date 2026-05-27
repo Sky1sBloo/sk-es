@@ -69,9 +69,8 @@ func _check_cell(grid_pos: Vector2i, scan_result: ScanResult) -> bool:
 	var room_details: = jani.world.room.room_details
 	if room_details.room_layout[grid_pos.y][grid_pos.x] == 1:
 		return false
-	if room_details.room_layout[grid_pos.y][grid_pos.x] == 9:
+	if room_details.exit == grid_pos:
 		scan_result.exit_locations.push_back(grid_pos)
-		return false
 	
 	var container: = room_details.get_cell_container(grid_pos)
 	if container != null:

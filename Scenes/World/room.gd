@@ -11,6 +11,7 @@ var composition_atlas: Dictionary[RoomDetails.TileType, Vector2i] = {
 	RoomDetails.TileType.WALL: Vector2i(0, 0),
 	RoomDetails.TileType.DOOR: Vector2i(1, 0),
 	RoomDetails.TileType.SPIKE: Vector2i(3, 0),
+	RoomDetails.TileType.EXIT: Vector2i(0, 3)
 }
 
 var item_atlas: Dictionary[Inventory.ItemType, Vector2i] = {
@@ -55,6 +56,8 @@ func load_composition_map() -> void:
 	var wall_positions: = _create_wall_positions()
 	for wall_pos in wall_positions:
 		composition_map.set_cell(wall_pos, 0, composition_atlas[RoomDetails.TileType.WALL])
+	
+	composition_map.set_cell(room_details.exit, 0, composition_atlas[RoomDetails.TileType.EXIT])
 	
 	for door in room_details.doors:
 		var atlas: Vector2i = composition_atlas[RoomDetails.TileType.DOOR]

@@ -22,7 +22,8 @@ func get_level(path: String) -> RoomDetails:
 	var data = json.data
 	
 	var room_details: = RoomDetails.new()
-	room_details.init_player_position = _get_start_pos(data)
+	room_details.init_player_position = _get_grid_pos(data, "start")
+	room_details.exit = _get_grid_pos(data, "exit")
 	room_details.room_layout = _room_layout(data)
 	room_details.doors = _load_doors(data)
 	room_details.containers = _load_containers(data)
@@ -30,13 +31,14 @@ func get_level(path: String) -> RoomDetails:
 	room_details.furnitures = _load_furniture(data)
 	return room_details
 
-func _get_start_pos(data: Dictionary) -> Vector2i:
-	if not data.has("start"):
-		printerr("JSON format error: Theres no start position")
+
+func _get_grid_pos(data: Dictionary, id: String) -> Vector2i:
+	if not data.has(id):
+		printerr("JSON format error: Theres no id of type: ", id)
 		return Vector2i(-1, -1)
 	
-	var x: int = data["start"]["x"]
-	var y: int = data["start"]["y"]
+	var x: int = data[id]["x"]
+	var y: int = data[id]["y"]
 	if x == null or y == null:
 		printerr("JSON format error: There is no specified x or y position")
 		return Vector2i(-1, -1)
@@ -58,8 +60,6 @@ func _room_layout(data: Dictionary) -> Array:
 				cell_type = 0
 			elif cell == "1":
 				cell_type = 1
-			elif cell == "X":
-				cell_type = 9
 			room_layout.back().push_back(cell_type)
 	return room_layout
 
