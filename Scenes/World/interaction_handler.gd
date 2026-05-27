@@ -85,6 +85,7 @@ func _door_interaction(pos: Vector2i) -> void:
 	if not jani.memory.door_lock_type.has(door.grid_pos):
 		jani.memory.door_lock_type[door.grid_pos] = door.lock_type
 		return
+	
 	# Second interaction: only unlock if Jani has the corresponding key
 	var needed_item: Inventory.ItemType
 	match door.lock_type:
@@ -101,7 +102,7 @@ func _door_interaction(pos: Vector2i) -> void:
 			return
 	if jani.inventory.contents.has(needed_item):
 		jani.memory.locked_door_locations.erase(pos)
-		jani.memory.door_lock_type.erase(pos)
+		#jani.memory.door_lock_type.erase(pos)
 		door.unlock()
 
 func _exit_interaction(pos: Vector2i) -> void:

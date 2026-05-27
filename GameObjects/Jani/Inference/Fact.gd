@@ -10,7 +10,7 @@ enum Type {
 	NEED_CRAFT, # Inventory.ItemType
 	LOCKED_DOOR_AT,
 	UNLOCKABLE_DOOR_AT, # Grid pos
-	DOOR_KEY_TYPE_IS,
+	DOOR_KEY_TYPE_IS, # [ Vector2i, LockType]
 	UNVISITED_DOOR_AT,
 	UNVISITED_CONTAINER_AT, # Vector2i
 	GET_OPEN_CONTAINER_AT, # Vector2i

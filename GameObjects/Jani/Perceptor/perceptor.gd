@@ -40,7 +40,6 @@ func _scan_room() -> ScanResult:
 	
 	var result: ScanResult = ScanResult.new()
 	
-	
 	while not scan_queue.is_empty():
 		var front: Vector2i = scan_queue.pop_front()
 		# Top

@@ -31,5 +31,5 @@ func initialize(pos: Vector2i, lock: String) -> void:
 
 func unlock() -> void:
 	is_locked = false
-	lock_type = LockTypes.NONE
+	#lock_type = LockTypes.NONE
 	unlocked.emit(grid_pos)

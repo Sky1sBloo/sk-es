@@ -47,6 +47,7 @@ func initialize(offset_position: Vector2, initial_grid_pos: Vector2i) -> void:
 func reset(offset_position: Vector2, initial_grid_pos: Vector2i, ) -> void:
 	_position_offset = offset_position
 	target_directions.clear()
+	inventory.clear()
 	grid_position = initial_grid_pos
 	global_position = Vector2(initial_grid_pos) * GameConfiguration.GRID_SIZE +  _position_offset
 	direction = Vector2.ZERO

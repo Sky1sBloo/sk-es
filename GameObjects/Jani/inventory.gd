@@ -45,3 +45,6 @@ func craft_item(item: Inventory.ItemType) -> void:
 	
 	for del in to_delete:
 		contents.erase(del)
+
+func clear() -> void:
+	contents.clear()

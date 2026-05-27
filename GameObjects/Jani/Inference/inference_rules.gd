@@ -104,6 +104,9 @@ func unvisited_door() -> void:
 
 func check_item_for_locked_door() -> void:
 	for fact in facts[Fact.Type.DOOR_KEY_TYPE_IS]:
+		if not _has_fact(Fact.Type.LOCKED_DOOR_AT, [fact.args[0]]):
+			continue
+		
 		var item_needed: Inventory.ItemType
 		match fact.args[1]:
 			DoorsData.LockTypes.RED:

@@ -1,7 +1,7 @@
 extends Node
 class_name JaniMemory
 
-# ZUsed only for pathfinding and not decision making
+# Used only for pathfinding and not decision making
 var env_layout: Array = []
 var exit_locations: Array[Vector2i] = []
 
@@ -12,7 +12,7 @@ var locked_door_locations: Array[Vector2i] = []  # Locked doors
 var door_lock_type: Dictionary[Vector2i, DoorsData.LockTypes]
 var trap_locations: Array[Vector2i] = []
 
-var container_locations: Array[Vector2i] = []
+var container_locations: Array[Vector2i] = [] 
 var furnitures: Array[FurnitureData] = []
 var unopened_container_locations: Array[Vector2i] = []
 
@@ -46,6 +46,7 @@ func rebind(details: RoomDetails) -> void:
 	for pos in trap_locations:
 		if pos.y >= 0 and pos.y < new_layout.size() and pos.x >= 0 and pos.x < new_layout.front().size():
 			new_layout[pos.y][pos.x] = 1
+	
 	env_layout = new_layout
 	room_details = details
 

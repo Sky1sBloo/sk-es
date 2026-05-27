@@ -12,7 +12,6 @@ func tick() -> void:
 	perceptor.percept_room()
 	inference.load_facts()
 	fact_to_action()
-	
 	decide()
 
 func fact_to_action() ->  void:
@@ -46,7 +45,7 @@ func fact_to_action() ->  void:
 				var container_fact = inference.facts[Fact.Type.UNVISITED_CONTAINER_AT][0]
 				_create_action(Action.Types.OPEN_CONTAINER, container_fact.args[0],
 					container_fact.args[0])
-				
+	
 	for fact in inference.facts[Fact.Type.UNLOCKABLE_DOOR_AT]:
 		_create_action(Action.Types.OPEN_DOOR, fact.args[0], fact.args[0])
 	
