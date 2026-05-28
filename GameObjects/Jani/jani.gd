@@ -21,7 +21,7 @@ signal move_finished(pos: Vector2i)
 signal move_instruction_finished(pos: Vector2i)
 signal interacted(action: Action, pos: Vector2i, args: Array)
 
-var speed: int = 128 # 64
+var speed: int = 100 # 64
 var direction: Vector2 = Vector2(0, 0)
 var facing_direction: Vector2 = Vector2(0, 0)  # Used for animation
 var target_directions: Array = []
