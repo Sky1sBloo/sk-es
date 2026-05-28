@@ -1,12 +1,13 @@
 {
   "start": { "x": 1, "y": 1 },
+"exit": {"x": 14, "y": 0},
 
   "layout": [
-	"1111111111111111",
+	"1111111111111101",
 	"1000000000110001",
 	"1000000000110001",
 	"1000000000110001",
-	"1111101111110001",
+	"1111101111111011",
 	"1000001000000001",
 	"1000001000000001",
 	"1000001111111101",
@@ -15,18 +16,24 @@
   ],
 
   "doors": [
-	{ "x": 5, "y": 4, "lock_type": "RED" }
+	{ "x": 5, "y": 4, "lock_type": "RED" },
+	{ "x": 14, "y": 7, "lock_type": "GREEN" },
+	{ "x": 13, "y": 4, "lock_type": "BOARDED"}
   ],
 
   "containers": [
-	{ "type": "DRAWER", "x": 2, "y": 2, "contains": ["RED_KEY"] },
-	{ "type": "DRAWER", "x": 4, "y": 2, "contains": [] },
+	{ "type": "DRAWER", "x": 2, "y": 2, "contains": ["AXE_HEAD"] },
+	{ "type": "DRAWER", "x": 6, "y": 3, "contains": ["RED_KEY"] },
 	{ "type": "DRAWER", "x": 2, "y": 6, "contains": ["GREEN_KEY"] },
-	{ "type": "DRAWER", "x": 4, "y": 6, "contains": [] },
-	{ "type": "DRAWER", "x": 2, "y": 8, "contains": ["YELLOW_KEY"] },
-	{ "type": "DRAWER", "x": 6, "y": 8, "contains": [] }
+	{ "type": "DRAWER", "x": 4, "y": 6, "contains": ["STICK"] },
+	{ "type": "DRAWER", "x": 2, "y": 8, "contains": ["YELLOW_KEY", "ROPE"] },
+	{ "type": "DRAWER", "x": 5, "y": 8, "contains": [] }
   ],
+"furnitures": [
+	{ "type": "TABLE", "x": 7, "y": 5 }
+],
   "traps": [
-	  { "type": "SPIKED", "x": 4, "y": 3}
+	  { "type": "SPIKED", "x": 5, "y": 6},
+	  { "type": "SPIKED", "x": 13, "y": 6}
   ]
 }

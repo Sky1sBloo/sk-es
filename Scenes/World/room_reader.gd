@@ -22,20 +22,23 @@ func get_level(path: String) -> RoomDetails:
 	var data = json.data
 	
 	var room_details: = RoomDetails.new()
-	room_details.init_player_position = _get_start_pos(data)
+	room_details.init_player_position = _get_grid_pos(data, "start")
+	room_details.exit = _get_grid_pos(data, "exit")
 	room_details.room_layout = _room_layout(data)
 	room_details.doors = _load_doors(data)
 	room_details.containers = _load_containers(data)
 	room_details.traps = _load_traps(data)
+	room_details.furnitures = _load_furniture(data)
 	return room_details
 
-func _get_start_pos(data: Dictionary) -> Vector2i:
-	if not data.has("start"):
-		printerr("JSON format error: Theres no start position")
+
+func _get_grid_pos(data: Dictionary, id: String) -> Vector2i:
+	if not data.has(id):
+		printerr("JSON format error: Theres no id of type: ", id)
 		return Vector2i(-1, -1)
 	
-	var x: int = data["start"]["x"]
-	var y: int = data["start"]["y"]
+	var x: int = data[id]["x"]
+	var y: int = data[id]["y"]
 	if x == null or y == null:
 		printerr("JSON format error: There is no specified x or y position")
 		return Vector2i(-1, -1)
@@ -92,11 +95,29 @@ func _load_containers(data: Dictionary) -> Array[ContainerData]:
 			item_type.append(str(item))
 		
 		if x == null or y == null or type == null or item_type == null:
-			printerr("JSON format error: Door isn't defined correctly")
+			printerr("JSON format error: Container isn't defined correctly")
 			continue
 		container_data.initialize(Vector2i(x, y), type, item_type)
 		containers.push_back(container_data)
 	return containers
+
+func _load_furniture(data: Dictionary) -> Array[FurnitureData]:
+	if not data.has("furnitures"):
+		return []
+	var furnitures: Array[FurnitureData] = []
+	
+	for furniture in data["furnitures"]:
+		var furniture_data: = FurnitureData.new()
+		var x: int = furniture["x"]
+		var y: int = furniture["y"]
+		
+		var type: String = furniture["type"]
+		if x == null or y == null or type == null:
+			printerr("JSON format error: Furniture isn't defined correctly")
+			continue
+		furniture_data.initialize(Vector2i(x, y), type)
+		furnitures.push_back(furniture_data)
+	return furnitures
 
 func _load_traps(data: Dictionary) -> Array[TrapData]:
 	if not data.has("traps"):

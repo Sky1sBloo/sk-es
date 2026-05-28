@@ -1,6 +1,6 @@
 class_name MinHeap
 
-var _heap: Array[AStarNode]
+var _heap: Array[AStarNode] = []
 
 func insert(node: AStarNode) -> void:
 	_heap.push_back(node)

@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://cqu1ei31uspcj" path="res://Sprites/Placeholder.png" id="5_7staa"]
 [ext_resource type="Script" uid="uid://b2d2mtpmypsea" path="res://Scenes/World/room_reader.gd" id="5_fo5ed"]
 [ext_resource type="Script" uid="uid://b3lnwbdck10e5" path="res://Scenes/World/interaction_handler.gd" id="7_7staa"]
+[ext_resource type="Script" uid="uid://c7l1rwd2ncfg0" path="res://Scenes/World/hud.gd" id="8_fcotr"]
+[ext_resource type="PackedScene" uid="uid://c4ptu88aurk7j" path="res://GameObjects/Details/inventory_collection_animation.tscn" id="9_y0d6x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8j60k"]
 texture = ExtResource("3_5a7ea")
@@ -127,20 +129,14 @@ sources/0 = SubResource("TileSetAtlasSource_8j60k")
 texture = ExtResource("5_7staa")
 0:0/0 = 0
 1:0/0 = 0
-2:0/0 = 0
 3:0/0 = 0
 1:2/0 = 0
 2:2/0 = 0
 3:2/0 = 0
+0:3/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_y0d6x"]
 sources/0 = SubResource("TileSetAtlasSource_fcotr")
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_adcqc"]
-texture = ExtResource("5_7staa")
-
-[sub_resource type="TileSet" id="TileSet_7staa"]
-sources/0 = SubResource("TileSetAtlasSource_adcqc")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7staa"]
 texture = ExtResource("5_7staa")
@@ -150,6 +146,10 @@ texture = ExtResource("5_7staa")
 3:1/0 = 0
 14:7/0 = 0
 0:2/0 = 0
+2:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_fcotr"]
 sources/0 = SubResource("TileSetAtlasSource_7staa")
@@ -175,16 +175,15 @@ position = Vector2(64, 128)
 scale = Vector2(2, 2)
 tile_set = SubResource("TileSet_y0d6x")
 
-[node name="TileMapItems" type="TileMapLayer" parent="Room/TileMap" unique_id=614893973]
-tile_set = SubResource("TileSet_7staa")
-
 [node name="TileMapDetails" type="TileMapLayer" parent="Room/TileMap" unique_id=723559531]
 position = Vector2(64, 128)
 scale = Vector2(2, 2)
 tile_set = SubResource("TileSet_fcotr")
 
-[node name="Jani" parent="Room" unique_id=1675082522 instance=ExtResource("1_a02cp")]
+[node name="Jani" parent="Room" unique_id=1675082522 node_paths=PackedStringArray("world") instance=ExtResource("1_a02cp")]
+z_index = 1
 wasd_control = false
+world = NodePath("../..")
 
 [node name="RoomReader" type="Node" parent="." unique_id=1029788623]
 script = ExtResource("5_fo5ed")
@@ -192,4 +191,82 @@ script = ExtResource("5_fo5ed")
 [node name="InteractionHandler" type="Node" parent="." unique_id=575979488]
 script = ExtResource("7_7staa")
 
+[node name="InventoryCollectionAnimation" parent="InteractionHandler" unique_id=930793992 instance=ExtResource("9_y0d6x")]
+
+[node name="HUD" type="Control" parent="." unique_id=1025702629]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 96.0
+script = ExtResource("8_fcotr")
+
+[node name="ActionHeading" type="Label" parent="HUD" unique_id=1283752672]
+layout_mode = 0
+offset_left = 528.0
+offset_top = 16.0
+offset_right = 608.0
+offset_bottom = 28.0
+theme_override_font_sizes/font_size = 8
+text = "Action:"
+
+[node name="Actions" type="RichTextLabel" parent="HUD" unique_id=1847753273]
+layout_mode = 0
+offset_left = 528.0
+offset_top = 32.0
+offset_right = 624.0
+offset_bottom = 112.0
+theme_override_font_sizes/normal_font_size = 8
+
+[node name="InventoryHeading" type="Label" parent="HUD" unique_id=2120830503]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 16.0
+offset_right = 480.0
+offset_bottom = 28.0
+theme_override_font_sizes/font_size = 8
+text = "Inventory:"
+
+[node name="Inventory" type="RichTextLabel" parent="HUD" unique_id=133921665]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 32.0
+offset_right = 496.0
+offset_bottom = 112.0
+theme_override_font_sizes/normal_font_size = 8
+
+[node name="FactsHeading" type="Label" parent="HUD" unique_id=1045521919]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 16.0
+offset_right = 208.0
+offset_bottom = 28.0
+theme_override_font_sizes/font_size = 8
+text = "Facts:"
+
+[node name="Facts" type="RichTextLabel" parent="HUD" unique_id=494151261]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 32.0
+offset_right = 368.0
+offset_bottom = 112.0
+theme_override_font_sizes/normal_font_size = 8
+
+[node name="TrapLocations" type="RichTextLabel" parent="HUD" unique_id=428096443]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 32.0
+offset_right = 112.0
+offset_bottom = 112.0
+theme_override_font_sizes/normal_font_size = 8
+
+[node name="TrapHeading" type="Label" parent="HUD" unique_id=1230214109]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 80.0
+offset_bottom = 28.0
+theme_override_font_sizes/font_size = 8
+text = "Trap Locations:"
+
+[connection signal="interacted" from="Room/Jani" to="InteractionHandler" method="_on_jani_interacted"]
 [connection signal="move_finished" from="Room/Jani" to="InteractionHandler" method="_on_jani_move_finished"]
