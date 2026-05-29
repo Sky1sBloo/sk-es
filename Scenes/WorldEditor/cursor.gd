@@ -9,10 +9,7 @@ var _offset: Vector2
 func initialize(offset: Vector2) -> void:
 	_offset = offset
 
-func _process(_delta: float) -> void:
-	_move_to_mouse()
-
-func _move_to_mouse() -> void:
+func move_to_mouse() -> void:
 	var mouse_pos: = get_global_mouse_position()
 	var grid_size: = GameConfiguration.GRID_SIZE
 	var sprite_offset: = Vector2(16, 16)
@@ -27,6 +24,19 @@ func _move_to_mouse() -> void:
 		sprite.visible = false
 	
 	global_position = grid_pos
+
+func move_to_mouse_edit() -> void:
+	var mouse_pos: = get_global_mouse_position()
+	var grid_size: = GameConfiguration.GRID_SIZE
+	var sprite_offset: = Vector2(16, 16)
+	var grid_pos: = (mouse_pos - sprite_offset).snapped(Vector2(grid_size, grid_size))
+	if not _inside_bounds(grid_pos):
+		return
+	sprite.play("able")
+	sprite.visible = true
+	able_to_place = true
+	global_position = grid_pos
+	
 
 func _inside_bounds(pos: Vector2) -> bool:
 	if pos.x < _offset.x:

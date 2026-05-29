@@ -1,3 +1,4 @@
+extends Object
 class_name ContainerData
 
 enum Types {
@@ -19,12 +20,12 @@ var str_to_item_type: Dictionary[String, Inventory.ItemType] = {
 
 var grid_pos: Vector2i
 var type: Types
-var contains: Array[Inventory.ItemType] = []
+var contains: Array[Inventory.ItemType]
 var is_opened: bool = false
 
 signal opened(pos: Vector2i)
 
-func initialize(pos: Vector2i, cont_type: String, items: Array[String]) -> void:
+func initialize(pos: Vector2i, cont_type: String = "", items: Array[String] = []) -> void:
 	is_opened = false
 	grid_pos = pos
 	if str_to_container_type.has(cont_type):

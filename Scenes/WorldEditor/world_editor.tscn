@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bwle65fjlilty" path="res://Scenes/WorldEditor/world_editor.gd" id="1_l0g0c"]
 [ext_resource type="Texture2D" uid="uid://cqu1ei31uspcj" path="res://Sprites/Placeholder.png" id="1_mpna8"]
 [ext_resource type="Script" uid="uid://ytxnbctkgea1" path="res://Scenes/WorldEditor/editor_selection.gd" id="2_3xf5j"]
+[ext_resource type="Script" uid="uid://wsrdv4s3b5yc" path="res://Scenes/WorldEditor/hud.gd" id="2_14lcv"]
 [ext_resource type="Script" uid="uid://cvxdilsowaa86" path="res://Scenes/WorldEditor/cursor.gd" id="2_nuol8"]
 [ext_resource type="PackedScene" uid="uid://bqad8pgonm6yj" path="res://Scenes/tile_map_details.tscn" id="4_sio5s"]
 
@@ -50,29 +51,39 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="WorldEditor" type="Node" unique_id=216869614 node_paths=PackedStringArray("cursor", "world", "tile_map_composition")]
+[node name="WorldEditor" type="Node" unique_id=216869614 node_paths=PackedStringArray("cursor", "world", "tile_map_composition", "tile_map_details")]
 script = ExtResource("1_l0g0c")
 cursor = NodePath("World/Cursor")
 world = NodePath("World")
 tile_map_composition = NodePath("World/Tilemap/TileMapRoomComposition")
+tile_map_details = NodePath("World/Tilemap/TileMapDetails")
 
 [node name="HUD" type="Control" parent="." unique_id=1321498274]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("2_14lcv")
 
-[node name="WorldSelection" type="Control" parent="HUD" unique_id=1056390191]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="WorldSelection" type="Node" parent="HUD" unique_id=1965291819]
 script = ExtResource("2_3xf5j")
 
-[node name="PlaceSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1773367621]
-layout_mode = 0
+[node name="ModeSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=686145198]
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 125.0
+offset_bottom = 39.0
+selected = 0
+item_count = 2
+popup/item_0/text = "Place"
+popup/item_0/id = 0
+popup/item_1/text = "Edit"
+popup/item_1/id = 1
+
+[node name="PlaceSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1773367621]
+offset_left = 144.0
+offset_top = 8.0
+offset_right = 261.0
 offset_bottom = 39.0
 selected = 0
 item_count = 4
@@ -85,16 +96,95 @@ popup/item_2/id = 2
 popup/item_3/text = "Trap"
 popup/item_3/id = 3
 
-[node name="OptionSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1428544698]
-layout_mode = 0
-offset_left = 144.0
+[node name="LockSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1428544698]
+offset_left = 280.0
 offset_top = 8.0
-offset_right = 261.0
+offset_right = 397.0
 offset_bottom = 39.0
 selected = 0
-item_count = 1
-popup/item_0/text = "Lock Red"
+item_count = 5
+popup/item_0/text = "None"
 popup/item_0/id = 0
+popup/item_1/text = "Red"
+popup/item_1/id = 1
+popup/item_2/text = "Yellow"
+popup/item_2/id = 2
+popup/item_3/text = "Green"
+popup/item_3/id = 3
+popup/item_4/text = "Boarded"
+popup/item_4/id = 4
+
+[node name="ItemSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1854731453]
+offset_left = 416.0
+offset_top = 8.0
+offset_right = 533.0
+offset_bottom = 39.0
+selected = 0
+item_count = 8
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Red Key"
+popup/item_1/id = 1
+popup/item_2/text = "Yellow Key"
+popup/item_2/id = 2
+popup/item_3/text = "Green Key"
+popup/item_3/id = 3
+popup/item_4/text = "Axe"
+popup/item_4/id = 4
+popup/item_5/text = "Axe Head"
+popup/item_5/id = 5
+popup/item_6/text = "Stick"
+popup/item_6/id = 6
+popup/item_7/text = "Rope"
+popup/item_7/id = 7
+
+[node name="AddItem" type="Button" parent="HUD/WorldSelection" unique_id=1745747154]
+offset_left = 544.0
+offset_top = 8.0
+offset_right = 576.0
+offset_bottom = 40.0
+text = "+"
+
+[node name="DeleteItem" type="Button" parent="HUD/WorldSelection" unique_id=1732364887]
+offset_left = 584.0
+offset_top = 8.0
+offset_right = 616.0
+offset_bottom = 40.0
+text = "-"
+
+[node name="Details" type="Node" parent="HUD" unique_id=1819185429]
+
+[node name="ContentLbl" type="Label" parent="HUD/Details" unique_id=1913507533]
+offset_left = 16.0
+offset_top = 72.0
+offset_right = 91.0
+offset_bottom = 89.0
+theme_override_font_sizes/font_size = 12
+text = "Contents:"
+
+[node name="Contents" type="Label" parent="HUD/Details" unique_id=1243396197]
+offset_left = 80.0
+offset_top = 72.0
+offset_right = 408.0
+offset_bottom = 89.0
+theme_override_font_sizes/font_size = 12
+text = "[]"
+
+[node name="CellType" type="Label" parent="HUD/Details" unique_id=1613906960]
+offset_left = 64.0
+offset_top = 48.0
+offset_right = 240.0
+offset_bottom = 65.0
+theme_override_font_sizes/font_size = 12
+text = "#"
+
+[node name="TypeLbl" type="Label" parent="HUD/Details" unique_id=664701700]
+offset_left = 16.0
+offset_top = 48.0
+offset_right = 64.0
+offset_bottom = 65.0
+theme_override_font_sizes/font_size = 12
+text = "Type:"
 
 [node name="World" type="Node2D" parent="." unique_id=521958938]
 position = Vector2(64, 128)
@@ -110,6 +200,7 @@ tile_set = SubResource("TileSet_3xf5j")
 position = Vector2(64, 128)
 
 [node name="Cursor" type="Area2D" parent="World" unique_id=1151426331]
+z_index = 1
 script = ExtResource("2_nuol8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/Cursor" unique_id=477378472]
@@ -121,3 +212,12 @@ scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_o8ns7")
 animation = &"able"
 centered = false
+
+[connection signal="edit_selected" from="." to="HUD" method="_on_world_editor_edit_selected"]
+[connection signal="added_item" from="HUD/WorldSelection" to="." method="_on_world_selection_added_item"]
+[connection signal="added_item" from="HUD/WorldSelection" to="HUD" method="_on_world_selection_added_item"]
+[connection signal="removed_item" from="HUD/WorldSelection" to="." method="_on_world_selection_removed_item"]
+[connection signal="removed_item" from="HUD/WorldSelection" to="HUD" method="_on_world_selection_removed_item"]
+[connection signal="item_selected" from="HUD/WorldSelection/LockSelection" to="." method="_on_lock_selection_item_selected"]
+[connection signal="pressed" from="HUD/WorldSelection/AddItem" to="HUD/WorldSelection" method="_on_add_item_pressed"]
+[connection signal="pressed" from="HUD/WorldSelection/DeleteItem" to="HUD/WorldSelection" method="_on_delete_item_pressed"]
