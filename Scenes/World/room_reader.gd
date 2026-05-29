@@ -63,11 +63,11 @@ func _room_layout(data: Dictionary) -> Array:
 			room_layout.back().push_back(cell_type)
 	return room_layout
 
-func _load_doors(data: Dictionary) -> Array[DoorsData]:
+func _load_doors(data: Dictionary) -> Dictionary[Vector2i, DoorsData]:
 	if not data.has("doors"):
-		return []
+		return {}
 	
-	var doors: Array[DoorsData] = []
+	var doors: Dictionary[Vector2i, DoorsData] = {}
 	for door in data["doors"]:
 		var door_data: = DoorsData.new()
 		var x: int = door["x"]
@@ -77,14 +77,14 @@ func _load_doors(data: Dictionary) -> Array[DoorsData]:
 			printerr("JSON format error: Door isn't defined correctly")
 			continue
 		door_data.initialize(Vector2i(x, y), lock_type)
-		doors.push_back(door_data)
+		doors[door_data.grid_pos] = door_data
 	
 	return doors
 
-func _load_containers(data: Dictionary) -> Array[ContainerData]:
+func _load_containers(data: Dictionary) -> Dictionary[Vector2i, ContainerData]:
 	if not data.has("containers"):
-		return []
-	var containers: Array[ContainerData] = []
+		return {}
+	var containers: Dictionary[Vector2i, ContainerData] = {}
 	for container in data["containers"]:
 		var container_data: = ContainerData.new()
 		var x: int = container["x"]
@@ -98,13 +98,13 @@ func _load_containers(data: Dictionary) -> Array[ContainerData]:
 			printerr("JSON format error: Container isn't defined correctly")
 			continue
 		container_data.initialize(Vector2i(x, y), type, item_type)
-		containers.push_back(container_data)
+		containers[container_data.grid_pos] = container_data
 	return containers
 
-func _load_furniture(data: Dictionary) -> Array[FurnitureData]:
+func _load_furniture(data: Dictionary) -> Dictionary[Vector2i, FurnitureData]:
 	if not data.has("furnitures"):
-		return []
-	var furnitures: Array[FurnitureData] = []
+		return {}
+	var furnitures: Dictionary[Vector2i, FurnitureData] = {}
 	
 	for furniture in data["furnitures"]:
 		var furniture_data: = FurnitureData.new()
@@ -116,7 +116,7 @@ func _load_furniture(data: Dictionary) -> Array[FurnitureData]:
 			printerr("JSON format error: Furniture isn't defined correctly")
 			continue
 		furniture_data.initialize(Vector2i(x, y), type)
-		furnitures.push_back(furniture_data)
+		furnitures[furniture_data.grid_pos] = furniture_data
 	return furnitures
 
 func _load_traps(data: Dictionary) -> Array[TrapData]:

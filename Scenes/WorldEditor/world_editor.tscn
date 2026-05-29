@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://bgrsd8bngl8vn"]
+
+[ext_resource type="Script" uid="uid://bwle65fjlilty" path="res://Scenes/WorldEditor/world_editor.gd" id="1_l0g0c"]
+[ext_resource type="Texture2D" uid="uid://cqu1ei31uspcj" path="res://Sprites/Placeholder.png" id="1_mpna8"]
+[ext_resource type="Script" uid="uid://ytxnbctkgea1" path="res://Scenes/WorldEditor/editor_selection.gd" id="2_3xf5j"]
+[ext_resource type="Script" uid="uid://cvxdilsowaa86" path="res://Scenes/WorldEditor/cursor.gd" id="2_nuol8"]
+[ext_resource type="PackedScene" uid="uid://bqad8pgonm6yj" path="res://Scenes/tile_map_details.tscn" id="4_sio5s"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nuol8"]
+texture = ExtResource("1_mpna8")
+0:0/0 = 0
+1:0/0 = 0
+3:0/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+14:7/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_3xf5j"]
+sources/0 = SubResource("TileSetAtlasSource_nuol8")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o8ns7"]
+size = Vector2(32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mpna8"]
+atlas = ExtResource("1_mpna8")
+region = Rect2(0, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l0g0c"]
+atlas = ExtResource("1_mpna8")
+region = Rect2(0, 80, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o8ns7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mpna8")
+}],
+"loop": true,
+"name": &"able",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l0g0c")
+}],
+"loop": true,
+"name": &"unable",
+"speed": 5.0
+}]
+
+[node name="WorldEditor" type="Node" unique_id=216869614 node_paths=PackedStringArray("cursor", "world", "tile_map_composition")]
+script = ExtResource("1_l0g0c")
+cursor = NodePath("World/Cursor")
+world = NodePath("World")
+tile_map_composition = NodePath("World/Tilemap/TileMapRoomComposition")
+
+[node name="HUD" type="Control" parent="." unique_id=1321498274]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="WorldSelection" type="Control" parent="HUD" unique_id=1056390191]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_3xf5j")
+
+[node name="PlaceSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1773367621]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 125.0
+offset_bottom = 39.0
+selected = 0
+item_count = 4
+popup/item_0/text = "Walls"
+popup/item_0/id = 0
+popup/item_1/text = "Doors"
+popup/item_1/id = 1
+popup/item_2/text = "Containers"
+popup/item_2/id = 2
+popup/item_3/text = "Trap"
+popup/item_3/id = 3
+
+[node name="OptionSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1428544698]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 8.0
+offset_right = 261.0
+offset_bottom = 39.0
+selected = 0
+item_count = 1
+popup/item_0/text = "Lock Red"
+popup/item_0/id = 0
+
+[node name="World" type="Node2D" parent="." unique_id=521958938]
+position = Vector2(64, 128)
+
+[node name="Tilemap" type="Node" parent="World" unique_id=694503414]
+
+[node name="TileMapRoomComposition" type="TileMapLayer" parent="World/Tilemap" unique_id=92179036]
+position = Vector2(64, 128)
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_3xf5j")
+
+[node name="TileMapDetails" parent="World/Tilemap" unique_id=667878711 instance=ExtResource("4_sio5s")]
+position = Vector2(64, 128)
+
+[node name="Cursor" type="Area2D" parent="World" unique_id=1151426331]
+script = ExtResource("2_nuol8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Cursor" unique_id=477378472]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_o8ns7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="World/Cursor" unique_id=33474690]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_o8ns7")
+animation = &"able"
+centered = false

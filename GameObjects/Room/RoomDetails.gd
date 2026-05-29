@@ -14,9 +14,9 @@ enum TileType {
 var room_layout: Array
 var init_player_position: Vector2i
 var exit: Vector2i
-var doors: Array[DoorsData]
-var containers: Array[ContainerData]
-var furnitures: Array[FurnitureData]
+var doors: Dictionary[Vector2i, DoorsData]
+var containers: Dictionary[Vector2i, ContainerData]
+var furnitures: Dictionary[Vector2i, FurnitureData]
 var traps: Array[TrapData]
 
 func get_cell_trap(pos: Vector2i) -> TrapData:
@@ -26,19 +26,16 @@ func get_cell_trap(pos: Vector2i) -> TrapData:
 	return null
 
 func get_cell_door(pos: Vector2i) -> DoorsData:
-	for door in doors:
-		if door.grid_pos == pos:
-			return door
+	if doors.has(pos):
+		return doors[pos]
 	return null
 
 func get_cell_container(pos: Vector2i) -> ContainerData:
-	for container in containers:
-		if container.grid_pos == pos:
-			return container
+	if containers.has(pos):
+		return containers[pos]
 	return null
 
 func get_cell_furniture(pos: Vector2i) -> FurnitureData:
-	for furniture in furnitures:
-		if furniture.grid_pos == pos:
-			return furniture
+	if furnitures.has(pos):
+		return furnitures[pos]
 	return null

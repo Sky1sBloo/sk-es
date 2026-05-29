@@ -10,7 +10,7 @@ func _process(_delta: float) -> void:
 	facts.text = ""
 	inventory_lbl.text = ""
 	actions_lbl.text = ""
-	var world: World = get_parent()
+	var world: World = get_parent().get_parent()
 	for loc in world.jani.memory.trap_locations:
 		trap_locations_lbl.text += str(loc) + "\n"
 	
