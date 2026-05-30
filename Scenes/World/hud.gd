@@ -1,19 +1,17 @@
 extends Control
 
-@onready var trap_locations_lbl: = $TrapLocations
+@onready var action_cost: = $Cost
 @onready var facts: = $Facts
 @onready var inventory_lbl: = $Inventory
 @onready var actions_lbl: = $Actions
 
 func _process(_delta: float) -> void:
-	trap_locations_lbl.text = ""
+	action_cost.text = ""
 	facts.text = ""
 	inventory_lbl.text = ""
 	actions_lbl.text = ""
 	var world: World = get_parent().get_parent()
-	for loc in world.jani.memory.trap_locations:
-		trap_locations_lbl.text += str(loc) + "\n"
-	
+	action_cost.text = str(world.action_cost)
 	for fact in world.jani.decision_manager.inference.get_facts_as_str():
 		facts.text += fact + "\n"
 	

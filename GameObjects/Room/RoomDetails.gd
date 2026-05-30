@@ -9,14 +9,14 @@ enum TileType {
 	JANI = 99
 }
 
-# 2D array of int
-var room_layout: Array
+var room_layout: Array  # 2D array of int
 var init_player_position: Vector2i
 var exit: Vector2i
 var doors: Dictionary[Vector2i, DoorsData]
 var containers: Dictionary[Vector2i, ContainerData]
 var furnitures: Dictionary[Vector2i, FurnitureData]
 var traps: Dictionary[Vector2i, TrapData]
+var goals: Dictionary = {}
 
 func get_cell_trap(pos: Vector2i) -> TrapData:
 	if traps.has(pos):

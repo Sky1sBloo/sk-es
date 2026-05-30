@@ -29,6 +29,9 @@ func get_level(path: String) -> RoomDetails:
 	room_details.containers = _load_containers(data)
 	room_details.traps = _load_traps(data)
 	room_details.furnitures = _load_furniture(data)
+	# Optional goals object in level JSON; pass through to RoomDetails
+	if data.has("goals"):
+		room_details.goals = data["goals"]
 	return room_details
 
 

@@ -14,6 +14,7 @@ var room_details: RoomDetails
 const room_size: Vector2i =  Vector2i(17, 11)
 
 signal edit_selected(pos: Vector2i, details: RoomDetails)
+signal placed_cell(pos: Vector2i, select: WorldSelection.PlaceType)
 
 func _ready() -> void:
 	_initialize_room()
@@ -82,6 +83,7 @@ func _place(place_pos: Vector2i) -> void:
 	if not cursor.able_to_place:
 		return
 	_handle_deletion(place_pos)
+	placed_cell.emit(place_pos, world_selection.place_type)
 	match world_selection.place_type:
 		WorldSelection.PlaceType.WALLS:
 			_place_wall(place_pos)
@@ -149,6 +151,7 @@ func _place_start_pos(place_pos: Vector2i) -> void:
 	tile_map_composition.set_cell_type(place_pos, 
 		TileMapComposition.CompositionType.START_POS)
 	room_details.init_player_position = place_pos
+	
 
 func _handle_deletion(pos: Vector2i) -> void:
 	tile_map_composition.set_cell(pos, 0, Vector2i(14, 7))
@@ -166,7 +169,6 @@ func _on_world_selection_added_item(selected_item: Inventory.ItemType) -> void:
 	if not room_details.containers.has(edit_pos):
 		return
 	room_details.containers[edit_pos].contains.push_back(selected_item)
-	print(selected_item)
 
 func _on_world_selection_removed_item() -> void:
 	if world_selection.mode_type != WorldSelection.ModeType.EDIT:

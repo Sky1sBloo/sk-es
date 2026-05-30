@@ -170,6 +170,7 @@ func _on_jani_move_instruction_finished(_pos: Vector2i) -> void:
 	if action_queue.is_empty():
 		return
 	var action = action_queue.peek()
+	jani.action_finished.emit(action)
 	action_queue.pop()
 	if action == null:
 		tick()
@@ -180,6 +181,7 @@ func _on_jani_move_instruction_finished(_pos: Vector2i) -> void:
 	if action.type == Action.Types.GO_TO_EXIT:
 		return
 	tick()
+
 
 func cancel_current_action() -> void:
 	# Remove the current/top action from the queue if present.

@@ -10,16 +10,23 @@ func initialize(jani_node: Jani, room_node: Room) -> void:
 	jani = jani_node
 	room = room_node
 
+func _on_jani_action_finished(action: Action) -> void:
+	world.action_cost += action.action_cost
+
 func _on_jani_move_finished(pos: Vector2i) -> void:
 	var trap: = room.room_details.get_cell_trap(pos)
 	if trap != null:
 		trap.trigger()
 		jani.memory.add_trap(pos)
 		# Cancel the current action so the decision manager doesn't get out of sync
-		if jani.has_node("DecisionManager"):
-			jani.decision_manager.cancel_current_action()
-		world.reset()
-		#room.details_map.set_cell_type(pos, TileMapDetails.DetailType.NONE)
+		#if jani.has_node("DecisionManager"):
+		#	jani.decision_manager.cancel_current_action()
+		#world.reset()
+		
+		# Pause jani instead
+		jani.stun(2)
+		world.action_cost += 90
+		room.details_map.set_cell_type(pos, TileMapDetails.DetailType.NONE)
 
 func _on_jani_interacted(action: Action, pos: Vector2i, args: Array) -> void:
 	_container_interaction(action)

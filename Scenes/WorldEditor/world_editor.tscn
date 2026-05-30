@@ -1,46 +1,15 @@
 [gd_scene format=3 uid="uid://bgrsd8bngl8vn"]
 
 [ext_resource type="Script" uid="uid://bwle65fjlilty" path="res://Scenes/WorldEditor/world_editor.gd" id="1_l0g0c"]
-[ext_resource type="Texture2D" uid="uid://cqu1ei31uspcj" path="res://Sprites/Placeholder.png" id="1_mpna8"]
 [ext_resource type="Script" uid="uid://ytxnbctkgea1" path="res://Scenes/WorldEditor/editor_selection.gd" id="2_3xf5j"]
 [ext_resource type="Script" uid="uid://wsrdv4s3b5yc" path="res://Scenes/WorldEditor/hud.gd" id="2_14lcv"]
-[ext_resource type="Script" uid="uid://cvxdilsowaa86" path="res://Scenes/WorldEditor/cursor.gd" id="2_nuol8"]
 [ext_resource type="PackedScene" uid="uid://bqad8pgonm6yj" path="res://Scenes/tile_map_details.tscn" id="4_sio5s"]
 [ext_resource type="PackedScene" uid="uid://b1i6ww2ao7mda" path="res://Scenes/tile_map_room_composition.tscn" id="5_7mt4e"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_o8ns7"]
-size = Vector2(32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mpna8"]
-atlas = ExtResource("1_mpna8")
-region = Rect2(0, 64, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_l0g0c"]
-atlas = ExtResource("1_mpna8")
-region = Rect2(0, 80, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_o8ns7"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mpna8")
-}],
-"loop": true,
-"name": &"able",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_l0g0c")
-}],
-"loop": true,
-"name": &"unable",
-"speed": 5.0
-}]
+[ext_resource type="PackedScene" uid="uid://bj1yysowb8ffl" path="res://Scenes/cursor.tscn" id="6_14lcv"]
 
 [node name="WorldEditor" type="Node" unique_id=216869614 node_paths=PackedStringArray("cursor", "world", "tile_map_composition", "tile_map_details")]
 script = ExtResource("1_l0g0c")
-cursor = NodePath("World/Cursor")
+cursor = NodePath("")
 world = NodePath("World")
 tile_map_composition = NodePath("World/Tilemap/TileMapRoomComposition")
 tile_map_details = NodePath("World/Tilemap/TileMapDetails")
@@ -155,6 +124,15 @@ text = "-"
 
 [node name="Details" type="Node" parent="HUD" unique_id=1819185429]
 
+[node name="CostLbl" type="Label" parent="HUD/Details" unique_id=1227643042]
+offset_left = 512.0
+offset_top = 8.0
+offset_right = 552.0
+offset_bottom = 32.0
+theme_override_font_sizes/font_size = 12
+text = "Cost:"
+vertical_alignment = 1
+
 [node name="ContentLbl" type="Label" parent="HUD/Details" unique_id=1913507533]
 offset_left = 16.0
 offset_top = 72.0
@@ -206,19 +184,7 @@ position = Vector2(64, 128)
 [node name="TileMapDetails" parent="World/Tilemap" unique_id=667878711 instance=ExtResource("4_sio5s")]
 position = Vector2(64, 128)
 
-[node name="Cursor" type="Area2D" parent="World" unique_id=1151426331]
-z_index = 1
-script = ExtResource("2_nuol8")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Cursor" unique_id=477378472]
-position = Vector2(16, 16)
-shape = SubResource("RectangleShape2D_o8ns7")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="World/Cursor" unique_id=33474690]
-scale = Vector2(2, 2)
-sprite_frames = SubResource("SpriteFrames_o8ns7")
-animation = &"able"
-centered = false
+[node name="Cursor" parent="World" unique_id=1276194277 instance=ExtResource("6_14lcv")]
 
 [connection signal="edit_selected" from="." to="HUD" method="_on_world_editor_edit_selected"]
 [connection signal="added_item" from="HUD/WorldSelection" to="." method="_on_world_selection_added_item"]
