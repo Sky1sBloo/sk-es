@@ -27,6 +27,9 @@ func _initialize_room() -> void:
 			room_details.room_layout[y].push_back(0)
 
 func _process(_delta: float) -> void:
+	if world_selection.is_selecting():
+		return
+	
 	match world_selection.mode_type:
 		WorldSelection.ModeType.PLACE:
 			_handle_placing()
@@ -47,7 +50,7 @@ func _handle_placing() -> void:
 		var place_pos: = _get_cursor_grid_pos()
 		_handle_deletion(place_pos)
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton:
 		return
 	if not event.pressed:
@@ -117,6 +120,7 @@ func _handle_deletion(pos: Vector2i) -> void:
 	room_details.room_layout[pos.y][pos.x] = 0
 	room_details.doors.erase(pos)
 	room_details.containers.erase(pos)
+	room_details.traps.erase(pos)
 
 func _on_world_selection_added_item(selected_item: Inventory.ItemType) -> void:
 	if world_selection.mode_type != WorldSelection.ModeType.EDIT:

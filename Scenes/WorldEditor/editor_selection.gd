@@ -35,6 +35,12 @@ var selected_items: Array[Inventory.ItemType] = []
 signal added_item(selected_item: Inventory.ItemType)
 signal removed_item()
 
+func is_selecting() -> bool:
+	return place_selection.get_popup().visible or \
+		lock_selection.get_popup().visible or \
+		mode_selection.get_popup().visible or \
+		item_selection.get_popup().visible
+
 func _on_add_item_pressed() -> void:
 	var item_selected: Inventory.ItemType = item_selection.selected
 	if item_selected == Inventory.ItemType.NONE:
