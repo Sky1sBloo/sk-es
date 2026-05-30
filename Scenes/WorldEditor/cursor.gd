@@ -5,9 +5,12 @@ class_name Cursor
 
 var able_to_place: bool = false
 var _offset: Vector2
+var _room_size: Vector2i = Vector2i(17, 11)
 
-func initialize(offset: Vector2) -> void:
+func initialize(offset: Vector2, room_size: Vector2i) -> void:
 	_offset = offset
+	if room_size != null:
+		_room_size = room_size
 
 func move_to_mouse() -> void:
 	var mouse_pos: = get_global_mouse_position()
@@ -39,12 +42,14 @@ func move_to_mouse_edit() -> void:
 	
 
 func _inside_bounds(pos: Vector2) -> bool:
-	if pos.x < _offset.x:
+	var grid_size: = GameConfiguration.GRID_SIZE
+	var local_pos: = pos - _offset
+	if local_pos.x < 0 or local_pos.y < 0:
 		return false
-	if pos.y < _offset.y:
+	var tile_x = int(floor(local_pos.x / grid_size))
+	var tile_y = int(floor(local_pos.y / grid_size))
+	if tile_x < 0 or tile_y < 0:
 		return false
-	if pos.x > 576:
-		return false
-	if pos.y > 450:
+	if tile_x >= _room_size.x or tile_y >= _room_size.y:
 		return false
 	return true

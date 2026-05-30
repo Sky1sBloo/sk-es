@@ -8,6 +8,10 @@ class_name WorldEditor
 @export var tile_map_details: TileMapDetails
 
 @onready var world_selection: WorldSelection = $HUD/WorldSelection
+@onready var limit_handler: LimitHandler = $LimitHandler
+@onready var room_reader: RoomReader = $RoomReader
+@onready var hud: EditorHud = $HUD
+
 var world_packed: PackedScene = preload("res://Scenes/World/world.tscn")
 
 var room_details: RoomDetails
@@ -15,10 +19,37 @@ const room_size: Vector2i =  Vector2i(17, 11)
 
 signal edit_selected(pos: Vector2i, details: RoomDetails)
 signal placed_cell(pos: Vector2i, select: WorldSelection.PlaceType)
+signal deleted_cell(pos: Vector2i, cell_type: WorldSelection.PlaceType)
 
 func _ready() -> void:
 	_initialize_room()
-	cursor.initialize(world.global_position)
+	var rd: RoomDetails = GameConfiguration.room_details
+	if rd == null:
+		var reader := RoomReader.new()
+		rd = reader.get_level("res://Levels/Level1.json")
+	# replace the empty room_details with the loaded one
+	room_details = rd
+
+	# initialize cursor with the loaded room size so bounds match layout
+	var rsize = Vector2i(room_details.room_layout[0].size(), room_details.room_layout.size())
+	cursor.initialize(world.global_position, rsize)
+
+	# render maps from room_details
+	_load_composition_map()
+	_load_details_map()
+
+	# ensure limit handler counts match the loaded room
+	_refresh_limits()
+	hud.update_limits(limit_handler, room_details)
+
+func _refresh_limits() -> void:
+	if room_details != null:
+		limit_handler.update_counts_from_room(room_details)
+		if hud != null:
+			hud.update_limits(limit_handler, room_details)
+
+func test() -> void:
+	limit_handler.wall_limit = 10
 
 func _initialize_room() -> void:
 	room_details = RoomDetails.new()
@@ -27,6 +58,70 @@ func _initialize_room() -> void:
 		room_details.room_layout.push_back([])
 		for x in room_size.x:
 			room_details.room_layout[y].push_back(0)
+
+func _load_composition_map() -> void:
+	if room_details == null:
+		return
+	tile_map_composition.clear()
+
+	# walls
+	for y in range(room_details.room_layout.size()):
+		for x in range(room_details.room_layout[y].size()):
+			if room_details.room_layout[y][x] == 1:
+				tile_map_composition.set_cell_type(Vector2i(x, y), TileMapComposition.CompositionType.WALL)
+
+	# exit
+	if room_details.exit != null:
+		tile_map_composition.set_cell_type(room_details.exit, TileMapComposition.CompositionType.EXIT)
+
+	# doors
+	if room_details.doors != null:
+		for pos in room_details.doors:
+			tile_map_composition.set_cell_type(room_details.doors[pos].grid_pos, TileMapComposition.CompositionType.DOOR)
+
+	# traps (composition)
+	if room_details.traps != null:
+		for pos in room_details.traps:
+			var trap: = room_details.traps[pos]
+			tile_map_composition.set_cell_type(trap.grid_pos, TileMapComposition.CompositionType.SPIKE)
+
+func _load_details_map() -> void:
+	if room_details == null:
+		return
+	tile_map_details.clear()
+
+	# locks / doors details
+	if room_details.doors != null:
+		for pos in room_details.doors:
+			var door: = room_details.doors[pos]
+			var detail_type: = TileMapDetails.lock_type_to_detail(door.lock_type)
+			tile_map_details.set_cell_type(pos, detail_type)
+
+	# containers
+	if room_details.containers != null:
+		for pos in room_details.containers:
+			var container: = room_details.containers[pos]
+			var type: = TileMapDetails.DetailType.CONTAINER
+			if container.is_opened:
+				type = TileMapDetails.DetailType.CONTAINER_OPENED
+			tile_map_details.set_cell_type(pos, type)
+
+	# furnitures
+	if room_details.furnitures != null:
+		for pos in room_details.furnitures:
+			var furniture: = room_details.furnitures[pos]
+			var dtype: = TileMapDetails.DetailType.UNKNOWN
+			match furniture.type:
+				FurnitureData.Types.TABLE:
+					dtype = TileMapDetails.DetailType.TABLE
+			tile_map_details.set_cell_type(pos, dtype)
+
+	# traps details (show spike traps)
+	if room_details.traps != null:
+		for pos in room_details.traps:
+			var trap: = room_details.traps[pos]
+			# show trap detail regardless of any Jani memory
+			tile_map_details.set_cell_type(trap.grid_pos, TileMapDetails.DetailType.SPIKE_TRAP)
 
 func _on_start_button_pressed() -> void:
 	GameConfiguration.room_details = room_details
@@ -82,6 +177,10 @@ func _handle_single_placing() -> void:
 func _place(place_pos: Vector2i) -> void:
 	if not cursor.able_to_place:
 		return
+	# check limits before placing (use RoomDetails as source of truth)
+	if not limit_handler.can_place(world_selection.place_type, room_details):
+		#print("Placement denied by limit")
+		return
 	_handle_deletion(place_pos)
 	placed_cell.emit(place_pos, world_selection.place_type)
 	match world_selection.place_type:
@@ -91,18 +190,29 @@ func _place(place_pos: Vector2i) -> void:
 			_place_door(place_pos)
 		WorldSelection.PlaceType.CONTAINERS:
 			_place_containers(place_pos)
+			# recompute counts and update HUD after placement
+			_refresh_limits()
 		WorldSelection.PlaceType.TRAP:
 			_place_traps(place_pos)
+			_refresh_limits()
 		WorldSelection.PlaceType.TABLE:
 			_place_table(place_pos)
+			_refresh_limits()
 		WorldSelection.PlaceType.EXIT:
 			_place_exit(place_pos)
 		WorldSelection.PlaceType.START_POS:
 			_place_start_pos(place_pos)
 
+
+func _on_limit_exceeded(pos: Vector2i, place_type) -> void:
+	# simple feedback: print and (optionally) play a sound or flash UI
+	print("Limit exceeded for placement: ", str(place_type), " at ", str(pos))
+
+
 func _place_wall(place_pos: Vector2i) -> void:
 	tile_map_composition.set_cell_type(place_pos, TileMapComposition.CompositionType.WALL)
 	room_details.room_layout[place_pos.y][place_pos.x] = 1
+	_refresh_limits()
 
 func _place_door(place_pos: Vector2i) -> void:
 	tile_map_composition.set_cell_type(place_pos, TileMapComposition.CompositionType.DOOR)
@@ -113,6 +223,7 @@ func _place_door(place_pos: Vector2i) -> void:
 	door.lock_type = world_selection.lock_type
 	door.is_locked = true
 	room_details.doors[place_pos] = door
+	_refresh_limits()
 
 func _place_containers(place_pos: Vector2i) -> void:
 	tile_map_details.set_cell_type(place_pos, TileMapDetails.DetailType.CONTAINER)
@@ -156,11 +267,32 @@ func _place_start_pos(place_pos: Vector2i) -> void:
 func _handle_deletion(pos: Vector2i) -> void:
 	tile_map_composition.set_cell(pos, 0, Vector2i(14, 7))
 	tile_map_details.set_cell_type(pos, TileMapDetails.DetailType.NONE)
-	room_details.room_layout[pos.y][pos.x] = 0
-	room_details.doors.erase(pos)
-	room_details.containers.erase(pos)
-	room_details.traps.erase(pos)
-	room_details.furnitures.erase(pos)
+	
+	var wall: int = room_details.room_layout[pos.y][pos.x] 
+	if wall == 1:
+		room_details.room_layout[pos.y][pos.x] = 0
+		deleted_cell.emit(pos, WorldSelection.PlaceType.WALLS)
+		_refresh_limits()
+	
+	if room_details.doors.has(pos):
+		room_details.doors.erase(pos)
+		deleted_cell.emit(pos, WorldSelection.PlaceType.DOORS)
+		_refresh_limits()
+	
+	if room_details.containers.has(pos):
+		room_details.containers.erase(pos)
+		deleted_cell.emit(pos, WorldSelection.PlaceType.CONTAINERS)
+		_refresh_limits()
+	
+	if room_details.traps.has(pos):
+		room_details.traps.erase(pos)
+		deleted_cell.emit(pos, WorldSelection.PlaceType.TRAP)
+		_refresh_limits()
+	
+	if room_details.furnitures.has(pos):
+		room_details.furnitures.erase(pos)
+		deleted_cell.emit(pos, WorldSelection.PlaceType.TABLE)
+		_refresh_limits()
 
 func _on_world_selection_added_item(selected_item: Inventory.ItemType) -> void:
 	if world_selection.mode_type != WorldSelection.ModeType.EDIT:

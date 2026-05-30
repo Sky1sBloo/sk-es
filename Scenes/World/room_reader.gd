@@ -7,6 +7,9 @@ enum States {
 	END = 2
 }
 
+# Default room size used when level JSON omits a layout
+const DEFAULT_ROOM_SIZE: Vector2i = Vector2i(17, 11)
+
 func _open_level_file(path: String) -> String:
 	var file: = FileAccess.open(path, FileAccess.READ)
 	var text: = file.get_as_text()
@@ -32,6 +35,20 @@ func get_level(path: String) -> RoomDetails:
 	# Optional goals object in level JSON; pass through to RoomDetails
 	if data.has("goals"):
 		room_details.goals = data["goals"]
+
+	# Optional limits object in level JSON; populate RoomDetails.limits and apply defaults for missing keys
+	var default_limits = {
+		"wall_limit": -1,
+		"door_limit": -1,
+		"container_limit": -1,
+		"trap_limit": -1,
+		"furniture_limit": -1
+	}
+	room_details.limits = default_limits.duplicate(true)
+	if data.has("limits") and typeof(data["limits"]) == TYPE_DICTIONARY:
+		for k in data["limits"].keys():
+			if room_details.limits.has(k):
+				room_details.limits[k] = int(data["limits"][k])
 	return room_details
 
 
@@ -50,11 +67,17 @@ func _get_grid_pos(data: Dictionary, id: String) -> Vector2i:
 
 # Returns 2D array of int containing walls
 func _room_layout(data: Dictionary) -> Array:
-	if not data.has("layout"):
-		printerr("JSON format error: There is no layout")
-		return []
+	# If no layout is provided, create a default empty layout
+	if not data.has("layout") or (data.has("layout") and typeof(data["layout"]) == TYPE_ARRAY and data["layout"].size() == 0):
+		var default_layout: Array = []
+		for y in range(DEFAULT_ROOM_SIZE.y):
+			default_layout.push_back([])
+			for x in range(DEFAULT_ROOM_SIZE.x):
+				default_layout.back().push_back(0)
+		return default_layout
+
 	var room_layout: Array = []
-	
+
 	for row in data["layout"]:
 		room_layout.push_back([])
 		for cell in row:

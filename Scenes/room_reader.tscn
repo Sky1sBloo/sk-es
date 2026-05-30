@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cmkeeifwk3e1l"]
+
+[ext_resource type="Script" uid="uid://b2d2mtpmypsea" path="res://Scenes/World/room_reader.gd" id="1_q51so"]
+
+[node name="RoomReader" type="Node" unique_id=1630330285]
+script = ExtResource("1_q51so")

@@ -1,17 +1,14 @@
 extends Control
 
-@onready var action_cost: = $Cost
 @onready var facts: = $Facts
 @onready var inventory_lbl: = $Inventory
 @onready var actions_lbl: = $Actions
 
 func _process(_delta: float) -> void:
-	action_cost.text = ""
 	facts.text = ""
 	inventory_lbl.text = ""
 	actions_lbl.text = ""
 	var world: World = get_parent().get_parent()
-	action_cost.text = str(world.action_cost)
 	for fact in world.jani.decision_manager.inference.get_facts_as_str():
 		facts.text += fact + "\n"
 	

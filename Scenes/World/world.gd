@@ -12,7 +12,9 @@ var action_cost: int = 0
 
 func _ready() -> void:
 	start()
-	cursor.initialize(room.global_position)
+	# initialize cursor with room size so bounds are correct
+	var room_size = Vector2i(room.room_details.room_layout[0].size(), room.room_details.room_layout.size())
+	cursor.initialize(room.global_position, room_size)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton:

@@ -45,14 +45,16 @@ func set_goals(g: Dictionary) -> void:
 func _check_and_emit() -> void:
 	if _objectives_completed:
 		return
-	print("container checked: ", container_checked)
-	print("trap triggered: ", trap_triggered)
 	if _objectives_met():
 		_objectives_completed = true
 		objectives_completed.emit()
 
 
 func _objectives_met() -> bool:
+	# If no goals defined, do not treat objectives as met.
+	if goals == null or goals.keys().size() == 0:
+		return false
+
 	# Iterate goals dictionary and compare against tracked counters.
 	for key in goals.keys():
 		var required = int(goals[key])

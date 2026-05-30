@@ -16,6 +16,7 @@ var doors: Dictionary[Vector2i, DoorsData]
 var containers: Dictionary[Vector2i, ContainerData]
 var furnitures: Dictionary[Vector2i, FurnitureData]
 var traps: Dictionary[Vector2i, TrapData]
+var limits: Dictionary = {}
 var goals: Dictionary = {}
 
 func get_cell_trap(pos: Vector2i) -> TrapData:

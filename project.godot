@@ -21,7 +21,7 @@ GameConfiguration="*uid://cle6f61368ofo"
 
 [display]
 
-window/size/viewport_width=640
+window/size/viewport_width=768
 window/size/viewport_height=480
 window/size/resizable=false
 

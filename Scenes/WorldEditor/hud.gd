@@ -5,6 +5,14 @@ class_name EditorHud
 @onready var contents_lbl: = $Details/Contents
 @onready var world_selection: = $WorldSelection
 
+@export var limit_handler: LimitHandler
+
+@onready var wall_limit_lbl: = $LevelInfo/Limit/WallLimit
+@onready var door_limit_lbl: = $LevelInfo/Limit/DoorLimit
+@onready var container_limit_lbl: = $LevelInfo/Limit/ContainerLimit
+@onready var trap_limit_lbl: = $LevelInfo/Limit/TrapLimit
+@onready var furniture_limit_lbl: = $LevelInfo/Limit/FurnitureLimit
+
 func update_contents(content: Array[Inventory.ItemType]) -> void:
 	contents_lbl.text = "["
 	for item in content:
@@ -46,3 +54,55 @@ func _on_world_selection_added_item(_selected_item: Inventory.ItemType) -> void:
 
 func _on_world_selection_removed_item() -> void:
 	update_contents(world_selection.selected_items)
+
+
+func _format_limit(limit_val: int) -> String:
+	if limit_val == -1:
+		return "∞"
+	return str(limit_val)
+
+
+func update_limits(limit_handler: LimitHandler, room_details: RoomDetails) -> void:
+	# Ensure counts are up to date
+	if limit_handler != null and room_details != null:
+		limit_handler.update_counts_from_room(room_details)
+
+	# Wall
+	var wc: int = 0
+	var wl: int = -1
+	if limit_handler != null:
+		wc = limit_handler.wall_count
+		wl = limit_handler.wall_limit
+	wall_limit_lbl.text = str(wc) + "/" + _format_limit(wl)
+
+	# Door
+	var dc: int = 0
+	var dl: int = -1
+	if limit_handler != null:
+		dc = limit_handler.door_count
+		dl = limit_handler.door_limit
+	door_limit_lbl.text = str(dc) + "/" + _format_limit(dl)
+
+	# Container
+	var cc: int = 0
+	var cl: int = -1
+	if limit_handler != null:
+		cc = limit_handler.container_count
+		cl = limit_handler.container_limit
+	container_limit_lbl.text = str(cc) + "/" + _format_limit(cl)
+
+	# Trap
+	var tc: int = 0
+	var tl: int = -1
+	if limit_handler != null:
+		tc = limit_handler.trap_count
+		tl = limit_handler.trap_limit
+	trap_limit_lbl.text = str(tc) + "/" + _format_limit(tl)
+
+	# Furniture
+	var fc: int = 0
+	var fl: int = -1
+	if limit_handler != null:
+		fc = limit_handler.furniture_count
+		fl = limit_handler.furniture_limit
+	furniture_limit_lbl.text = str(fc) + "/" + _format_limit(fl)
