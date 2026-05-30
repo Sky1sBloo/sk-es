@@ -40,16 +40,14 @@ func _ready() -> void:
 	# ensure limit handler counts match the loaded room
 	# give the limit handler the authoritative RoomDetails and do an initial refresh
 	limit_handler.set_room_details(room_details)
-	hud.update_limits(room_details)
+	hud.update_limits()
 	hud.set_objective(room_details.objective)
-
-
 
 func _refresh_limits() -> void:
 	if room_details != null:
 		limit_handler.update_counts_from_room()
 		if hud != null:
-			hud.update_limits( room_details)
+			hud.update_limits()
 
 func _initialize_room() -> void:
 	room_details = RoomDetails.new()
@@ -296,6 +294,10 @@ func _handle_deletion(pos: Vector2i) -> void:
 		room_details.furnitures.erase(pos)
 		deleted_cell.emit(pos, WorldSelection.PlaceType.TABLE)
 		_refresh_limits()
+	if room_details.init_player_position == pos:
+		room_details.init_player_position = null
+	if room_details.exit == pos:
+		room_details.exit = null
 
 func _on_world_selection_added_item(selected_item: Inventory.ItemType) -> void:
 	if world_selection.mode_type != WorldSelection.ModeType.EDIT:

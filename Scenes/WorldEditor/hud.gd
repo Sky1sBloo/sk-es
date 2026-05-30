@@ -5,6 +5,7 @@ class_name EditorHud
 @onready var contents_lbl: = $Details/Contents
 @onready var world_selection: = $WorldSelection
 @onready var objectives_lbl: = $LevelInfo/Objectives
+@onready var start_btn: = $StartButton
 
 @export var limit_handler: LimitHandler
 
@@ -15,6 +16,16 @@ class_name EditorHud
 @onready var furniture_limit_lbl: = $LevelInfo/Limit/FurnitureLimit
 var _acc: float = 0.0
 var _interval: float = 0.2
+
+func _process(delta: float) -> void:
+	start_btn.disabled = get_parent().room_details.init_player_position == null or \
+		get_parent().room_details.exit == null
+	# Poll the limit handler periodically and refresh labels
+	_acc += delta
+	if _acc < _interval:
+		return
+	_acc = 0.0
+	update_limits()
 
 func set_objective(objective: String) -> void:
 	objectives_lbl.text = objective
@@ -67,20 +78,7 @@ func _format_limit(limit_val: int) -> String:
 		return "∞"
 	return str(limit_val)
 
-
-
-func _ready() -> void:
-	set_process(true)
-
-func _process(delta: float) -> void:
-	# Poll the limit handler periodically and refresh labels
-	_acc += delta
-	if _acc < _interval:
-		return
-	_acc = 0.0
-	update_limits(null)
-
-func update_limits(room_details: RoomDetails) -> void:
+func update_limits() -> void:
 	# Read counts from the limit handler (do not trigger recalculation here)
 	# Wall
 	var wc: int = 0
