@@ -16,12 +16,11 @@ var exit: Vector2i
 var doors: Dictionary[Vector2i, DoorsData]
 var containers: Dictionary[Vector2i, ContainerData]
 var furnitures: Dictionary[Vector2i, FurnitureData]
-var traps: Array[TrapData]
+var traps: Dictionary[Vector2i, TrapData]
 
 func get_cell_trap(pos: Vector2i) -> TrapData:
-	for trap in traps:
-		if trap.grid_pos == pos:
-			return  trap
+	if traps.has(pos):
+		return traps[pos]
 	return null
 
 func get_cell_door(pos: Vector2i) -> DoorsData:

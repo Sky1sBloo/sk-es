@@ -19,7 +19,7 @@ func _on_jani_move_finished(pos: Vector2i) -> void:
 		if jani.has_node("DecisionManager"):
 			jani.decision_manager.cancel_current_action()
 		world.reset()
-		room.details_map.set_cell_type(pos, TileMapDetails.DetailType.NONE)
+		#room.details_map.set_cell_type(pos, TileMapDetails.DetailType.NONE)
 
 func _on_jani_interacted(action: Action, pos: Vector2i, args: Array) -> void:
 	_container_interaction(action)

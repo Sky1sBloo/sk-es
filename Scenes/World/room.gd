@@ -3,6 +3,7 @@ class_name Room
 
 @export var composition_map: TileMapLayer
 @export var details_map: TileMapDetails
+@export var jani: Jani
 
 var room_details: RoomDetails
 
@@ -40,7 +41,8 @@ func load_composition_map() -> void:
 		var atlas: Vector2i = composition_atlas[RoomDetails.TileType.DOOR]
 		composition_map.set_cell(room_details.doors[pos].grid_pos, 0, atlas)
 	
-	for trap in room_details.traps:
+	for pos in room_details.traps:
+		var trap: = room_details.traps[pos]
 		composition_map.set_cell(trap.grid_pos, 0, composition_atlas[RoomDetails.TileType.SPIKE])
 
 func load_details_map() -> void:
@@ -48,8 +50,9 @@ func load_details_map() -> void:
 	_load_containers()
 	_load_furnitures()
 	
-	for trap in room_details.traps:
-		if not trap.is_triggered:
+	for pos in room_details.traps:
+		var trap: = room_details.traps[pos]
+		if not jani.memory.trap_locations.has(pos):
 			details_map.set_cell_type(trap.grid_pos, TileMapDetails.DetailType.SPIKE_TRAP)
 
 func _create_wall_positions() -> Array[Vector2i]:

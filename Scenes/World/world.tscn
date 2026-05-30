@@ -142,11 +142,12 @@ sources/0 = SubResource("TileSetAtlasSource_fcotr")
 [node name="World" type="Node" unique_id=28969131]
 script = ExtResource("1_go701")
 
-[node name="Room" type="Node2D" parent="." unique_id=1047963504 node_paths=PackedStringArray("composition_map", "details_map")]
+[node name="Room" type="Node2D" parent="." unique_id=1047963504 node_paths=PackedStringArray("composition_map", "details_map", "jani")]
 position = Vector2(64, 128)
 script = ExtResource("2_8j60k")
 composition_map = NodePath("TileMap/TileMapRoomComposition")
 details_map = NodePath("TileMap/TileMapDetails")
+jani = NodePath("Jani")
 
 [node name="OldTilemap" type="TileMapLayer" parent="Room" unique_id=1815452842]
 visible = false

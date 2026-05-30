@@ -119,15 +119,15 @@ func _load_furniture(data: Dictionary) -> Dictionary[Vector2i, FurnitureData]:
 		furnitures[furniture_data.grid_pos] = furniture_data
 	return furnitures
 
-func _load_traps(data: Dictionary) -> Array[TrapData]:
+func _load_traps(data: Dictionary) -> Dictionary[Vector2i, TrapData]:
 	if not data.has("traps"):
-		return []
-	var traps: Array[TrapData] = []
+		return {}
+	var traps: Dictionary[Vector2i, TrapData] = {}
 	for trap in data["traps"]:
 		var trap_data: = TrapData.new()
 		var x: int = trap["x"]
 		var y: int = trap["y"]
 		var type: String = trap["type"]
 		trap_data.initialize(Vector2i(x, y), type)
-		traps.push_back(trap_data)
+		traps[Vector2i(x, y)] = trap_data
 	return traps
