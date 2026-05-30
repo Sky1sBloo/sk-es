@@ -30,7 +30,7 @@ func set_room_details(rd: RoomDetails) -> void:
 		trap_limit = int(rd.limits.get("trap_limit", trap_limit))
 		furniture_limit = int(rd.limits.get("furniture_limit", furniture_limit))
 	# perform initial count
-	update_counts_from_room(rd, false)
+	update_counts_from_room(false)
 
 
 func _process(delta: float) -> void:
@@ -40,12 +40,12 @@ func _process(delta: float) -> void:
 	if _acc >= _interval:
 		_acc = 0.0
 		# recompute counts periodically but don't emit to avoid recursion
-		update_counts_from_room(room_details, false)
+		update_counts_from_room(false)
 
-func can_place(place_type, room_details: RoomDetails = null) -> bool:
+func can_place(place_type) -> bool:
 	# If room_details provided, recalc counts from it to avoid desync.
 	if room_details != null:
-		update_counts_from_room(room_details)
+		update_counts_from_room()
 		# If the level defines limits, use them as authoritative
 		if room_details.limits != null and typeof(room_details.limits) == TYPE_DICTIONARY:
 			wall_limit = int(room_details.limits.get("wall_limit", wall_limit))
@@ -69,7 +69,7 @@ func can_place(place_type, room_details: RoomDetails = null) -> bool:
 			return true
 
 
-func update_counts_from_room(room_details: RoomDetails, do_emit: bool = true) -> void:
+func update_counts_from_room(do_emit: bool = true) -> void:
 	# Recompute all counts from the authoritative RoomDetails structure.
 	var wc: int = 0
 	if room_details.room_layout != null:

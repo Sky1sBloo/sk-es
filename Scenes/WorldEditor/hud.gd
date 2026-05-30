@@ -16,7 +16,7 @@ class_name EditorHud
 var _acc: float = 0.0
 var _interval: float = 0.2
 
-func initialize(objective: String) -> void:
+func set_objective(objective: String) -> void:
 	objectives_lbl.text = objective
 
 func update_contents(content: Array[Inventory.ItemType]) -> void:

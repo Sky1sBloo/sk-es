@@ -42,12 +42,13 @@ func _ready() -> void:
 	# give the limit handler the authoritative RoomDetails and do an initial refresh
 	limit_handler.set_room_details(room_details)
 	hud.update_limits(room_details)
+	hud.set_objective(room_details.objective)
 
 
 
 func _refresh_limits() -> void:
 	if room_details != null:
-		limit_handler.update_counts_from_room(room_details)
+		limit_handler.update_counts_from_room()
 		if hud != null:
 			hud.update_limits( room_details)
 
@@ -178,7 +179,7 @@ func _place(place_pos: Vector2i) -> void:
 	if not cursor.able_to_place:
 		return
 	# check limits before placing (use RoomDetails as source of truth)
-	if not limit_handler.can_place(world_selection.place_type, room_details):
+	if not limit_handler.can_place(world_selection.place_type):
 		#print("Placement denied by limit")
 		return
 	_handle_deletion(place_pos)
