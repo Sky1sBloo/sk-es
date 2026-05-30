@@ -91,6 +91,12 @@ func _place(place_pos: Vector2i) -> void:
 			_place_containers(place_pos)
 		WorldSelection.PlaceType.TRAP:
 			_place_traps(place_pos)
+		WorldSelection.PlaceType.TABLE:
+			_place_table(place_pos)
+		WorldSelection.PlaceType.EXIT:
+			_place_exit(place_pos)
+		WorldSelection.PlaceType.START_POS:
+			_place_start_pos(place_pos)
 
 func _place_wall(place_pos: Vector2i) -> void:
 	tile_map_composition.set_cell_type(place_pos, TileMapComposition.CompositionType.WALL)
@@ -103,6 +109,7 @@ func _place_door(place_pos: Vector2i) -> void:
 	var door: = DoorsData.new()
 	door.initialize(place_pos)
 	door.lock_type = world_selection.lock_type
+	door.is_locked = true
 	room_details.doors[place_pos] = door
 
 func _place_containers(place_pos: Vector2i) -> void:
@@ -119,6 +126,30 @@ func _place_traps(place_pos: Vector2i) -> void:
 	trap.type = TrapData.Types.SPIKED
 	room_details.traps[place_pos] = trap
 
+func _place_table(place_pos: Vector2i) -> void:
+	tile_map_details.set_cell_type(place_pos, TileMapDetails.DetailType.TABLE)
+	var furniture: = FurnitureData.new()
+	furniture.grid_pos = place_pos
+	furniture.type = FurnitureData.Types.TABLE
+	room_details.furnitures[place_pos] = furniture
+
+func _place_exit(place_pos: Vector2i) -> void:
+	if room_details.exit != null:
+		tile_map_composition.set_cell_type(room_details.exit,
+			TileMapComposition.CompositionType.NONE)
+	
+	tile_map_composition.set_cell_type(place_pos, 
+		TileMapComposition.CompositionType.EXIT)
+	room_details.exit = place_pos
+
+func _place_start_pos(place_pos: Vector2i) -> void:
+	if room_details.init_player_position != null:
+		tile_map_composition.set_cell_type(room_details.init_player_position,
+			TileMapComposition.CompositionType.NONE)
+	tile_map_composition.set_cell_type(place_pos, 
+		TileMapComposition.CompositionType.START_POS)
+	room_details.init_player_position = place_pos
+
 func _handle_deletion(pos: Vector2i) -> void:
 	tile_map_composition.set_cell(pos, 0, Vector2i(14, 7))
 	tile_map_details.set_cell_type(pos, TileMapDetails.DetailType.NONE)
@@ -126,6 +157,7 @@ func _handle_deletion(pos: Vector2i) -> void:
 	room_details.doors.erase(pos)
 	room_details.containers.erase(pos)
 	room_details.traps.erase(pos)
+	room_details.furnitures.erase(pos)
 
 func _on_world_selection_added_item(selected_item: Inventory.ItemType) -> void:
 	if world_selection.mode_type != WorldSelection.ModeType.EDIT:

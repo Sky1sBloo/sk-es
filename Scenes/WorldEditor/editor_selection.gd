@@ -10,7 +10,10 @@ enum PlaceType {
 	WALLS,
 	DOORS,
 	CONTAINERS,
-	TRAP
+	TRAP,
+	TABLE,
+	EXIT,
+	START_POS
 }
 
 var mode_type: ModeType :
