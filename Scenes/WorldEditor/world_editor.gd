@@ -4,7 +4,7 @@ class_name WorldEditor
 @export var cursor: Cursor
 @export var world: Node2D
 
-@export var tile_map_composition: TileMapLayer
+@export var tile_map_composition: TileMapComposition
 @export var tile_map_details: TileMapDetails
 
 @onready var world_selection: WorldSelection = $HUD/WorldSelection
@@ -13,20 +13,6 @@ var room_details: RoomDetails
 const room_size: Vector2i =  Vector2i(17, 11)
 
 signal edit_selected(pos: Vector2i, details: RoomDetails)
-
-enum CompositionType {
-	WALL,
-	DOOR,
-	SPIKE,
-	EXIT
-}
-
-var _composition_atlas: Dictionary[CompositionType, Vector2i] = {
-	CompositionType.WALL: Vector2i(0, 0),
-	CompositionType.DOOR: Vector2i(1, 0),
-	CompositionType.SPIKE: Vector2i(3, 0),
-	CompositionType.EXIT: Vector2i(0, 3)
-}
 
 func _ready() -> void:
 	_initialize_room()
@@ -95,14 +81,15 @@ func _place(place_pos: Vector2i) -> void:
 			_place_door(place_pos)
 		WorldSelection.PlaceType.CONTAINERS:
 			_place_containers(place_pos)
+		WorldSelection.PlaceType.TRAP:
+			_place_traps(place_pos)
 
 func _place_wall(place_pos: Vector2i) -> void:
-	tile_map_composition.set_cell(place_pos, 0, _composition_atlas[CompositionType.WALL])
+	tile_map_composition.set_cell_type(place_pos, TileMapComposition.CompositionType.WALL)
 	room_details.room_layout[place_pos.y][place_pos.x] = 1
 
 func _place_door(place_pos: Vector2i) -> void:
-	
-	tile_map_composition.set_cell(place_pos, 0, _composition_atlas[CompositionType.DOOR])
+	tile_map_composition.set_cell_type(place_pos, TileMapComposition.CompositionType.DOOR)
 	var detail_type: = TileMapDetails.lock_type_to_detail(world_selection.lock_type)
 	tile_map_details.set_cell_type(place_pos, detail_type)
 	var door: = DoorsData.new()
@@ -116,6 +103,13 @@ func _place_containers(place_pos: Vector2i) -> void:
 	container_data.grid_pos = place_pos
 	container_data.contains = world_selection.selected_items.duplicate_deep()
 	room_details.containers[place_pos] = container_data
+
+func _place_traps(place_pos: Vector2i) -> void:
+	tile_map_composition.set_cell_type(place_pos, TileMapComposition.CompositionType.SPIKE)
+	var trap: = TrapData.new()
+	trap.grid_pos = place_pos
+	trap.type = TrapData.Types.SPIKED
+	room_details.traps[place_pos] = trap
 
 func _handle_deletion(pos: Vector2i) -> void:
 	tile_map_composition.set_cell(pos, 0, Vector2i(14, 7))

@@ -6,20 +6,7 @@
 [ext_resource type="Script" uid="uid://wsrdv4s3b5yc" path="res://Scenes/WorldEditor/hud.gd" id="2_14lcv"]
 [ext_resource type="Script" uid="uid://cvxdilsowaa86" path="res://Scenes/WorldEditor/cursor.gd" id="2_nuol8"]
 [ext_resource type="PackedScene" uid="uid://bqad8pgonm6yj" path="res://Scenes/tile_map_details.tscn" id="4_sio5s"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nuol8"]
-texture = ExtResource("1_mpna8")
-0:0/0 = 0
-1:0/0 = 0
-3:0/0 = 0
-1:2/0 = 0
-2:2/0 = 0
-3:2/0 = 0
-0:3/0 = 0
-14:7/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_3xf5j"]
-sources/0 = SubResource("TileSetAtlasSource_nuol8")
+[ext_resource type="PackedScene" uid="uid://b1i6ww2ao7mda" path="res://Scenes/tile_map_room_composition.tscn" id="5_7mt4e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o8ns7"]
 size = Vector2(32, 32)
@@ -191,10 +178,8 @@ position = Vector2(64, 128)
 
 [node name="Tilemap" type="Node" parent="World" unique_id=694503414]
 
-[node name="TileMapRoomComposition" type="TileMapLayer" parent="World/Tilemap" unique_id=92179036]
+[node name="TileMapRoomComposition" parent="World/Tilemap" unique_id=374275345 instance=ExtResource("5_7mt4e")]
 position = Vector2(64, 128)
-scale = Vector2(2, 2)
-tile_set = SubResource("TileSet_3xf5j")
 
 [node name="TileMapDetails" parent="World/Tilemap" unique_id=667878711 instance=ExtResource("4_sio5s")]
 position = Vector2(64, 128)

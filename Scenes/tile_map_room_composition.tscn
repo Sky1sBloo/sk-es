@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://b1i6ww2ao7mda"]
+
+[ext_resource type="Texture2D" uid="uid://cqu1ei31uspcj" path="res://Sprites/Placeholder.png" id="1_6qrw0"]
+[ext_resource type="Script" uid="uid://thyrreuryucb" path="res://Scenes/tile_map_composition.gd" id="2_soded"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fcotr"]
+texture = ExtResource("1_6qrw0")
+0:0/0 = 0
+1:0/0 = 0
+3:0/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+3:2/0 = 0
+0:3/0 = 0
+14:7/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_y0d6x"]
+sources/0 = SubResource("TileSetAtlasSource_fcotr")
+
+[node name="TileMapRoomComposition" type="TileMapLayer" unique_id=374275345]
+scale = Vector2(2, 2)
+tile_set = SubResource("TileSet_y0d6x")
+script = ExtResource("2_soded")

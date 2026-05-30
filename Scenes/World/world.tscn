@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bb583xfii63f" path="res://Scenes/World/world.gd" id="1_go701"]
 [ext_resource type="Script" uid="uid://b4y6v2kv55w11" path="res://Scenes/World/room.gd" id="2_8j60k"]
 [ext_resource type="Texture2D" uid="uid://ddcghq7cuk2tn" path="res://Sprites/Environment.png" id="3_5a7ea"]
-[ext_resource type="Texture2D" uid="uid://cqu1ei31uspcj" path="res://Sprites/Placeholder.png" id="5_7staa"]
+[ext_resource type="PackedScene" uid="uid://b1i6ww2ao7mda" path="res://Scenes/tile_map_room_composition.tscn" id="4_ugf0j"]
 [ext_resource type="Script" uid="uid://b2d2mtpmypsea" path="res://Scenes/World/room_reader.gd" id="5_fo5ed"]
 [ext_resource type="PackedScene" uid="uid://bqad8pgonm6yj" path="res://Scenes/tile_map_details.tscn" id="5_ugf0j"]
 [ext_resource type="Script" uid="uid://b3lnwbdck10e5" path="res://Scenes/World/interaction_handler.gd" id="7_7staa"]
@@ -126,26 +126,12 @@ terrain_set_0/terrain_1/name = "Doors"
 terrain_set_0/terrain_1/color = Color(0.5, 0.4375, 0.25, 1)
 sources/0 = SubResource("TileSetAtlasSource_8j60k")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fcotr"]
-texture = ExtResource("5_7staa")
-0:0/0 = 0
-1:0/0 = 0
-3:0/0 = 0
-1:2/0 = 0
-2:2/0 = 0
-3:2/0 = 0
-0:3/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_y0d6x"]
-sources/0 = SubResource("TileSetAtlasSource_fcotr")
-
 [node name="World" type="Node" unique_id=28969131]
 script = ExtResource("1_go701")
 
-[node name="Room" type="Node2D" parent="." unique_id=1047963504 node_paths=PackedStringArray("composition_map", "details_map", "jani")]
+[node name="Room" type="Node2D" parent="." unique_id=1047963504 node_paths=PackedStringArray("details_map", "jani")]
 position = Vector2(64, 128)
 script = ExtResource("2_8j60k")
-composition_map = NodePath("TileMap/TileMapRoomComposition")
 details_map = NodePath("TileMap/TileMapDetails")
 jani = NodePath("Jani")
 
@@ -156,10 +142,8 @@ tile_set = SubResource("TileSet_fo5ed")
 
 [node name="TileMap" type="Node" parent="Room" unique_id=609749231]
 
-[node name="TileMapRoomComposition" type="TileMapLayer" parent="Room/TileMap" unique_id=1096967341]
+[node name="TileMapRoomComposition" parent="Room/TileMap" unique_id=374275345 instance=ExtResource("4_ugf0j")]
 position = Vector2(64, 128)
-scale = Vector2(2, 2)
-tile_set = SubResource("TileSet_y0d6x")
 
 [node name="TileMapDetails" parent="Room/TileMap" unique_id=667878711 instance=ExtResource("5_ugf0j")]
 position = Vector2(64, 128)
