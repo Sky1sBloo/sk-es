@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="sk-es"
-run/main_scene="uid://ddjs2congt1xt"
+run/main_scene="uid://dlnbw6klgwk6x"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

@@ -21,7 +21,8 @@ func initialize(details: RoomDetails) -> void:
 	load_details_map()
 	
 	for pos in room_details.doors:
-		room_details.doors[pos].unlocked.connect(_unlock_door)
+		if not room_details.doors[pos].unlocked.is_connected(_unlock_door):
+			room_details.doors[pos].unlocked.connect(_unlock_door)
 
 func load_composition_map() -> void:
 	var wall_positions: = _create_wall_positions()
@@ -68,7 +69,8 @@ func _load_locks() -> void:
 func _load_containers() -> void:
 	for pos in room_details.containers:
 		var container: = room_details.containers[pos]
-		container.opened.connect(_opened_chest)
+		if not container.opened.is_connected(_opened_chest):
+			container.opened.connect(_opened_chest)
 		var type: = TileMapDetails.DetailType.CONTAINER
 		if container.is_opened:
 			type = TileMapDetails.DetailType.CONTAINER_OPENED

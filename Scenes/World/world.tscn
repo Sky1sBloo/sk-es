@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://c7b3601t5ku8o" path="res://Scenes/World/goal_counter.gd" id="3_0ph6x"]
 [ext_resource type="PackedScene" uid="uid://b1i6ww2ao7mda" path="res://Scenes/tile_map_room_composition.tscn" id="4_ugf0j"]
 [ext_resource type="PackedScene" uid="uid://bqad8pgonm6yj" path="res://Scenes/tile_map_details.tscn" id="5_ugf0j"]
-[ext_resource type="PackedScene" uid="uid://bj1yysowb8ffl" path="res://Scenes/cursor.tscn" id="6_ugf0j"]
 [ext_resource type="Script" uid="uid://b3lnwbdck10e5" path="res://Scenes/World/interaction_handler.gd" id="7_7staa"]
 [ext_resource type="PackedScene" uid="uid://cmkeeifwk3e1l" path="res://Scenes/room_reader.tscn" id="8_0ph6x"]
 [ext_resource type="Script" uid="uid://c7l1rwd2ncfg0" path="res://Scenes/World/hud.gd" id="8_fcotr"]
@@ -14,9 +13,6 @@
 
 [node name="World" type="Node" unique_id=28969131]
 script = ExtResource("1_go701")
-
-[node name="Cursor" parent="." unique_id=1276194277 instance=ExtResource("6_ugf0j")]
-position = Vector2(64, 128)
 
 [node name="GoalCounter" type="Node" parent="." unique_id=1768265958]
 script = ExtResource("3_0ph6x")

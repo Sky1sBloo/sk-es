@@ -26,7 +26,8 @@ func get_level(path: String) -> RoomDetails:
 	if error != OK:
 		printerr("JSON parse error: ", json.get_error_message(), "at line", json.get_error_line())
 	var data = json.data
-	
+	if data == null:
+		return null
 	var room_details: = RoomDetails.new()
 	if data.has("objective"):
 		room_details.objective = data["objective"]

@@ -14,7 +14,8 @@ var _objectives_completed: bool = false
 
 func initialize(room_details: RoomDetails) -> void:
 	for pos in room_details.traps:
-		room_details.traps[pos].triggered.connect(_on_trap_triggered)
+		if not room_details.traps[pos].triggered.is_connected(_on_trap_triggered):
+			room_details.traps[pos].triggered.connect(_on_trap_triggered)
 		print(pos)
 
 func _on_jani_move_finished(_pos: Vector2i) -> void:
