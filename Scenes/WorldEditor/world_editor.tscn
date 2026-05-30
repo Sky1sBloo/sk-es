@@ -73,7 +73,7 @@ offset_top = 8.0
 offset_right = 261.0
 offset_bottom = 39.0
 selected = 0
-item_count = 4
+item_count = 5
 popup/item_0/text = "Walls"
 popup/item_0/id = 0
 popup/item_1/text = "Doors"
@@ -82,12 +82,15 @@ popup/item_2/text = "Containers"
 popup/item_2/id = 2
 popup/item_3/text = "Trap"
 popup/item_3/id = 3
+popup/item_4/text = "Table"
+popup/item_4/id = 4
 
 [node name="LockSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1428544698]
 offset_left = 280.0
 offset_top = 8.0
 offset_right = 397.0
 offset_bottom = 39.0
+disabled = true
 selected = 0
 item_count = 5
 popup/item_0/text = "None"
@@ -106,6 +109,7 @@ offset_left = 416.0
 offset_top = 8.0
 offset_right = 533.0
 offset_bottom = 39.0
+disabled = true
 selected = 0
 item_count = 8
 popup/item_0/text = "None"
@@ -173,6 +177,14 @@ offset_bottom = 65.0
 theme_override_font_sizes/font_size = 12
 text = "Type:"
 
+[node name="StartButton" type="Button" parent="HUD" unique_id=2040348532]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 416.0
+offset_right = 56.0
+offset_bottom = 472.0
+text = "Start"
+
 [node name="World" type="Node2D" parent="." unique_id=521958938]
 position = Vector2(64, 128)
 
@@ -206,3 +218,4 @@ centered = false
 [connection signal="item_selected" from="HUD/WorldSelection/LockSelection" to="." method="_on_lock_selection_item_selected"]
 [connection signal="pressed" from="HUD/WorldSelection/AddItem" to="HUD/WorldSelection" method="_on_add_item_pressed"]
 [connection signal="pressed" from="HUD/WorldSelection/DeleteItem" to="HUD/WorldSelection" method="_on_delete_item_pressed"]
+[connection signal="pressed" from="HUD/StartButton" to="." method="_on_start_button_pressed"]

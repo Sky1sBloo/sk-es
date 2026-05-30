@@ -8,6 +8,7 @@ class_name WorldEditor
 @export var tile_map_details: TileMapDetails
 
 @onready var world_selection: WorldSelection = $HUD/WorldSelection
+var world_packed: PackedScene = preload("res://Scenes/World/world.tscn")
 
 var room_details: RoomDetails
 const room_size: Vector2i =  Vector2i(17, 11)
@@ -25,6 +26,10 @@ func _initialize_room() -> void:
 		room_details.room_layout.push_back([])
 		for x in room_size.x:
 			room_details.room_layout[y].push_back(0)
+
+func _on_start_button_pressed() -> void:
+	GameConfiguration.room_details = room_details
+	get_tree().change_scene_to_packed(world_packed)
 
 func _process(_delta: float) -> void:
 	if world_selection.is_selecting():

@@ -32,8 +32,18 @@ var selected_items: Array[Inventory.ItemType] = []
 @onready var mode_selection: = $ModeSelection
 @onready var item_selection: = $ItemSelection
 
+@onready var add_item: = $AddItem
+@onready var delete_item: = $DeleteItem
 signal added_item(selected_item: Inventory.ItemType)
 signal removed_item()
+
+func _process(_delta: float) -> void:
+	if mode_type == ModeType.PLACE:
+		item_selection.disabled = true
+		lock_selection.disabled = true
+	
+	add_item.disabled = item_selection.disabled
+	delete_item.disabled = item_selection.disabled
 
 func is_selecting() -> bool:
 	return place_selection.get_popup().visible or \

@@ -12,6 +12,9 @@ func update_contents(content: Array[Inventory.ItemType]) -> void:
 	contents_lbl.text += "]"
 
 func _on_world_editor_edit_selected(pos: Vector2i, room_details: RoomDetails) -> void:
+	world_selection.item_selection.disabled = true
+	world_selection.lock_selection.disabled = true
+	
 	contents_lbl.text = "[]"
 	if room_details.room_layout[pos.y][pos.x] == 1:
 		cell_type_lbl.text = "Wall"
@@ -20,11 +23,13 @@ func _on_world_editor_edit_selected(pos: Vector2i, room_details: RoomDetails) ->
 	if room_details.doors.has(pos):
 		cell_type_lbl.text = "Door"
 		_handle_door(room_details.doors[pos])
+		world_selection.lock_selection.disabled = false
 		return
 	
 	if room_details.containers.has(pos):
 		cell_type_lbl.text = "Container"
 		_handle_container(room_details.containers[pos])
+		world_selection.item_selection.disabled = false
 		return
 	
 	cell_type_lbl.text = "#"
