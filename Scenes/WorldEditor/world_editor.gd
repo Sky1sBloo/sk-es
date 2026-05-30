@@ -25,8 +25,7 @@ func _ready() -> void:
 	_initialize_room()
 	var rd: RoomDetails = GameConfiguration.room_details
 	if rd == null:
-		var reader := RoomReader.new()
-		rd = reader.get_level("res://Levels/Level1.json")
+		rd = room_reader.get_level("res://Levels/Sandbox.json")
 	# replace the empty room_details with the loaded one
 	room_details = rd
 
@@ -70,7 +69,6 @@ func _load_composition_map() -> void:
 		for x in range(room_details.room_layout[y].size()):
 			if room_details.room_layout[y][x] == 1:
 				tile_map_composition.set_cell_type(Vector2i(x, y), TileMapComposition.CompositionType.WALL)
-
 	# exit
 	if room_details.exit != null:
 		tile_map_composition.set_cell_type(room_details.exit, TileMapComposition.CompositionType.EXIT)
@@ -125,6 +123,10 @@ func _load_details_map() -> void:
 			tile_map_details.set_cell_type(trap.grid_pos, TileMapDetails.DetailType.SPIKE_TRAP)
 
 func _on_start_button_pressed() -> void:
+	if room_details.init_player_position == null or \
+		room_details.exit == null:
+			print("No start and end pos")
+			return
 	GameConfiguration.room_details = room_details
 	get_tree().change_scene_to_packed(world_packed)
 

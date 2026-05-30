@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dlnbw6klgwk6x"]
+
+[ext_resource type="Script" uid="uid://highakdixcm7" path="res://Scenes/MainMenu/main_menu.gd" id="1_uqdog"]
+[ext_resource type="PackedScene" uid="uid://cmkeeifwk3e1l" path="res://Scenes/room_reader.tscn" id="2_v763k"]
+
+[node name="MainMenu" type="Node2D" unique_id=461850589]
+script = ExtResource("1_uqdog")
+
+[node name="TitlePage" type="Control" parent="." unique_id=1776465134]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LevelSelector" type="Button" parent="TitlePage" unique_id=1367364706]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 224.0
+offset_right = 448.0
+offset_bottom = 255.0
+text = "Levels"
+
+[node name="Sandbox" type="Button" parent="TitlePage" unique_id=1430112936]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 272.0
+offset_right = 448.0
+offset_bottom = 303.0
+text = "Sandbox"
+
+[node name="Title" type="Label" parent="TitlePage" unique_id=7408459]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 136.0
+offset_right = 592.0
+offset_bottom = 181.0
+theme_override_font_sizes/font_size = 32
+text = "Escape the Serial Killer"
+horizontal_alignment = 1
+
+[node name="RoomReader" parent="." unique_id=1630330285 instance=ExtResource("2_v763k")]
+
+[connection signal="pressed" from="TitlePage/Sandbox" to="." method="_on_sandbox_pressed"]

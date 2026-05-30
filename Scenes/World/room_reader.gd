@@ -12,6 +12,9 @@ const DEFAULT_ROOM_SIZE: Vector2i = Vector2i(17, 11)
 
 func _open_level_file(path: String) -> String:
 	var file: = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		printerr("No file")
+		return ""
 	var text: = file.get_as_text()
 	file.close()
 	return text
@@ -28,8 +31,17 @@ func get_level(path: String) -> RoomDetails:
 	if data.has("objective"):
 		room_details.objective = data["objective"]
 	
-	room_details.init_player_position = _get_grid_pos(data, "start")
-	room_details.exit = _get_grid_pos(data, "exit")
+	var _start_pos: Vector2i = _get_grid_pos(data, "start")
+	if _start_pos == Vector2i(-1, -1):
+		room_details.init_player_position = null
+	else:
+		room_details.init_player_position = _start_pos
+
+	var _exit_pos: Vector2i = _get_grid_pos(data, "exit")
+	if _exit_pos == Vector2i(-1, -1):
+		room_details.exit = null
+	else:
+		room_details.exit = _exit_pos
 	room_details.room_layout = _room_layout(data)
 	room_details.doors = _load_doors(data)
 	room_details.containers = _load_containers(data)

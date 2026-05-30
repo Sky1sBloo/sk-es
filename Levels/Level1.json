@@ -9,7 +9,7 @@
 	},
 	"objective": "Create a level where there is 1 locked door",
 	"goals": {
-		"container_checked": 2,
+		"container_checked": 1,
 		"door_opened": 1
 	},
 	"limits": {

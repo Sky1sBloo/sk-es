@@ -28,7 +28,8 @@ func load_composition_map() -> void:
 	for wall_pos in wall_positions:
 		composition_map.set_cell_type(wall_pos, TileMapComposition.CompositionType.WALL)
 	
-	composition_map.set_cell_type(room_details.exit, TileMapComposition.CompositionType.EXIT)
+	if room_details.exit != null:
+		composition_map.set_cell_type(room_details.exit, TileMapComposition.CompositionType.EXIT)
 	
 	for pos in room_details.doors:
 		composition_map.set_cell_type(room_details.doors[pos].grid_pos, 

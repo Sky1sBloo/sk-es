@@ -5,6 +5,7 @@ var move_count: int = 0
 var container_checked: int = 0
 var door_opened: int = 0
 var trap_triggered: int = 0
+var cost_reached: int = 0
 
 signal objectives_completed
 

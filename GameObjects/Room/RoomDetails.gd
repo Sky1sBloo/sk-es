@@ -11,8 +11,8 @@ enum TileType {
 
 var room_layout: Array  # 2D array of int
 var objective: String = ""
-var init_player_position: Vector2i
-var exit: Vector2i
+var init_player_position = null
+var exit = null
 var doors: Dictionary[Vector2i, DoorsData]
 var containers: Dictionary[Vector2i, ContainerData]
 var furnitures: Dictionary[Vector2i, FurnitureData]

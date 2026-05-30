@@ -38,11 +38,12 @@ func start(keep_memory: bool = false) -> void:
 	
 	if room_details.goals != null:
 		goal_counter.set_goals(room_details.goals)
+	var _initial_pos: Vector2i = room_details.init_player_position if room_details.init_player_position != null else Vector2i(0, 0)
 	if keep_memory:
 		jani.memory.rebind(room_details)
-		jani.reset($Room.global_position, room_details.init_player_position)
+		jani.reset($Room.global_position, _initial_pos)
 	else:
-		jani.initialize($Room.global_position, room_details.init_player_position)
+		jani.initialize($Room.global_position, _initial_pos)
 	interaction_handler.initialize(jani, room)
 
 
