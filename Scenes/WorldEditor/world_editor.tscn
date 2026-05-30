@@ -171,6 +171,7 @@ offset_right = 760.0
 offset_bottom = 168.0
 theme_override_font_sizes/font_size = 8
 text = "Build a level with"
+autowrap_mode = 3
 
 [node name="Limit" type="Node" parent="HUD/LevelInfo" unique_id=1749155012]
 
@@ -242,7 +243,7 @@ offset_top = 8.0
 offset_right = 680.0
 offset_bottom = 32.0
 theme_override_font_sizes/font_size = 12
-text = "Objectives:"
+text = "Objective:"
 vertical_alignment = 1
 
 [node name="StartButton" type="Button" parent="HUD" unique_id=2040348532]

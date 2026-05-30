@@ -25,6 +25,9 @@ func get_level(path: String) -> RoomDetails:
 	var data = json.data
 	
 	var room_details: = RoomDetails.new()
+	if data.has("objective"):
+		room_details.objective = data["objective"]
+	
 	room_details.init_player_position = _get_grid_pos(data, "start")
 	room_details.exit = _get_grid_pos(data, "exit")
 	room_details.room_layout = _room_layout(data)

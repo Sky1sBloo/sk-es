@@ -33,23 +33,23 @@ func _ready() -> void:
 	# initialize cursor with the loaded room size so bounds match layout
 	var rsize = Vector2i(room_details.room_layout[0].size(), room_details.room_layout.size())
 	cursor.initialize(world.global_position, rsize)
-
+	
 	# render maps from room_details
 	_load_composition_map()
 	_load_details_map()
-
+	
 	# ensure limit handler counts match the loaded room
-	_refresh_limits()
-	hud.update_limits(limit_handler, room_details)
+	# give the limit handler the authoritative RoomDetails and do an initial refresh
+	limit_handler.set_room_details(room_details)
+	hud.update_limits(room_details)
+
+
 
 func _refresh_limits() -> void:
 	if room_details != null:
 		limit_handler.update_counts_from_room(room_details)
 		if hud != null:
-			hud.update_limits(limit_handler, room_details)
-
-func test() -> void:
-	limit_handler.wall_limit = 10
+			hud.update_limits( room_details)
 
 func _initialize_room() -> void:
 	room_details = RoomDetails.new()

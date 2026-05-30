@@ -15,6 +15,32 @@ var trap_count: int = 0
 var furniture_count: int = 0
 
 signal limit_exceeded(pos: Vector2i, place_type)
+signal counts_updated()
+var room_details: RoomDetails = null
+var _acc: float = 0.0
+var _interval: float = 0.2
+
+func set_room_details(rd: RoomDetails) -> void:
+	room_details = rd
+	# adopt limits from the room as authoritative when provided
+	if rd != null and rd.limits != null and typeof(rd.limits) == TYPE_DICTIONARY:
+		wall_limit = int(rd.limits.get("wall_limit", wall_limit))
+		door_limit = int(rd.limits.get("door_limit", door_limit))
+		container_limit = int(rd.limits.get("container_limit", container_limit))
+		trap_limit = int(rd.limits.get("trap_limit", trap_limit))
+		furniture_limit = int(rd.limits.get("furniture_limit", furniture_limit))
+	# perform initial count
+	update_counts_from_room(rd, false)
+
+
+func _process(delta: float) -> void:
+	if room_details == null:
+		return
+	_acc += delta
+	if _acc >= _interval:
+		_acc = 0.0
+		# recompute counts periodically but don't emit to avoid recursion
+		update_counts_from_room(room_details, false)
 
 func can_place(place_type, room_details: RoomDetails = null) -> bool:
 	# If room_details provided, recalc counts from it to avoid desync.
@@ -43,7 +69,7 @@ func can_place(place_type, room_details: RoomDetails = null) -> bool:
 			return true
 
 
-func update_counts_from_room(room_details: RoomDetails) -> void:
+func update_counts_from_room(room_details: RoomDetails, do_emit: bool = true) -> void:
 	# Recompute all counts from the authoritative RoomDetails structure.
 	var wc: int = 0
 	if room_details.room_layout != null:
@@ -68,6 +94,10 @@ func update_counts_from_room(room_details: RoomDetails) -> void:
 	furniture_count = 0
 	if room_details.furnitures != null:
 		furniture_count = room_details.furnitures.size()
+
+	# notify listeners that counts changed (optional)
+	if do_emit:
+		emit_signal("counts_updated")
 
 func record_place(place_type, pos: Vector2i) -> void:
 	# Increment the appropriate counter. If exceeding limit, emit signal and do not increment.

@@ -7,13 +7,15 @@
 		"x": 14.0,
 		"y": 0.0
 	},
+	"objective": "Create a level where there is 1 locked door",
 	"goals": {
-		"container_checked": 2.0,
-		"trap_triggered": 2.0
+		"container_checked": 2,
+		"door_opened": 1
 	},
 	"limits": {
-		"container_limit": 3.0,
-		"trap_limit": 2.0
+		"container_limit": 1,
+		"door_limit": 1,
+		"trap_limit": 0
 	},
 	"layout": [],
 	"doors": [],

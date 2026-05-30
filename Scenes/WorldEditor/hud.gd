@@ -4,6 +4,7 @@ class_name EditorHud
 @onready var cell_type_lbl: = $Details/CellType
 @onready var contents_lbl: = $Details/Contents
 @onready var world_selection: = $WorldSelection
+@onready var objectives_lbl: = $LevelInfo/Objectives
 
 @export var limit_handler: LimitHandler
 
@@ -12,6 +13,11 @@ class_name EditorHud
 @onready var container_limit_lbl: = $LevelInfo/Limit/ContainerLimit
 @onready var trap_limit_lbl: = $LevelInfo/Limit/TrapLimit
 @onready var furniture_limit_lbl: = $LevelInfo/Limit/FurnitureLimit
+var _acc: float = 0.0
+var _interval: float = 0.2
+
+func initialize(objective: String) -> void:
+	objectives_lbl.text = objective
 
 func update_contents(content: Array[Inventory.ItemType]) -> void:
 	contents_lbl.text = "["
@@ -62,11 +68,20 @@ func _format_limit(limit_val: int) -> String:
 	return str(limit_val)
 
 
-func update_limits(limit_handler: LimitHandler, room_details: RoomDetails) -> void:
-	# Ensure counts are up to date
-	if limit_handler != null and room_details != null:
-		limit_handler.update_counts_from_room(room_details)
 
+func _ready() -> void:
+	set_process(true)
+
+func _process(delta: float) -> void:
+	# Poll the limit handler periodically and refresh labels
+	_acc += delta
+	if _acc < _interval:
+		return
+	_acc = 0.0
+	update_limits(null)
+
+func update_limits(room_details: RoomDetails) -> void:
+	# Read counts from the limit handler (do not trigger recalculation here)
 	# Wall
 	var wc: int = 0
 	var wl: int = -1
