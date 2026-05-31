@@ -128,6 +128,7 @@ fixed_column_width = 32
 icon_scale = 2.0
 
 [connection signal="objectives_completed" from="GoalCounter" to="." method="_on_objectives_completed"]
+[connection signal="objectives_completed" from="GoalCounter" to="Camera2D/HUD" method="_on_goal_counter_objectives_completed"]
 [connection signal="action_finished" from="Room/Jani" to="InteractionHandler" method="_on_jani_action_finished"]
 [connection signal="interacted" from="Room/Jani" to="GoalCounter" method="_on_jani_interacted"]
 [connection signal="interacted" from="Room/Jani" to="InteractionHandler" method="_on_jani_interacted"]

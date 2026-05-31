@@ -4,6 +4,11 @@ extends Control
 @onready var actions_lbl: = $Actions
 @onready var inventory_list: = $InventoryList
 @onready var objectives_lbl: = $Objectives
+@onready var objectives_hdr: = $ObjectivesHeading
+
+func _on_goal_counter_objectives_completed() -> void:
+	objectives_hdr.modulate = Color(1, 1, 0, 1)
+	objectives_lbl.modulate = Color(1, 1, 0, 1)
 
 func _process(_delta: float) -> void:
 	facts.text = ""
