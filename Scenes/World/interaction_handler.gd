@@ -6,6 +6,8 @@ var room: Room
 @onready var world: World = get_parent()
 @onready var inventory_collection_anim: = $InventoryCollectionAnimation
 
+signal exit_reached
+
 func initialize(jani_node: Jani, room_node: Room) -> void:
 	jani = jani_node
 	room = room_node
@@ -27,6 +29,9 @@ func _on_jani_move_finished(pos: Vector2i) -> void:
 		#jani.stun(2)
 		world.action_cost += 90
 		room.details_map.set_cell_type(pos, TileMapDetails.DetailType.NONE)
+	
+	if pos == room.room_details.exit:
+		exit_reached.emit()
 
 func _on_jani_interacted(action: Action, pos: Vector2i, args: Array) -> void:
 	_container_interaction(action)

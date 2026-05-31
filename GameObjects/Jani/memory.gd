@@ -12,6 +12,10 @@ var locked_door_locations: Array[Vector2i] = []  # Locked doors
 var door_lock_type: Dictionary[Vector2i, DoorsData.LockTypes]
 var trap_locations: Array[Vector2i] = []
 
+# Positions that have been percepted/seen by Jani (used to avoid treating
+# isolated/floating doors as actual blocked passages)
+var percepted_positions: Array[Vector2i] = []
+
 var container_locations: Array[Vector2i] = [] 
 var furnitures: Array[FurnitureData] = []
 var unopened_container_locations: Array[Vector2i] = []

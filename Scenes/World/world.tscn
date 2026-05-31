@@ -133,3 +133,4 @@ icon_scale = 2.0
 [connection signal="interacted" from="Room/Jani" to="InteractionHandler" method="_on_jani_interacted"]
 [connection signal="move_finished" from="Room/Jani" to="GoalCounter" method="_on_jani_move_finished"]
 [connection signal="move_finished" from="Room/Jani" to="InteractionHandler" method="_on_jani_move_finished"]
+[connection signal="exit_reached" from="InteractionHandler" to="." method="_on_interaction_handler_exit_reached"]

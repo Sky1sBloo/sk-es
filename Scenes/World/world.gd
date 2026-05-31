@@ -41,5 +41,12 @@ func start(keep_memory: bool = false) -> void:
 
 
 func _on_objectives_completed() -> void:
-	print("Objectives completed for this level")
-	# TODO: trigger end-of-level flow, show HUD message, etc.
+	#print("Objectives completed for this level")
+	pass
+
+
+func _on_interaction_handler_exit_reached() -> void:
+	if goal_counter._objectives_completed:
+		print("Passed")
+	else:
+		print("Failed")
