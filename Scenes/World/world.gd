@@ -22,7 +22,7 @@ func reset() -> void:
 	start(true)
 
 func start(keep_memory: bool = false) -> void:
-	var room_details: = GameConfiguration.room_details
+	var room_details: RoomDetails = GameConfiguration.room_details
 	if room_details == null:
 		room_details = room_reader.get_level("res://Levels/Sandbox.json")
 	
@@ -44,9 +44,14 @@ func _on_objectives_completed() -> void:
 	#print("Objectives completed for this level")
 	pass
 
-
 func _on_interaction_handler_exit_reached() -> void:
 	if goal_counter._objectives_completed:
-		print("Passed")
+		pass
 	else:
 		print("Failed")
+
+func _on_restart_btn_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/WorldEditor/world_editor.tscn")
+
+func _on_menu_btn_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/MainMenu/main_menu.tscn")

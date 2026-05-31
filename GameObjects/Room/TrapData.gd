@@ -23,3 +23,10 @@ func initialize(pos: Vector2i, trap_type: String) -> void:
 func trigger() -> void:
 	is_triggered = true
 	triggered.emit(grid_pos, type)
+
+func clone() -> TrapData:
+	var copy: = TrapData.new()
+	copy.grid_pos = grid_pos
+	copy.type = type
+	copy.is_triggered = is_triggered
+	return copy

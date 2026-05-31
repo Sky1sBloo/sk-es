@@ -41,3 +41,11 @@ func initialize(pos: Vector2i, cont_type: String = "", items: Array[String] = []
 func open() -> void:
 	is_opened = true
 	opened.emit(grid_pos)
+
+func clone() -> ContainerData:
+	var copy = ContainerData.new()
+	copy.grid_pos = grid_pos
+	copy.type = type
+	copy.is_opened = is_opened
+	copy.contains = contains.duplicate(true)
+	return copy

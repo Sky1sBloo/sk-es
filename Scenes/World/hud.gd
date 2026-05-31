@@ -5,10 +5,28 @@ extends Control
 @onready var inventory_list: = $InventoryList
 @onready var objectives_lbl: = $Objectives
 @onready var objectives_hdr: = $ObjectivesHeading
+@onready var result: = $Result
+@onready var passed_lbl:= $Result/PassedLabel
+
+var _passed: bool =false
 
 func _on_goal_counter_objectives_completed() -> void:
 	objectives_hdr.modulate = Color(1, 1, 0, 1)
 	objectives_lbl.modulate = Color(1, 1, 0, 1)
+	_passed = true
+
+func _on_interaction_handler_exit_reached() -> void:
+	show_passed(_passed)
+
+func show_passed(passed: bool) -> void:
+	result.visible = true
+	if passed:
+		passed_lbl.text = "PASSED!"
+		passed_lbl.modulate = Color(1, 1, 0, 1)
+	else:
+		passed_lbl.text = "FAILED!"
+		passed_lbl.modulate = Color(1, 0, 0, 1)
+
 
 func _process(_delta: float) -> void:
 	facts.text = ""

@@ -33,3 +33,10 @@ func unlock() -> void:
 	is_locked = false
 	#lock_type = LockTypes.NONE
 	unlocked.emit(grid_pos)
+
+func clone() -> DoorsData:
+	var copy = DoorsData.new()
+	copy.grid_pos = grid_pos
+	copy.lock_type = lock_type
+	copy.is_locked = is_locked
+	return copy

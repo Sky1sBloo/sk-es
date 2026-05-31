@@ -61,7 +61,11 @@ func _load_composition_map() -> void:
 	if room_details == null:
 		return
 	tile_map_composition.clear()
-
+	var init_player_pos = room_details.init_player_position
+	if init_player_pos != null and init_player_pos != Vector2i(-1, -1):
+		tile_map_composition.set_cell_type(room_details.init_player_position,
+			TileMapComposition.CompositionType.START_POS)
+	
 	# walls
 	for y in range(room_details.room_layout.size()):
 		for x in range(room_details.room_layout[y].size()):
