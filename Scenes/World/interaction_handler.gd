@@ -21,13 +21,16 @@ func _on_jani_move_finished(pos: Vector2i) -> void:
 		trap.trigger()
 		jani.memory.add_trap(pos)
 		# Cancel the current action so the decision manager doesn't get out of sync
-		if jani.has_node("DecisionManager"):
-			jani.decision_manager.cancel_current_action()
-		world.reset()
+		match trap.type:
+			TrapData.Types.SPIKED:
+				if jani.has_node("DecisionManager"):
+					jani.decision_manager.cancel_current_action()
+					world.reset()
+				world.action_cost += 30
+			TrapData.Types.GLUE:
+				jani.stun(2)
+				world.action_cost += 90
 		
-		# Pause jani instead
-		#jani.stun(2)
-		world.action_cost += 90
 		room.details_map.set_cell_type(pos, TileMapDetails.DetailType.NONE)
 	
 	if pos == room.room_details.exit:

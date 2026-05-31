@@ -61,7 +61,9 @@ func can_place(place_type) -> bool:
 			return door_limit < 0 or door_count < door_limit
 		WorldSelection.PlaceType.CONTAINERS:
 			return container_limit < 0 or container_count < container_limit
-		WorldSelection.PlaceType.TRAP:
+		WorldSelection.PlaceType.SPIKE:
+			return trap_limit < 0 or trap_count < trap_limit
+		WorldSelection.PlaceType.GLUE:
 			return trap_limit < 0 or trap_count < trap_limit
 		WorldSelection.PlaceType.TABLE:
 			return furniture_limit < 0 or furniture_count < furniture_limit
@@ -97,34 +99,39 @@ func update_counts_from_room(do_emit: bool = true) -> void:
 
 	# notify listeners that counts changed (optional)
 	if do_emit:
-		emit_signal("counts_updated")
+		counts_updated.emit()
 
 func record_place(place_type, pos: Vector2i) -> void:
 	# Increment the appropriate counter. If exceeding limit, emit signal and do not increment.
 	match place_type:
 		WorldSelection.PlaceType.WALLS:
 			if wall_limit >= 0 and wall_count + 1 > wall_limit:
-				emit_signal("limit_exceeded", pos, place_type)
+				limit_exceeded.emit(pos, place_type)
 				return
 			wall_count += 1
 		WorldSelection.PlaceType.DOORS:
 			if door_limit >= 0 and door_count + 1 > door_limit:
-				emit_signal("limit_exceeded", pos, place_type)
+				limit_exceeded.emit(pos, place_type)
 				return
 			door_count += 1
 		WorldSelection.PlaceType.CONTAINERS:
 			if container_limit >= 0 and container_count + 1 > container_limit:
-				emit_signal("limit_exceeded", pos, place_type)
+				limit_exceeded.emit(pos, place_type)
 				return
 			container_count += 1
-		WorldSelection.PlaceType.TRAP:
+		WorldSelection.PlaceType.SPIKE:
 			if trap_limit >= 0 and trap_count + 1 > trap_limit:
-				emit_signal("limit_exceeded", pos, place_type)
+				limit_exceeded.emit(pos, place_type)
+				return
+			trap_count += 1
+		WorldSelection.PlaceType.GLUE:
+			if trap_limit >= 0 and trap_count + 1 > trap_limit:
+				limit_exceeded.emit(pos, place_type)
 				return
 			trap_count += 1
 		WorldSelection.PlaceType.TABLE:
 			if furniture_limit >= 0 and furniture_count + 1 > furniture_limit:
-				emit_signal("limit_exceeded", pos, place_type)
+				limit_exceeded.emit(pos, place_type)
 				return
 			furniture_count += 1
 
@@ -136,7 +143,9 @@ func record_delete(place_type) -> void:
 			door_count = max(0, door_count - 1)
 		WorldSelection.PlaceType.CONTAINERS:
 			container_count = max(0, container_count - 1)
-		WorldSelection.PlaceType.TRAP:
+		WorldSelection.PlaceType.SPIKE:
+			trap_count = max(0, trap_count - 1)
+		WorldSelection.PlaceType.GLUE:
 			trap_count = max(0, trap_count - 1)
 		WorldSelection.PlaceType.TABLE:
 			furniture_count = max(0, furniture_count - 1)

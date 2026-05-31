@@ -1,10 +1,12 @@
 class_name TrapData
 
 enum Types {
-	SPIKED
+	SPIKED,
+	GLUE
 }
 var str_to_trap_type : Dictionary[String, Types] = {
-	"SPIKED": Types.SPIKED
+	"SPIKED": Types.SPIKED,
+	"GLUE": Types.GLUE
 }
 
 var grid_pos: Vector2i

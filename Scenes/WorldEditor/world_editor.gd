@@ -197,8 +197,11 @@ func _place(place_pos: Vector2i) -> void:
 			_place_containers(place_pos)
 			# recompute counts and update HUD after placement
 			_refresh_limits()
-		WorldSelection.PlaceType.TRAP:
-			_place_traps(place_pos)
+		WorldSelection.PlaceType.SPIKE:
+			_place_spike(place_pos)
+			_refresh_limits()
+		WorldSelection.PlaceType.GLUE:
+			_place_glue(place_pos)
 			_refresh_limits()
 		WorldSelection.PlaceType.TABLE:
 			_place_table(place_pos)
@@ -226,7 +229,7 @@ func _place_door(place_pos: Vector2i) -> void:
 	var door: = DoorsData.new()
 	door.initialize(place_pos)
 	door.lock_type = world_selection.lock_type
-	door.is_locked = true
+	door.is_locked = door.lock_type != DoorsData.LockTypes.NONE
 	room_details.doors[place_pos] = door
 	_refresh_limits()
 
@@ -237,11 +240,18 @@ func _place_containers(place_pos: Vector2i) -> void:
 	container_data.contains = world_selection.selected_items.duplicate_deep()
 	room_details.containers[place_pos] = container_data
 
-func _place_traps(place_pos: Vector2i) -> void:
+func _place_spike(place_pos: Vector2i) -> void:
 	tile_map_composition.set_cell_type(place_pos, TileMapComposition.CompositionType.SPIKE)
 	var trap: = TrapData.new()
 	trap.grid_pos = place_pos
 	trap.type = TrapData.Types.SPIKED
+	room_details.traps[place_pos] = trap
+
+func _place_glue(place_pos: Vector2i) -> void:
+	tile_map_composition.set_cell_type(place_pos, TileMapComposition.CompositionType.GLUE)
+	var trap: = TrapData.new()
+	trap.grid_pos = place_pos
+	trap.type = TrapData.Types.GLUE
 	room_details.traps[place_pos] = trap
 
 func _place_table(place_pos: Vector2i) -> void:
@@ -291,7 +301,7 @@ func _handle_deletion(pos: Vector2i) -> void:
 	
 	if room_details.traps.has(pos):
 		room_details.traps.erase(pos)
-		deleted_cell.emit(pos, WorldSelection.PlaceType.TRAP)
+		deleted_cell.emit(pos, WorldSelection.PlaceType.SPIKE)
 		_refresh_limits()
 	
 	if room_details.furnitures.has(pos):
