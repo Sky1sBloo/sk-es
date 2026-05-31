@@ -125,7 +125,8 @@ func _is_unpassable(memory: JaniMemory, pos: Vector2i) -> bool:
 	if memory.env_layout[pos.y][pos.x] == RoomDetails.TileType.WALL:
 		return true
 	
-	for door in memory.room_details.doors:
+	for door_pos in memory.room_details.doors:
+		var door: = memory.room_details.doors[door_pos]
 		if door.grid_pos == pos and door.is_locked:
 			return true
 	return false

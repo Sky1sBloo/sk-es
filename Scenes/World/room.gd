@@ -1,45 +1,16 @@
 extends Node2D
 class_name Room
 
-@export var composition_map: TileMapLayer
-@export var details_map: TileMapLayer
+@export var composition_map: TileMapComposition
+@export var details_map: TileMapDetails
+@export var jani: Jani
 
 var room_details: RoomDetails
-
-var composition_atlas: Dictionary[RoomDetails.TileType, Vector2i] = {
-	RoomDetails.TileType.WALL: Vector2i(0, 0),
-	RoomDetails.TileType.DOOR: Vector2i(1, 0),
-	RoomDetails.TileType.SPIKE: Vector2i(3, 0),
-	RoomDetails.TileType.EXIT: Vector2i(0, 3)
-}
 
 var item_atlas: Dictionary[Inventory.ItemType, Vector2i] = {
 	Inventory.ItemType.RED_KEY: Vector2i(1, 2),
 	Inventory.ItemType.YELLOW_KEY: Vector2i(2, 2),
 	Inventory.ItemType.GREEN_KEY: Vector2i(3, 2)
-}
-
-enum DetailType {
-	NONE,
-	RED_LOCK,
-	YELLOW_LOCK,
-	GREEN_LOCK,
-	BOARDED_DOOR,
-	TABLE,
-	CONTAINER,
-	CONTAINER_OPENED,
-	SPIKE_TRAP
-}
-var details_atlas: Dictionary[DetailType, Vector2i] = {
-	DetailType.NONE: Vector2i(14, 7),
-	DetailType.RED_LOCK: Vector2i(1, 1),
-	DetailType.YELLOW_LOCK: Vector2i(2, 1),
-	DetailType.GREEN_LOCK: Vector2i(3, 1),
-	DetailType.BOARDED_DOOR: Vector2i(2, 0),
-	DetailType.TABLE: Vector2i(4, 0),
-	DetailType.CONTAINER: Vector2i(5, 0),
-	DetailType.CONTAINER_OPENED: Vector2i(6, 0),
-	DetailType.SPIKE_TRAP: Vector2i(0, 2)
 }
 
 func initialize(details: RoomDetails) -> void:
@@ -49,31 +20,36 @@ func initialize(details: RoomDetails) -> void:
 	load_composition_map()
 	load_details_map()
 	
-	for door in room_details.doors:
-		door.unlocked.connect(_unlock_door)
+	for pos in room_details.doors:
+		if not room_details.doors[pos].unlocked.is_connected(_unlock_door):
+			room_details.doors[pos].unlocked.connect(_unlock_door)
 
 func load_composition_map() -> void:
 	var wall_positions: = _create_wall_positions()
 	for wall_pos in wall_positions:
-		composition_map.set_cell(wall_pos, 0, composition_atlas[RoomDetails.TileType.WALL])
+		composition_map.set_cell_type(wall_pos, TileMapComposition.CompositionType.WALL)
 	
-	composition_map.set_cell(room_details.exit, 0, composition_atlas[RoomDetails.TileType.EXIT])
+	if room_details.exit != null:
+		composition_map.set_cell_type(room_details.exit, TileMapComposition.CompositionType.EXIT)
 	
-	for door in room_details.doors:
-		var atlas: Vector2i = composition_atlas[RoomDetails.TileType.DOOR]
-		composition_map.set_cell(door.grid_pos, 0, atlas)
+	for pos in room_details.doors:
+		composition_map.set_cell_type(room_details.doors[pos].grid_pos, 
+			TileMapComposition.CompositionType.DOOR)
 	
-	for trap in room_details.traps:
-		composition_map.set_cell(trap.grid_pos, 0, composition_atlas[RoomDetails.TileType.SPIKE])
+	for pos in room_details.traps:
+		var trap: = room_details.traps[pos]
+		composition_map.set_cell_type(trap.grid_pos, 
+			TileMapComposition.CompositionType.SPIKE)
 
 func load_details_map() -> void:
 	_load_locks()
 	_load_containers()
 	_load_furnitures()
 	
-	for trap in room_details.traps:
-		if not trap.is_triggered:
-			details_map.set_cell(trap.grid_pos, 0, details_atlas[DetailType.SPIKE_TRAP])
+	for pos in room_details.traps:
+		var trap: = room_details.traps[pos]
+		if not jani.memory.trap_locations.has(pos):
+			details_map.set_cell_type(trap.grid_pos, TileMapDetails.DetailType.SPIKE_TRAP)
 
 func _create_wall_positions() -> Array[Vector2i]:
 	var wall_positions: Array[Vector2i]
@@ -84,28 +60,34 @@ func _create_wall_positions() -> Array[Vector2i]:
 	return wall_positions
 
 func _load_locks() -> void:
-	for door in room_details.doors:
-		details_map.set_cell(door.grid_pos, 0, details_atlas[door.lock_type])
+	for pos in room_details.doors:
+		var door: = room_details.doors[pos]
+		var detail_type: = TileMapDetails.lock_type_to_detail(door.lock_type)
+		details_map.set_cell_type(pos,detail_type)
+		#details_map.set_cell(door.grid_pos, 0, details_atlas[door.lock_type])
 
 func _load_containers() -> void:
-	for container in room_details.containers:
-		container.opened.connect(_opened_chest)
-		var atlas: = details_atlas[DetailType.CONTAINER]
+	for pos in room_details.containers:
+		var container: = room_details.containers[pos]
+		if not container.opened.is_connected(_opened_chest):
+			container.opened.connect(_opened_chest)
+		var type: = TileMapDetails.DetailType.CONTAINER
 		if container.is_opened:
-			atlas = details_atlas[DetailType.CONTAINER_OPENED]
-		details_map.set_cell(container.grid_pos, 0, atlas)
+			type = TileMapDetails.DetailType.CONTAINER_OPENED
+		details_map.set_cell_type(pos, type)
 
 func _load_furnitures() -> void:
-	for furniture in room_details.furnitures:
-		var atlas: Vector2i = Vector2i(-1, -1)
+	for pos in room_details.furnitures:
+		var type: = TileMapDetails.DetailType.UNKNOWN
+		var furniture: = room_details.furnitures[pos]
 		match furniture.type:
 			FurnitureData.Types.TABLE:
-				atlas = details_atlas[DetailType.TABLE]
-		details_map.set_cell(furniture.grid_pos, 0, atlas)
+				type = TileMapDetails.DetailType.TABLE
+		details_map.set_cell_type(pos, type)
 
 # Connected to doors signal
 func _unlock_door(pos: Vector2i) -> void:
-	details_map.set_cell(pos, 0, details_atlas[DetailType.NONE])
+	details_map.set_cell_type(pos, TileMapDetails.DetailType.NONE)
 
 func _opened_chest(pos: Vector2i) -> void:
-	details_map.set_cell(pos, 0, details_atlas[DetailType.CONTAINER_OPENED])
+	details_map.set_cell_type(pos, TileMapDetails.DetailType.CONTAINER_OPENED)

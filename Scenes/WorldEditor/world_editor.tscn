@@ -1,0 +1,292 @@
+[gd_scene format=3 uid="uid://bgrsd8bngl8vn"]
+
+[ext_resource type="Script" uid="uid://bwle65fjlilty" path="res://Scenes/WorldEditor/world_editor.gd" id="1_l0g0c"]
+[ext_resource type="Script" uid="uid://ytxnbctkgea1" path="res://Scenes/WorldEditor/editor_selection.gd" id="2_3xf5j"]
+[ext_resource type="Script" uid="uid://dntrhhrfhc3qk" path="res://Scenes/WorldEditor/limit_handler.gd" id="2_7mt4e"]
+[ext_resource type="Script" uid="uid://wsrdv4s3b5yc" path="res://Scenes/WorldEditor/hud.gd" id="2_14lcv"]
+[ext_resource type="PackedScene" uid="uid://bqad8pgonm6yj" path="res://Scenes/tile_map_details.tscn" id="4_sio5s"]
+[ext_resource type="PackedScene" uid="uid://b1i6ww2ao7mda" path="res://Scenes/tile_map_room_composition.tscn" id="5_7mt4e"]
+[ext_resource type="PackedScene" uid="uid://bj1yysowb8ffl" path="res://Scenes/cursor.tscn" id="6_14lcv"]
+[ext_resource type="PackedScene" uid="uid://cmkeeifwk3e1l" path="res://Scenes/room_reader.tscn" id="8_0a36b"]
+
+[node name="WorldEditor" type="Node" unique_id=216869614 node_paths=PackedStringArray("cursor", "world", "tile_map_composition", "tile_map_details")]
+script = ExtResource("1_l0g0c")
+cursor = NodePath("World/Cursor")
+world = NodePath("World")
+tile_map_composition = NodePath("World/Tilemap/TileMapRoomComposition")
+tile_map_details = NodePath("World/Tilemap/TileMapDetails")
+
+[node name="LimitHandler" type="Node" parent="." unique_id=1722549678]
+script = ExtResource("2_7mt4e")
+
+[node name="HUD" type="Control" parent="." unique_id=1321498274 node_paths=PackedStringArray("limit_handler")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_14lcv")
+limit_handler = NodePath("../LimitHandler")
+
+[node name="WorldSelection" type="Node" parent="HUD" unique_id=1965291819]
+script = ExtResource("2_3xf5j")
+
+[node name="ModeSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=686145198]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 112.0
+offset_bottom = 33.0
+theme_override_font_sizes/font_size = 12
+selected = 0
+item_count = 2
+popup/item_0/text = "Place"
+popup/item_0/id = 0
+popup/item_1/text = "Edit"
+popup/item_1/id = 1
+
+[node name="PlaceSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1773367621]
+offset_left = 120.0
+offset_top = 8.0
+offset_right = 216.0
+offset_bottom = 33.0
+theme_override_font_sizes/font_size = 12
+selected = 0
+item_count = 7
+popup/item_0/text = "Walls"
+popup/item_0/id = 0
+popup/item_1/text = "Doors"
+popup/item_1/id = 1
+popup/item_2/text = "Containers"
+popup/item_2/id = 2
+popup/item_3/text = "Trap"
+popup/item_3/id = 3
+popup/item_4/text = "Table"
+popup/item_4/id = 4
+popup/item_5/text = "Exit"
+popup/item_5/id = 5
+popup/item_6/text = "StartPos"
+popup/item_6/id = 6
+
+[node name="LockSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1428544698]
+offset_left = 224.0
+offset_top = 8.0
+offset_right = 328.0
+offset_bottom = 33.0
+theme_override_font_sizes/font_size = 12
+disabled = true
+selected = 0
+item_count = 5
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Red"
+popup/item_1/id = 1
+popup/item_2/text = "Yellow"
+popup/item_2/id = 2
+popup/item_3/text = "Green"
+popup/item_3/id = 3
+popup/item_4/text = "Boarded"
+popup/item_4/id = 4
+
+[node name="ItemSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1854731453]
+offset_left = 336.0
+offset_top = 8.0
+offset_right = 432.0
+offset_bottom = 33.0
+theme_override_font_sizes/font_size = 12
+disabled = true
+selected = 0
+item_count = 8
+popup/item_0/text = "None"
+popup/item_0/id = 0
+popup/item_1/text = "Red Key"
+popup/item_1/id = 1
+popup/item_2/text = "Yellow Key"
+popup/item_2/id = 2
+popup/item_3/text = "Green Key"
+popup/item_3/id = 3
+popup/item_4/text = "Axe"
+popup/item_4/id = 4
+popup/item_5/text = "Axe Head"
+popup/item_5/id = 5
+popup/item_6/text = "Stick"
+popup/item_6/id = 6
+popup/item_7/text = "Rope"
+popup/item_7/id = 7
+
+[node name="AddItem" type="Button" parent="HUD/WorldSelection" unique_id=1745747154]
+offset_left = 440.0
+offset_top = 8.0
+offset_right = 464.0
+offset_bottom = 33.0
+theme_override_font_sizes/font_size = 12
+text = "+"
+
+[node name="DeleteItem" type="Button" parent="HUD/WorldSelection" unique_id=1732364887]
+offset_left = 472.0
+offset_top = 8.0
+offset_right = 496.0
+offset_bottom = 33.0
+theme_override_font_sizes/font_size = 12
+text = "-"
+
+[node name="Details" type="Node" parent="HUD" unique_id=1819185429]
+
+[node name="ContentLbl" type="Label" parent="HUD/Details" unique_id=1913507533]
+offset_left = 16.0
+offset_top = 72.0
+offset_right = 91.0
+offset_bottom = 89.0
+theme_override_font_sizes/font_size = 12
+text = "Contents:"
+
+[node name="Contents" type="Label" parent="HUD/Details" unique_id=1243396197]
+offset_left = 80.0
+offset_top = 72.0
+offset_right = 408.0
+offset_bottom = 89.0
+theme_override_font_sizes/font_size = 12
+text = "[]"
+
+[node name="CellType" type="Label" parent="HUD/Details" unique_id=1613906960]
+offset_left = 64.0
+offset_top = 48.0
+offset_right = 240.0
+offset_bottom = 65.0
+theme_override_font_sizes/font_size = 12
+text = "#"
+
+[node name="TypeLbl" type="Label" parent="HUD/Details" unique_id=664701700]
+offset_left = 16.0
+offset_top = 48.0
+offset_right = 64.0
+offset_bottom = 65.0
+theme_override_font_sizes/font_size = 12
+text = "Type:"
+
+[node name="LevelInfo" type="Node" parent="HUD" unique_id=187109521]
+
+[node name="Objectives" type="Label" parent="HUD/LevelInfo" unique_id=2092441520]
+offset_left = 616.0
+offset_top = 32.0
+offset_right = 760.0
+offset_bottom = 168.0
+theme_override_font_sizes/font_size = 8
+text = "Build a level with"
+autowrap_mode = 3
+
+[node name="Limit" type="Node" parent="HUD/LevelInfo" unique_id=1749155012]
+
+[node name="WallLimit" type="Label" parent="HUD/LevelInfo/Limit" unique_id=207736119]
+offset_left = 688.0
+offset_top = 192.0
+offset_right = 736.0
+offset_bottom = 208.0
+theme_override_font_sizes/font_size = 8
+text = "-1"
+
+[node name="DoorLimit" type="Label" parent="HUD/LevelInfo/Limit" unique_id=306315020]
+offset_left = 688.0
+offset_top = 208.0
+offset_right = 736.0
+offset_bottom = 224.0
+theme_override_font_sizes/font_size = 8
+text = "-1"
+
+[node name="ContainerLimit" type="Label" parent="HUD/LevelInfo/Limit" unique_id=98770823]
+offset_left = 688.0
+offset_top = 224.0
+offset_right = 736.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 8
+text = "-1"
+
+[node name="TrapLimit" type="Label" parent="HUD/LevelInfo/Limit" unique_id=998540103]
+offset_left = 688.0
+offset_top = 240.0
+offset_right = 736.0
+offset_bottom = 256.0
+theme_override_font_sizes/font_size = 8
+text = "-1"
+
+[node name="FurnitureLimit" type="Label" parent="HUD/LevelInfo/Limit" unique_id=28263317]
+offset_left = 688.0
+offset_top = 256.0
+offset_right = 736.0
+offset_bottom = 272.0
+theme_override_font_sizes/font_size = 8
+text = "-1"
+
+[node name="LimitLabels" type="Label" parent="HUD/LevelInfo/Limit" unique_id=1287016546]
+offset_left = 616.0
+offset_top = 192.0
+offset_right = 680.0
+offset_bottom = 264.0
+theme_override_font_sizes/font_size = 8
+text = "Wall Limit:
+Door Limit:
+Container Limit:
+Trap Limit:
+Furniture Limit:"
+vertical_alignment = 1
+
+[node name="LimitLbl" type="Label" parent="HUD/LevelInfo" unique_id=2131572716]
+offset_left = 616.0
+offset_top = 168.0
+offset_right = 680.0
+offset_bottom = 192.0
+theme_override_font_sizes/font_size = 12
+text = "Limit:"
+vertical_alignment = 1
+
+[node name="ObjectivesLbl" type="Label" parent="HUD/LevelInfo" unique_id=1227643042]
+offset_left = 616.0
+offset_top = 8.0
+offset_right = 680.0
+offset_bottom = 32.0
+theme_override_font_sizes/font_size = 12
+text = "Objective:"
+vertical_alignment = 1
+
+[node name="StartButton" type="Button" parent="HUD" unique_id=2040348532]
+layout_mode = 0
+offset_left = 712.0
+offset_top = 416.0
+offset_right = 760.0
+offset_bottom = 472.0
+text = "Start"
+
+[node name="BackBtn" type="Button" parent="HUD" unique_id=1455947984]
+layout_mode = 0
+offset_left = 648.0
+offset_top = 416.0
+offset_right = 696.0
+offset_bottom = 472.0
+text = "Back"
+
+[node name="World" type="Node2D" parent="." unique_id=521958938]
+position = Vector2(32, 128)
+
+[node name="Tilemap" type="Node" parent="World" unique_id=694503414]
+
+[node name="TileMapRoomComposition" parent="World/Tilemap" unique_id=374275345 instance=ExtResource("5_7mt4e")]
+position = Vector2(32, 128)
+
+[node name="TileMapDetails" parent="World/Tilemap" unique_id=667878711 instance=ExtResource("4_sio5s")]
+position = Vector2(32, 128)
+
+[node name="Cursor" parent="World" unique_id=1276194277 instance=ExtResource("6_14lcv")]
+
+[node name="RoomReader" parent="." unique_id=1630330285 instance=ExtResource("8_0a36b")]
+
+[connection signal="deleted_cell" from="." to="LimitHandler" method="_on_world_editor_deleted_cell"]
+[connection signal="edit_selected" from="." to="HUD" method="_on_world_editor_edit_selected"]
+[connection signal="placed_cell" from="." to="LimitHandler" method="_on_world_editor_placed_cell"]
+[connection signal="limit_exceeded" from="LimitHandler" to="." method="_on_limit_exceeded"]
+[connection signal="added_item" from="HUD/WorldSelection" to="." method="_on_world_selection_added_item"]
+[connection signal="added_item" from="HUD/WorldSelection" to="HUD" method="_on_world_selection_added_item"]
+[connection signal="removed_item" from="HUD/WorldSelection" to="." method="_on_world_selection_removed_item"]
+[connection signal="removed_item" from="HUD/WorldSelection" to="HUD" method="_on_world_selection_removed_item"]
+[connection signal="item_selected" from="HUD/WorldSelection/LockSelection" to="." method="_on_lock_selection_item_selected"]
+[connection signal="pressed" from="HUD/WorldSelection/AddItem" to="HUD/WorldSelection" method="_on_add_item_pressed"]
+[connection signal="pressed" from="HUD/WorldSelection/DeleteItem" to="HUD/WorldSelection" method="_on_delete_item_pressed"]
+[connection signal="pressed" from="HUD/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="HUD/BackBtn" to="." method="_on_back_btn_pressed"]

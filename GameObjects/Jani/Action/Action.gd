@@ -21,13 +21,26 @@ var priority: float :
 	get:
 		return _action_priority[type]
 
-var _action_priority: Dictionary[Types, float] = {
+var action_cost: int :
+	get:
+		return _action_cost[type]
+
+static var _action_priority: Dictionary[Types, float] = {
 	Types.VISIT_DOOR: 10,
 	Types.OPEN_DOOR: 15,
 	Types.OPEN_CONTAINER: 5,
 	Types.CRAFT_ITEM: 8,
 	Types.GET_ITEM_FROM_CONTAINER: 20,
 	Types.GO_TO_EXIT: 99
+}
+
+static var _action_cost: Dictionary[Types, int] = {
+	Types.VISIT_DOOR: 8,
+	Types.OPEN_DOOR: 35,
+	Types.OPEN_CONTAINER: 10,
+	Types.CRAFT_ITEM: 45,
+	Types.GET_ITEM_FROM_CONTAINER: 20,
+	Types.GO_TO_EXIT: 0
 }
 
 static var _type_names := {

@@ -1,0 +1,21 @@
+{
+	"start": {
+		"x": -1,
+		"y": -1
+	},
+	"exit": {
+		"x": -1,
+		"y": -1
+	},
+	"objective": "Delay Jani for 400 action cost",
+	"goals": {
+		"cost_reached": 400
+	},
+	"limits": {
+	},
+	"layout": [],
+	"doors": [],
+	"containers": [],
+	"furnitures": [],
+	"traps": []
+}

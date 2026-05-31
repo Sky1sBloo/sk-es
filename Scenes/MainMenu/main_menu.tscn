@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://dlnbw6klgwk6x"]
+
+[ext_resource type="Script" uid="uid://highakdixcm7" path="res://Scenes/MainMenu/main_menu.gd" id="1_uqdog"]
+[ext_resource type="PackedScene" uid="uid://cmkeeifwk3e1l" path="res://Scenes/room_reader.tscn" id="2_v763k"]
+
+[node name="MainMenu" type="Node2D" unique_id=461850589]
+script = ExtResource("1_uqdog")
+
+[node name="TitlePage" type="Control" parent="." unique_id=1776465134]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Level" type="Button" parent="TitlePage" unique_id=1367364706]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 248.0
+offset_right = 440.0
+offset_bottom = 279.0
+text = "Start
+"
+
+[node name="Sandbox" type="Button" parent="TitlePage" unique_id=1430112936]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 288.0
+offset_right = 512.0
+offset_bottom = 319.0
+text = "Sandbox"
+
+[node name="Title" type="Label" parent="TitlePage" unique_id=7408459]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 136.0
+offset_right = 592.0
+offset_bottom = 181.0
+theme_override_font_sizes/font_size = 32
+text = "Escape the Serial Killer"
+horizontal_alignment = 1
+
+[node name="LevelSelection" type="OptionButton" parent="TitlePage" unique_id=232903513]
+layout_mode = 0
+offset_left = 448.0
+offset_top = 248.0
+offset_right = 512.0
+offset_bottom = 279.0
+selected = 0
+item_count = 6
+popup/item_0/text = "0"
+popup/item_0/id = 0
+popup/item_1/text = "1"
+popup/item_1/id = 1
+popup/item_2/text = "2"
+popup/item_2/id = 2
+popup/item_3/text = "3"
+popup/item_3/id = 3
+popup/item_4/text = "4"
+popup/item_4/id = 4
+popup/item_5/text = "5"
+popup/item_5/id = 5
+
+[node name="RoomReader" parent="." unique_id=1630330285 instance=ExtResource("2_v763k")]
+
+[connection signal="pressed" from="TitlePage/Level" to="." method="_on_level_pressed"]
+[connection signal="pressed" from="TitlePage/Sandbox" to="." method="_on_sandbox_pressed"]

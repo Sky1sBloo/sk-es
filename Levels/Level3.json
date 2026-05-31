@@ -1,0 +1,21 @@
+{
+	"start": {
+		"x": -1,
+		"y": -1
+	},
+	"exit": {
+		"x": -1,
+		"y": -1
+	},
+	"objective": "Make Jani open 3 doors",
+	"goals": {
+		"door_opened": 3
+	},
+	"limits": {
+	},
+	"layout": [],
+	"doors": [],
+	"containers": [],
+	"furnitures": [],
+	"traps": []
+}

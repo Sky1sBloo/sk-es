@@ -3,270 +3,182 @@
 [ext_resource type="PackedScene" uid="uid://silxonupiov8" path="res://GameObjects/Jani/jani.tscn" id="1_a02cp"]
 [ext_resource type="Script" uid="uid://bb583xfii63f" path="res://Scenes/World/world.gd" id="1_go701"]
 [ext_resource type="Script" uid="uid://b4y6v2kv55w11" path="res://Scenes/World/room.gd" id="2_8j60k"]
-[ext_resource type="Texture2D" uid="uid://ddcghq7cuk2tn" path="res://Sprites/Environment.png" id="3_5a7ea"]
-[ext_resource type="Texture2D" uid="uid://cqu1ei31uspcj" path="res://Sprites/Placeholder.png" id="5_7staa"]
-[ext_resource type="Script" uid="uid://b2d2mtpmypsea" path="res://Scenes/World/room_reader.gd" id="5_fo5ed"]
+[ext_resource type="Script" uid="uid://c7b3601t5ku8o" path="res://Scenes/World/goal_counter.gd" id="3_0ph6x"]
+[ext_resource type="PackedScene" uid="uid://b1i6ww2ao7mda" path="res://Scenes/tile_map_room_composition.tscn" id="4_ugf0j"]
+[ext_resource type="PackedScene" uid="uid://bqad8pgonm6yj" path="res://Scenes/tile_map_details.tscn" id="5_ugf0j"]
 [ext_resource type="Script" uid="uid://b3lnwbdck10e5" path="res://Scenes/World/interaction_handler.gd" id="7_7staa"]
+[ext_resource type="PackedScene" uid="uid://cmkeeifwk3e1l" path="res://Scenes/room_reader.tscn" id="8_0ph6x"]
 [ext_resource type="Script" uid="uid://c7l1rwd2ncfg0" path="res://Scenes/World/hud.gd" id="8_fcotr"]
 [ext_resource type="PackedScene" uid="uid://c4ptu88aurk7j" path="res://GameObjects/Details/inventory_collection_animation.tscn" id="9_y0d6x"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8j60k"]
-texture = ExtResource("3_5a7ea")
-0:0/0 = 0
-0:0/0/terrain_set = 0
-0:0/0/terrain = 0
-0:0/0/terrains_peering_bit/bottom_side = 0
-1:0/0 = 0
-1:0/0/terrain_set = 0
-1:0/0/terrain = 0
-1:0/0/terrains_peering_bit/right_side = 0
-1:0/0/terrains_peering_bit/bottom_side = 0
-2:0/0 = 0
-2:0/0/terrain_set = 0
-2:0/0/terrain = 0
-2:0/0/terrains_peering_bit/right_side = 0
-2:0/0/terrains_peering_bit/left_side = 0
-3:0/0 = 0
-3:0/0/terrain_set = 0
-3:0/0/terrain = 0
-3:0/0/terrains_peering_bit/bottom_side = 0
-3:0/0/terrains_peering_bit/left_side = 0
-0:1/0 = 0
-0:1/0/terrain_set = 0
-0:1/0/terrain = 0
-0:1/0/terrains_peering_bit/bottom_side = 0
-0:1/0/terrains_peering_bit/top_side = 0
-1:1/0 = 0
-1:1/0/terrain_set = 0
-1:1/0/terrain = 0
-1:1/0/terrains_peering_bit/bottom_side = 0
-1:1/0/terrains_peering_bit/top_side = 0
-3:1/0 = 0
-3:1/0/terrain_set = 0
-3:1/0/terrain = 0
-3:1/0/terrains_peering_bit/bottom_side = 0
-3:1/0/terrains_peering_bit/top_side = 0
-0:2/0 = 0
-0:2/0/terrain_set = 0
-0:2/0/terrain = 0
-0:2/0/terrains_peering_bit/top_side = 0
-1:2/0 = 0
-1:2/0/terrain_set = 0
-1:2/0/terrain = 0
-1:2/0/terrains_peering_bit/right_side = 0
-1:2/0/terrains_peering_bit/top_side = 0
-2:2/0 = 0
-2:2/0/terrain_set = 0
-2:2/0/terrain = 0
-2:2/0/terrains_peering_bit/right_side = 0
-2:2/0/terrains_peering_bit/left_side = 0
-2:2/0/terrains_peering_bit/top_side = 0
-3:2/0 = 0
-3:2/0/terrain_set = 0
-3:2/0/terrain = 0
-3:2/0/terrains_peering_bit/left_side = 0
-3:2/0/terrains_peering_bit/top_side = 0
-0:3/0 = 0
-0:3/0/terrain_set = 0
-0:3/0/terrain = 0
-1:3/0 = 0
-1:3/0/terrain_set = 0
-1:3/0/terrain = 0
-1:3/0/terrains_peering_bit/right_side = 0
-2:3/0 = 0
-2:3/0/terrain_set = 0
-2:3/0/terrain = 0
-2:3/0/terrains_peering_bit/right_side = 0
-2:3/0/terrains_peering_bit/left_side = 0
-3:3/0 = 0
-3:3/0/terrain_set = 0
-3:3/0/terrain = 0
-3:3/0/terrains_peering_bit/left_side = 0
-4:0/0 = 0
-4:0/0/terrain_set = 0
-4:0/0/terrain = 0
-4:0/0/terrains_peering_bit/right_side = 0
-4:0/0/terrains_peering_bit/bottom_side = 0
-4:0/0/terrains_peering_bit/top_side = 0
-4:1/0 = 0
-4:1/0/terrain_set = 0
-4:1/0/terrain = 0
-4:1/0/terrains_peering_bit/bottom_side = 0
-4:1/0/terrains_peering_bit/left_side = 0
-4:1/0/terrains_peering_bit/top_side = 0
-5:0/0 = 0
-5:0/0/terrain_set = 0
-5:0/0/terrain = 0
-5:0/0/terrains_peering_bit/right_side = 0
-5:0/0/terrains_peering_bit/bottom_side = 0
-5:0/0/terrains_peering_bit/left_side = 0
-5:1/0 = 0
-5:1/0/terrain_set = 0
-5:1/0/terrain = 0
-5:1/0/terrains_peering_bit/right_side = 0
-5:1/0/terrains_peering_bit/bottom_side = 0
-5:1/0/terrains_peering_bit/left_side = 0
-5:1/0/terrains_peering_bit/top_side = 0
-6:0/0 = 0
-6:0/0/terrain_set = 0
-6:0/0/terrain = 1
-6:0/0/terrains_peering_bit/right_side = 0
-6:0/0/terrains_peering_bit/left_side = 0
-7:0/0 = 0
-7:1/0 = 0
-6:1/0 = 0
-6:2/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_fo5ed"]
-terrain_set_0/mode = 2
-terrain_set_0/terrain_0/name = "Walls"
-terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
-terrain_set_0/terrain_1/name = "Doors"
-terrain_set_0/terrain_1/color = Color(0.5, 0.4375, 0.25, 1)
-sources/0 = SubResource("TileSetAtlasSource_8j60k")
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fcotr"]
-texture = ExtResource("5_7staa")
-0:0/0 = 0
-1:0/0 = 0
-3:0/0 = 0
-1:2/0 = 0
-2:2/0 = 0
-3:2/0 = 0
-0:3/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_y0d6x"]
-sources/0 = SubResource("TileSetAtlasSource_fcotr")
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7staa"]
-texture = ExtResource("5_7staa")
-0:1/0 = 0
-1:1/0 = 0
-2:1/0 = 0
-3:1/0 = 0
-14:7/0 = 0
-0:2/0 = 0
-2:0/0 = 0
-4:0/0 = 0
-5:0/0 = 0
-6:0/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_fcotr"]
-sources/0 = SubResource("TileSetAtlasSource_7staa")
 
 [node name="World" type="Node" unique_id=28969131]
 script = ExtResource("1_go701")
 
-[node name="Room" type="Node2D" parent="." unique_id=1047963504 node_paths=PackedStringArray("composition_map", "details_map")]
+[node name="GoalCounter" type="Node" parent="." unique_id=1768265958]
+script = ExtResource("3_0ph6x")
+
+[node name="Timer" type="Timer" parent="GoalCounter" unique_id=2014408878]
+
+[node name="Room" type="Node2D" parent="." unique_id=1047963504 node_paths=PackedStringArray("composition_map", "details_map", "jani")]
 position = Vector2(64, 128)
 script = ExtResource("2_8j60k")
 composition_map = NodePath("TileMap/TileMapRoomComposition")
 details_map = NodePath("TileMap/TileMapDetails")
-
-[node name="OldTilemap" type="TileMapLayer" parent="Room" unique_id=1815452842]
-visible = false
-scale = Vector2(2, 2)
-tile_set = SubResource("TileSet_fo5ed")
+jani = NodePath("Jani")
 
 [node name="TileMap" type="Node" parent="Room" unique_id=609749231]
 
-[node name="TileMapRoomComposition" type="TileMapLayer" parent="Room/TileMap" unique_id=1096967341]
+[node name="TileMapRoomComposition" parent="Room/TileMap" unique_id=374275345 instance=ExtResource("4_ugf0j")]
 position = Vector2(64, 128)
-scale = Vector2(2, 2)
-tile_set = SubResource("TileSet_y0d6x")
 
-[node name="TileMapDetails" type="TileMapLayer" parent="Room/TileMap" unique_id=723559531]
+[node name="TileMapDetails" parent="Room/TileMap" unique_id=667878711 instance=ExtResource("5_ugf0j")]
 position = Vector2(64, 128)
-scale = Vector2(2, 2)
-tile_set = SubResource("TileSet_fcotr")
 
 [node name="Jani" parent="Room" unique_id=1675082522 node_paths=PackedStringArray("world") instance=ExtResource("1_a02cp")]
 z_index = 1
 wasd_control = false
 world = NodePath("../..")
 
-[node name="RoomReader" type="Node" parent="." unique_id=1029788623]
-script = ExtResource("5_fo5ed")
+[node name="RoomReader" parent="." unique_id=1630330285 instance=ExtResource("8_0ph6x")]
 
 [node name="InteractionHandler" type="Node" parent="." unique_id=575979488]
 script = ExtResource("7_7staa")
 
 [node name="InventoryCollectionAnimation" parent="InteractionHandler" unique_id=930793992 instance=ExtResource("9_y0d6x")]
 
-[node name="HUD" type="Control" parent="." unique_id=1025702629]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=340670238]
+anchor_mode = 0
+
+[node name="HUD" type="Control" parent="Camera2D" unique_id=1025702629]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 640.0
 offset_bottom = 96.0
 script = ExtResource("8_fcotr")
 
-[node name="ActionHeading" type="Label" parent="HUD" unique_id=1283752672]
+[node name="ActionHeading" type="Label" parent="Camera2D/HUD" unique_id=1283752672]
 layout_mode = 0
-offset_left = 528.0
+offset_left = 224.0
 offset_top = 16.0
-offset_right = 608.0
+offset_right = 304.0
 offset_bottom = 28.0
 theme_override_font_sizes/font_size = 8
 text = "Action:"
 
-[node name="Actions" type="RichTextLabel" parent="HUD" unique_id=1847753273]
+[node name="Actions" type="RichTextLabel" parent="Camera2D/HUD" unique_id=1847753273]
 layout_mode = 0
-offset_left = 528.0
-offset_top = 32.0
-offset_right = 624.0
-offset_bottom = 112.0
-theme_override_font_sizes/normal_font_size = 8
-
-[node name="InventoryHeading" type="Label" parent="HUD" unique_id=2120830503]
-layout_mode = 0
-offset_left = 400.0
-offset_top = 16.0
-offset_right = 480.0
-offset_bottom = 28.0
-theme_override_font_sizes/font_size = 8
-text = "Inventory:"
-
-[node name="Inventory" type="RichTextLabel" parent="HUD" unique_id=133921665]
-layout_mode = 0
-offset_left = 400.0
-offset_top = 32.0
-offset_right = 496.0
-offset_bottom = 112.0
-theme_override_font_sizes/normal_font_size = 8
-
-[node name="FactsHeading" type="Label" parent="HUD" unique_id=1045521919]
-layout_mode = 0
-offset_left = 144.0
-offset_top = 16.0
-offset_right = 208.0
-offset_bottom = 28.0
-theme_override_font_sizes/font_size = 8
-text = "Facts:"
-
-[node name="Facts" type="RichTextLabel" parent="HUD" unique_id=494151261]
-layout_mode = 0
-offset_left = 144.0
+offset_left = 224.0
 offset_top = 32.0
 offset_right = 368.0
 offset_bottom = 112.0
 theme_override_font_sizes/normal_font_size = 8
 
-[node name="TrapLocations" type="RichTextLabel" parent="HUD" unique_id=428096443]
+[node name="InventoryHeading" type="Label" parent="Camera2D/HUD" unique_id=2120830503]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 32.0
-offset_right = 112.0
-offset_bottom = 112.0
-theme_override_font_sizes/normal_font_size = 8
+offset_left = 624.0
+offset_top = 16.0
+offset_right = 704.0
+offset_bottom = 28.0
+theme_override_font_sizes/font_size = 8
+text = "Inventory:"
 
-[node name="TrapHeading" type="Label" parent="HUD" unique_id=1230214109]
+[node name="Objectives" type="Label" parent="Camera2D/HUD" unique_id=495500413]
+layout_mode = 0
+offset_left = 624.0
+offset_top = 256.0
+offset_right = 752.0
+offset_bottom = 352.0
+theme_override_font_sizes/font_size = 8
+
+[node name="ObjectivesHeading" type="Label" parent="Camera2D/HUD" unique_id=1305379165]
+layout_mode = 0
+offset_left = 624.0
+offset_top = 240.0
+offset_right = 704.0
+offset_bottom = 252.0
+theme_override_font_sizes/font_size = 8
+text = "Objectives:"
+
+[node name="FactsHeading" type="Label" parent="Camera2D/HUD" unique_id=1045521919]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 16.0
 offset_right = 80.0
 offset_bottom = 28.0
 theme_override_font_sizes/font_size = 8
-text = "Trap Locations:"
+text = "Facts:"
 
+[node name="Facts" type="RichTextLabel" parent="Camera2D/HUD" unique_id=494151261]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 32.0
+offset_right = 208.0
+offset_bottom = 112.0
+theme_override_font_sizes/normal_font_size = 8
+
+[node name="InventoryList" type="ItemList" parent="Camera2D/HUD" unique_id=1001849943]
+layout_mode = 0
+offset_left = 624.0
+offset_top = 32.0
+offset_right = 704.0
+offset_bottom = 224.0
+theme_override_font_sizes/font_size = 8
+max_columns = 2
+fixed_column_width = 32
+icon_scale = 2.0
+
+[node name="MenuBtn" type="Button" parent="Camera2D/HUD" unique_id=1677209402]
+layout_mode = 0
+offset_left = 656.0
+offset_top = 432.0
+offset_right = 752.0
+offset_bottom = 464.0
+theme_override_font_sizes/font_size = 12
+text = "Menu"
+
+[node name="RestartBtn" type="Button" parent="Camera2D/HUD" unique_id=1191544948]
+layout_mode = 0
+offset_left = 656.0
+offset_top = 384.0
+offset_right = 752.0
+offset_bottom = 416.0
+theme_override_font_sizes/font_size = 12
+text = "Restart"
+
+[node name="Result" type="Control" parent="Camera2D/HUD" unique_id=907032713]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="Camera2D/HUD/Result" unique_id=1448524528]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 192.0
+offset_right = 512.0
+offset_bottom = 272.0
+color = Color(0, 0, 0, 0.49019608)
+
+[node name="PassedLabel" type="Label" parent="Camera2D/HUD/Result" unique_id=1586788540]
+z_index = 10
+layout_mode = 0
+offset_left = 240.0
+offset_top = 192.0
+offset_right = 512.0
+offset_bottom = 280.0
+theme_override_font_sizes/font_size = 64
+text = "PASSED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="objectives_completed" from="GoalCounter" to="." method="_on_objectives_completed"]
+[connection signal="objectives_completed" from="GoalCounter" to="Camera2D/HUD" method="_on_goal_counter_objectives_completed"]
+[connection signal="action_finished" from="Room/Jani" to="InteractionHandler" method="_on_jani_action_finished"]
+[connection signal="interacted" from="Room/Jani" to="GoalCounter" method="_on_jani_interacted"]
 [connection signal="interacted" from="Room/Jani" to="InteractionHandler" method="_on_jani_interacted"]
+[connection signal="move_finished" from="Room/Jani" to="GoalCounter" method="_on_jani_move_finished"]
 [connection signal="move_finished" from="Room/Jani" to="InteractionHandler" method="_on_jani_move_finished"]
+[connection signal="exit_reached" from="InteractionHandler" to="." method="_on_interaction_handler_exit_reached"]
+[connection signal="exit_reached" from="InteractionHandler" to="Camera2D/HUD" method="_on_interaction_handler_exit_reached"]
+[connection signal="pressed" from="Camera2D/HUD/MenuBtn" to="." method="_on_menu_btn_pressed"]
+[connection signal="pressed" from="Camera2D/HUD/RestartBtn" to="." method="_on_restart_btn_pressed"]

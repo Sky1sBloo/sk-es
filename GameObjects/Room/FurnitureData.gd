@@ -14,3 +14,9 @@ static var str_to_type: Dictionary[String, Types] = {
 func initialize(pos: Vector2i, new_type: String) -> void:
 	grid_pos = pos
 	type = str_to_type[new_type]
+
+func clone() -> FurnitureData:
+	var copy: = FurnitureData.new()
+	copy.grid_pos = grid_pos
+	copy.type = type
+	return copy

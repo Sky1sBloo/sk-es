@@ -15,6 +15,7 @@ enum ItemType {
 }
 
 var contents: Array[ItemType] = []
+signal crafted_item(item: ItemType, recipe: Array[ItemType])
 
 func push_item(item: ItemType) -> void:
 	contents.push_back(item)
@@ -45,6 +46,7 @@ func craft_item(item: Inventory.ItemType) -> void:
 	
 	for del in to_delete:
 		contents.erase(del)
+	crafted_item.emit(recipe.item, recipe.requirements)
 
 func clear() -> void:
 	contents.clear()

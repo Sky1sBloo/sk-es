@@ -12,6 +12,9 @@ class_name Jani
 @export var wasd_control: bool
 @export var world: World
 
+@warning_ignore("unused_signal")
+signal action_finished(action: Action)
+
 # Used to set origin position for offset
 var _position_offset: Vector2 = Vector2.ZERO
 
@@ -21,11 +24,12 @@ signal move_finished(pos: Vector2i)
 signal move_instruction_finished(pos: Vector2i)
 signal interacted(action: Action, pos: Vector2i, args: Array)
 
-var speed: int = 100 # 64
+var speed: int = 128 # 64
 var direction: Vector2 = Vector2(0, 0)
 var facing_direction: Vector2 = Vector2(0, 0)  # Used for animation
 var target_directions: Array = []
 var grid_position: Vector2
+var is_stunned: bool = false
 
 var state: JaniStateHandler.States:
 	get:
@@ -84,6 +88,18 @@ func clear_move_queue() -> void:
 
 func interact(action: Action, pos: Vector2i = grid_position, args: Array = []) -> void:
 	interacted.emit(action, pos, args)
+
+func stun(duration: float) -> void:
+	is_stunned = true
+	set_process(false) # stops AI logic
+	set_physics_process(false)
+	anim_tree.active = false
+	var timer := get_tree().create_timer(duration)
+	await timer.timeout
+	set_process(true)
+	set_physics_process(true)
+	anim_tree.active = true
+	is_stunned = false
 
 func _control_manually() -> void:
 	var input_dir = Input.get_vector("move_left", "move_right", "move_up", "move_down").normalized()
