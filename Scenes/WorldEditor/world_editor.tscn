@@ -254,6 +254,14 @@ offset_right = 760.0
 offset_bottom = 472.0
 text = "Start"
 
+[node name="BackBtn" type="Button" parent="HUD" unique_id=1455947984]
+layout_mode = 0
+offset_left = 648.0
+offset_top = 416.0
+offset_right = 696.0
+offset_bottom = 472.0
+text = "Back"
+
 [node name="World" type="Node2D" parent="." unique_id=521958938]
 position = Vector2(32, 128)
 
@@ -281,3 +289,4 @@ position = Vector2(32, 128)
 [connection signal="pressed" from="HUD/WorldSelection/AddItem" to="HUD/WorldSelection" method="_on_add_item_pressed"]
 [connection signal="pressed" from="HUD/WorldSelection/DeleteItem" to="HUD/WorldSelection" method="_on_delete_item_pressed"]
 [connection signal="pressed" from="HUD/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="HUD/BackBtn" to="." method="_on_back_btn_pressed"]

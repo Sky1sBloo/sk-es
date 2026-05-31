@@ -19,7 +19,7 @@ func reset() -> void:
 func start(keep_memory: bool = false) -> void:
 	var room_details: = GameConfiguration.room_details
 	if room_details == null:
-		room_details = room_reader.get_level("res://Levels/TestLevel.json")
+		room_details = room_reader.get_level("res://Levels/Sandbox.json")
 	
 	room.initialize(room_details)
 	goal_counter.initialize(room_details)

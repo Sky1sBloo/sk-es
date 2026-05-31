@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://cmkeeifwk3e1l" path="res://Scenes/room_reader.tscn" id="8_0ph6x"]
 [ext_resource type="Script" uid="uid://c7l1rwd2ncfg0" path="res://Scenes/World/hud.gd" id="8_fcotr"]
 [ext_resource type="PackedScene" uid="uid://c4ptu88aurk7j" path="res://GameObjects/Details/inventory_collection_animation.tscn" id="9_y0d6x"]
+[ext_resource type="Texture2D" uid="uid://6xyen22ggvvx" path="res://Sprites/Items/AxeHead.png" id="11_0ph6x"]
+[ext_resource type="Texture2D" uid="uid://cfe83ej0be7uw" path="res://Sprites/Items/RedKey.png" id="12_pvt60"]
 
 [node name="World" type="Node" unique_id=28969131]
 script = ExtResource("1_go701")
@@ -58,37 +60,38 @@ script = ExtResource("8_fcotr")
 
 [node name="ActionHeading" type="Label" parent="Camera2D/HUD" unique_id=1283752672]
 layout_mode = 0
-offset_left = 336.0
+offset_left = 224.0
 offset_top = 16.0
-offset_right = 416.0
+offset_right = 304.0
 offset_bottom = 28.0
 theme_override_font_sizes/font_size = 8
 text = "Action:"
 
 [node name="Actions" type="RichTextLabel" parent="Camera2D/HUD" unique_id=1847753273]
 layout_mode = 0
-offset_left = 336.0
+offset_left = 224.0
 offset_top = 32.0
-offset_right = 480.0
+offset_right = 368.0
 offset_bottom = 112.0
 theme_override_font_sizes/normal_font_size = 8
 
 [node name="InventoryHeading" type="Label" parent="Camera2D/HUD" unique_id=2120830503]
 layout_mode = 0
-offset_left = 224.0
+offset_left = 656.0
 offset_top = 16.0
-offset_right = 304.0
+offset_right = 736.0
 offset_bottom = 28.0
 theme_override_font_sizes/font_size = 8
 text = "Inventory:"
 
-[node name="Inventory" type="RichTextLabel" parent="Camera2D/HUD" unique_id=133921665]
+[node name="ObjectivesHeading" type="Label" parent="Camera2D/HUD" unique_id=1305379165]
 layout_mode = 0
-offset_left = 224.0
-offset_top = 32.0
-offset_right = 320.0
-offset_bottom = 112.0
-theme_override_font_sizes/normal_font_size = 8
+offset_left = 656.0
+offset_top = 240.0
+offset_right = 736.0
+offset_bottom = 252.0
+theme_override_font_sizes/font_size = 8
+text = "Objectives:"
 
 [node name="FactsHeading" type="Label" parent="Camera2D/HUD" unique_id=1045521919]
 layout_mode = 0
@@ -106,6 +109,24 @@ offset_top = 32.0
 offset_right = 208.0
 offset_bottom = 112.0
 theme_override_font_sizes/normal_font_size = 8
+
+[node name="InventoryList" type="ItemList" parent="Camera2D/HUD" unique_id=1001849943]
+layout_mode = 0
+offset_left = 656.0
+offset_top = 32.0
+offset_right = 736.0
+offset_bottom = 224.0
+theme_override_font_sizes/font_size = 8
+item_count = 4
+max_columns = 2
+fixed_column_width = 32
+icon_scale = 2.0
+item_0/icon = ExtResource("11_0ph6x")
+item_0/selectable = false
+item_1/icon = ExtResource("12_pvt60")
+item_1/selectable = false
+item_2/text = "T"
+item_3/text = "T"
 
 [connection signal="objectives_completed" from="GoalCounter" to="." method="_on_objectives_completed"]
 [connection signal="action_finished" from="Room/Jani" to="InteractionHandler" method="_on_jani_action_finished"]

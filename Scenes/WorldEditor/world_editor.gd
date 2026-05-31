@@ -337,3 +337,7 @@ func _on_lock_selection_item_selected(index: int) -> void:
 	room_details.doors[edit_pos].lock_type = index as DoorsData.LockTypes
 	var detail_type: = TileMapDetails.lock_type_to_detail(world_selection.lock_type)
 	tile_map_details.set_cell_type(edit_pos, detail_type)
+
+
+func _on_back_btn_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/MainMenu/main_menu.tscn")
