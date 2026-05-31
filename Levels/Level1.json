@@ -7,7 +7,7 @@
 		"x": -1,
 		"y": -1
 	},
-	"objective": "Make a boarded door",
+	"objective": "Make a boarded door. Place table to craft axe.",
 	"goals": {
 		"container_checked": 1,
 		"door_opened": 1,

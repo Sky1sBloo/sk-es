@@ -1,0 +1,22 @@
+{
+	"start": {
+		"x": -1,
+		"y": -1
+	},
+	"exit": {
+		"x": -1,
+		"y": -1
+	},
+	"objective": "Make Jani fall into 2 traps",
+	"goals": {
+		"trap_triggered": 2
+	},
+	"limits": {
+		"trap_limit": 2
+	},
+	"layout": [],
+	"doors": [],
+	"containers": [],
+	"furnitures": [],
+	"traps": []
+}
