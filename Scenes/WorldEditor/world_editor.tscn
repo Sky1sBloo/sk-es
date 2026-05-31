@@ -50,21 +50,23 @@ offset_right = 216.0
 offset_bottom = 33.0
 theme_override_font_sizes/font_size = 12
 selected = 0
-item_count = 7
+item_count = 8
 popup/item_0/text = "Walls"
 popup/item_0/id = 0
 popup/item_1/text = "Doors"
 popup/item_1/id = 1
 popup/item_2/text = "Containers"
 popup/item_2/id = 2
-popup/item_3/text = "Trap"
+popup/item_3/text = "Spike"
 popup/item_3/id = 3
-popup/item_4/text = "Table"
+popup/item_4/text = "Glue"
 popup/item_4/id = 4
-popup/item_5/text = "Exit"
+popup/item_5/text = "Table"
 popup/item_5/id = 5
-popup/item_6/text = "StartPos"
+popup/item_6/text = "Exit"
 popup/item_6/id = 6
+popup/item_7/text = "StartPos"
+popup/item_7/id = 7
 
 [node name="LockSelection" type="OptionButton" parent="HUD/WorldSelection" unique_id=1428544698]
 offset_left = 224.0
@@ -133,12 +135,14 @@ text = "-"
 [node name="ContentLbl" type="Label" parent="HUD/Details" unique_id=1913507533]
 offset_left = 16.0
 offset_top = 72.0
-offset_right = 91.0
-offset_bottom = 89.0
+offset_right = 80.0
+offset_bottom = 96.0
 theme_override_font_sizes/font_size = 12
 text = "Contents:"
+vertical_alignment = 1
 
 [node name="Contents" type="Label" parent="HUD/Details" unique_id=1243396197]
+visible = false
 offset_left = 80.0
 offset_top = 72.0
 offset_right = 408.0
@@ -161,6 +165,16 @@ offset_right = 64.0
 offset_bottom = 65.0
 theme_override_font_sizes/font_size = 12
 text = "Type:"
+
+[node name="ContentsList" type="ItemList" parent="HUD/Details" unique_id=1693927379]
+offset_left = 80.0
+offset_top = 64.0
+offset_right = 384.0
+offset_bottom = 104.0
+theme_override_font_sizes/font_size = 8
+max_columns = 7
+fixed_column_width = 32
+icon_scale = 2.0
 
 [node name="LevelInfo" type="Node" parent="HUD" unique_id=187109521]
 

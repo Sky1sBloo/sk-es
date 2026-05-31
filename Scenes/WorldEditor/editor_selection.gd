@@ -10,7 +10,8 @@ enum PlaceType {
 	WALLS,
 	DOORS,
 	CONTAINERS,
-	TRAP,
+	SPIKE,
+	GLUE,
 	TABLE,
 	EXIT,
 	START_POS

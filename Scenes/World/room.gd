@@ -38,8 +38,11 @@ func load_composition_map() -> void:
 	
 	for pos in room_details.traps:
 		var trap: = room_details.traps[pos]
+		var composition_type: = TileMapComposition.CompositionType.SPIKE
+		if trap.type == TrapData.Types.GLUE:
+			composition_type = TileMapComposition.CompositionType.GLUE
 		composition_map.set_cell_type(trap.grid_pos, 
-			TileMapComposition.CompositionType.SPIKE)
+			composition_type)
 
 func load_details_map() -> void:
 	_load_locks()
