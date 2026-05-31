@@ -349,6 +349,8 @@ func _on_lock_selection_item_selected(index: int) -> void:
 	if not room_details.doors.has(edit_pos):
 		return
 	room_details.doors[edit_pos].lock_type = index as DoorsData.LockTypes
+	room_details.doors[edit_pos].is_locked = room_details.doors[edit_pos].lock_type != \
+		DoorsData.LockTypes.NONE
 	var detail_type: = TileMapDetails.lock_type_to_detail(world_selection.lock_type)
 	tile_map_details.set_cell_type(edit_pos, detail_type)
 
