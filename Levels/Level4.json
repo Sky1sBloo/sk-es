@@ -12,6 +12,10 @@
 		"cost_reached": 400
 	},
 	"limits": {
+		"door_limit": 5,
+		"container_limit": 15,
+		"trap_limit": 3,
+		"furniture_limit": 10
 	},
 	"layout": [],
 	"doors": [],

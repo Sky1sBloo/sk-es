@@ -11,6 +11,10 @@
 	"goals": {
 	},
 	"limits": {
+		"door_limit": 99,
+		"container_limit": 99,
+		"trap_limit": 99,
+		"furniture_limit": 99
 	},
 	"layout": [],
 	"doors": [],
