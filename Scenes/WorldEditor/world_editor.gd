@@ -229,7 +229,7 @@ func _place_door(place_pos: Vector2i) -> void:
 	var door: = DoorsData.new()
 	door.initialize(place_pos)
 	door.lock_type = world_selection.lock_type
-	door.is_locked = door.lock_type != DoorsData.LockTypes.NONE
+	door.is_locked = world_selection.lock_type != DoorsData.LockTypes.NONE
 	room_details.doors[place_pos] = door
 	_refresh_limits()
 
