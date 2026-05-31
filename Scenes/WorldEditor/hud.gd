@@ -3,9 +3,11 @@ class_name EditorHud
 
 @onready var cell_type_lbl: = $Details/CellType
 @onready var contents_lbl: = $Details/Contents
+@onready var contents_list: = $Details/ContentsList
 @onready var world_selection: = $WorldSelection
 @onready var objectives_lbl: = $LevelInfo/Objectives
 @onready var start_btn: = $StartButton
+
 
 @export var limit_handler: LimitHandler
 
@@ -31,16 +33,28 @@ func set_objective(objective: String) -> void:
 	objectives_lbl.text = objective
 
 func update_contents(content: Array[Inventory.ItemType]) -> void:
+	contents_list.clear()
 	contents_lbl.text = "["
 	for item in content:
 		contents_lbl.text += Inventory.type_to_string(item) + ", "
+		contents_list.add_icon_item(load(_item_to_tex[item]))
 	contents_lbl.text += "]"
+
+static var _item_to_tex: Dictionary[Inventory.ItemType, String] = {
+	Inventory.ItemType.RED_KEY: "res://Sprites/Items/RedKey.png",
+	Inventory.ItemType.YELLOW_KEY: "res://Sprites/Items/YellowKey.png",
+	Inventory.ItemType.GREEN_KEY: "res://Sprites/Items/GreenKey.png",
+	Inventory.ItemType.AXE: "res://Sprites/Items/Axe.png",
+	Inventory.ItemType.AXE_HEAD: "res://Sprites/Items/AxeHead.png",
+	Inventory.ItemType.STICK: "res://Sprites/Items/Stick.png",
+	Inventory.ItemType.ROPE: "res://Sprites/Items/Rope.png"
+}
 
 func _on_world_editor_edit_selected(pos: Vector2i, room_details: RoomDetails) -> void:
 	world_selection.item_selection.disabled = true
 	world_selection.lock_selection.disabled = true
 	
-	contents_lbl.text = "[]"
+	contents_lbl.text = "["
 	if room_details.room_layout[pos.y][pos.x] == 1:
 		cell_type_lbl.text = "Wall"
 		return

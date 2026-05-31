@@ -133,12 +133,14 @@ text = "-"
 [node name="ContentLbl" type="Label" parent="HUD/Details" unique_id=1913507533]
 offset_left = 16.0
 offset_top = 72.0
-offset_right = 91.0
-offset_bottom = 89.0
+offset_right = 80.0
+offset_bottom = 96.0
 theme_override_font_sizes/font_size = 12
 text = "Contents:"
+vertical_alignment = 1
 
 [node name="Contents" type="Label" parent="HUD/Details" unique_id=1243396197]
+visible = false
 offset_left = 80.0
 offset_top = 72.0
 offset_right = 408.0
@@ -161,6 +163,16 @@ offset_right = 64.0
 offset_bottom = 65.0
 theme_override_font_sizes/font_size = 12
 text = "Type:"
+
+[node name="ContentsList" type="ItemList" parent="HUD/Details" unique_id=1693927379]
+offset_left = 80.0
+offset_top = 64.0
+offset_right = 384.0
+offset_bottom = 104.0
+theme_override_font_sizes/font_size = 8
+max_columns = 7
+fixed_column_width = 32
+icon_scale = 2.0
 
 [node name="LevelInfo" type="Node" parent="HUD" unique_id=187109521]
 
