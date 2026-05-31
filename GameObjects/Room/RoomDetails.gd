@@ -44,28 +44,28 @@ func clone() -> RoomDetails:
 	var copy = RoomDetails.new()
 	copy.objective = objective
 	copy.init_player_position = init_player_position
-	print(init_player_position)
+	copy.exit = exit
 	# --- Room layout (2D array) ---
 	copy.room_layout = []
 	for row in room_layout:
 		copy.room_layout.append(row.duplicate(true))
 	# --- Doors (deep copy) ---
-	copy.doors = {}
+	
 	for pos in doors:
 		if doors[pos] != null:
 			copy.doors[pos] = doors[pos].clone()
 	# --- Containers (deep copy) ---
-	copy.containers = {}
+	
 	for pos in containers:
 		if containers[pos] != null:
 			copy.containers[pos] = containers[pos].clone()
 	# --- Furnitures (deep copy) ---
-	copy.furnitures = {}
+	
 	for pos in furnitures:
 		if furnitures[pos] != null:
 			copy.furnitures[pos] = furnitures[pos].clone()
 	# --- Traps (deep copy) ---
-	copy.traps = {}
+	
 	for pos in traps:
 		if traps[pos] != null:
 			copy.traps[pos] = traps[pos].clone()

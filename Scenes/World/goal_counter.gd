@@ -7,7 +7,7 @@ var container_checked: int = 0
 var door_opened: int = 0
 var trap_triggered: int = 0
 var crafted_item: int = 0
-var action_cost: int = 0
+var cost_reached: int = 0
 
 signal objectives_completed
 
@@ -20,7 +20,7 @@ func initialize(room_details: RoomDetails) -> void:
 			room_details.traps[pos].triggered.connect(_on_trap_triggered)
 
 func update_cost(new_cost: int) -> void:
-	action_cost = new_cost
+	cost_reached = new_cost
 
 
 func _on_jani_move_finished(_pos: Vector2i) -> void:
@@ -75,7 +75,7 @@ func _objectives_met() -> bool:
 			"trap_triggered":
 				current = trap_triggered
 			"cost_reached":
-				current = action_cost
+				current = cost_reached
 			"crafted_item":
 				current = crafted_item
 			_:

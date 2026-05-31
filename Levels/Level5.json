@@ -7,11 +7,16 @@
 		"x": -1,
 		"y": -1
 	},
-	"objective": "Delay Jani for 400 action cost",
+	"objective": "Reach action cost of 250",
 	"goals": {
-		"cost_reached": 400
+		"cost_reached": 250
 	},
 	"limits": {
+		"wall_limit": 25,
+		"door_limit": 3,
+		"trap_limit": 1,
+		"container_limit": 1,
+		"furniture_limit": 1
 	},
 	"layout": [],
 	"doors": [],

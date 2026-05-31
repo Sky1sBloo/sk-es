@@ -127,6 +127,24 @@ max_columns = 2
 fixed_column_width = 32
 icon_scale = 2.0
 
+[node name="MenuBtn" type="Button" parent="Camera2D/HUD" unique_id=1677209402]
+layout_mode = 0
+offset_left = 656.0
+offset_top = 432.0
+offset_right = 752.0
+offset_bottom = 464.0
+theme_override_font_sizes/font_size = 12
+text = "Menu"
+
+[node name="RestartBtn" type="Button" parent="Camera2D/HUD" unique_id=1191544948]
+layout_mode = 0
+offset_left = 656.0
+offset_top = 384.0
+offset_right = 752.0
+offset_bottom = 416.0
+theme_override_font_sizes/font_size = 12
+text = "Restart"
+
 [node name="Result" type="Control" parent="Camera2D/HUD" unique_id=907032713]
 visible = false
 anchors_preset = 0
@@ -138,7 +156,7 @@ layout_mode = 0
 offset_left = 240.0
 offset_top = 192.0
 offset_right = 512.0
-offset_bottom = 320.0
+offset_bottom = 272.0
 color = Color(0, 0, 0, 0.49019608)
 
 [node name="PassedLabel" type="Label" parent="Camera2D/HUD/Result" unique_id=1586788540]
@@ -153,24 +171,6 @@ text = "PASSED"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MenuBtn" type="Button" parent="Camera2D/HUD/Result" unique_id=1677209402]
-layout_mode = 0
-offset_left = 272.0
-offset_top = 272.0
-offset_right = 368.0
-offset_bottom = 304.0
-theme_override_font_sizes/font_size = 12
-text = "Menu"
-
-[node name="RestartBtn" type="Button" parent="Camera2D/HUD/Result" unique_id=1191544948]
-layout_mode = 0
-offset_left = 384.0
-offset_top = 272.0
-offset_right = 480.0
-offset_bottom = 304.0
-theme_override_font_sizes/font_size = 12
-text = "Restart"
-
 [connection signal="objectives_completed" from="GoalCounter" to="." method="_on_objectives_completed"]
 [connection signal="objectives_completed" from="GoalCounter" to="Camera2D/HUD" method="_on_goal_counter_objectives_completed"]
 [connection signal="action_finished" from="Room/Jani" to="InteractionHandler" method="_on_jani_action_finished"]
@@ -180,5 +180,5 @@ text = "Restart"
 [connection signal="move_finished" from="Room/Jani" to="InteractionHandler" method="_on_jani_move_finished"]
 [connection signal="exit_reached" from="InteractionHandler" to="." method="_on_interaction_handler_exit_reached"]
 [connection signal="exit_reached" from="InteractionHandler" to="Camera2D/HUD" method="_on_interaction_handler_exit_reached"]
-[connection signal="pressed" from="Camera2D/HUD/Result/MenuBtn" to="." method="_on_menu_btn_pressed"]
-[connection signal="pressed" from="Camera2D/HUD/Result/RestartBtn" to="." method="_on_restart_btn_pressed"]
+[connection signal="pressed" from="Camera2D/HUD/MenuBtn" to="." method="_on_menu_btn_pressed"]
+[connection signal="pressed" from="Camera2D/HUD/RestartBtn" to="." method="_on_restart_btn_pressed"]

@@ -63,7 +63,7 @@ func _process(_delta: float) -> void:
 				"trap_triggered":
 					current = gc.trap_triggered
 				"cost_reached":
-					current = gc.action_cost
+					current = gc.cost_reached
 				"crafted_item":
 					current = gc.crafted_item
 				_:
