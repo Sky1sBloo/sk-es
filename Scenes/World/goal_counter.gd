@@ -1,11 +1,13 @@
 extends Node
+class_name GoalCounter
 
 var interaction_count: int = 0
 var move_count: int = 0
 var container_checked: int = 0
 var door_opened: int = 0
 var trap_triggered: int = 0
-var cost_reached: int = 0
+var crafted_item: int = 0
+var action_cost: int = 0
 
 signal objectives_completed
 
@@ -16,7 +18,10 @@ func initialize(room_details: RoomDetails) -> void:
 	for pos in room_details.traps:
 		if not room_details.traps[pos].triggered.is_connected(_on_trap_triggered):
 			room_details.traps[pos].triggered.connect(_on_trap_triggered)
-		print(pos)
+
+func update_cost(new_cost: int) -> void:
+	action_cost = new_cost
+
 
 func _on_jani_move_finished(_pos: Vector2i) -> void:
 	move_count += 1
@@ -30,7 +35,9 @@ func _on_jani_interacted(_action: Action, _pos: Vector2i, _args: Array) -> void:
 	
 	if _action.type == Action.Types.OPEN_DOOR:
 		door_opened += 1
-
+	
+	if _action.type == Action.Types.CRAFT_ITEM:
+		crafted_item += 1
 	_check_and_emit()
 
 func _on_trap_triggered(_grid_pos: Vector2i, _type: TrapData.Types) -> void:
@@ -53,11 +60,6 @@ func _check_and_emit() -> void:
 
 
 func _objectives_met() -> bool:
-	# If no goals defined, do not treat objectives as met.
-	if goals == null or goals.keys().size() == 0:
-		return false
-
-	# Iterate goals dictionary and compare against tracked counters.
 	for key in goals.keys():
 		var required = int(goals[key])
 		var current = 0
@@ -72,8 +74,27 @@ func _objectives_met() -> bool:
 				current = door_opened
 			"trap_triggered":
 				current = trap_triggered
+			"cost_reached":
+				current = action_cost
+			"crafted_item":
+				current = crafted_item
 			_:
 				continue
 		if current < required:
 			return false
 	return true
+
+static func goal_key_to_str(key: String) -> String:
+	if _goal_key_to_str.has(key):
+		return _goal_key_to_str[key]
+	return "Unknown objective: "
+
+static var _goal_key_to_str: Dictionary[String, String] = {
+	"interaction_count": "# of Interactions: ",
+	"move_count": "# of Moves: ",
+	"container_checked": "# of Checked Containers: ",
+	"door_opened": "# of Doors Opened: ",
+	"trap_triggered": "# of Traps Triggered: ",
+	"cost_reached": "Cost Reached: ",
+	"crafted_item": "# of Crafted Items: "
+}

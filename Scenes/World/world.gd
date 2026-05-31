@@ -7,7 +7,12 @@ class_name World
 @onready var room: Room = $Room
 @onready var goal_counter = $GoalCounter
 
-var action_cost: int = 0
+var action_cost: int = 0 :
+	get:
+		return action_cost
+	set(value):
+		action_cost = value
+		goal_counter.update_cost(value)
 
 func _ready() -> void:
 	start()

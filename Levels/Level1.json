@@ -7,11 +7,11 @@
 		"x": -1,
 		"y": -1
 	},
-	"objective": "Create a level where there is 1 locked door",
+	"objective": "Make a boarded door",
 	"goals": {
 		"container_checked": 1,
 		"door_opened": 1,
-		"cost_reached": 60
+		"crafted_item": 1
 	},
 	"limits": {
 		"container_limit": 1,

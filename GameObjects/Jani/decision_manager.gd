@@ -96,7 +96,8 @@ func _handle_expoloration_for_items() -> void:
 				break
 		if unresolved_need:
 			if inference.facts[Fact.Type.UNVISITED_CONTAINER_AT].is_empty():
-				print("No container left")
+				#print("No container left")
+				pass
 			else:
 				var container_fact = _get_nearest_fact_pos(Fact.Type.UNVISITED_CONTAINER_AT, 0)
 				_create_action(Action.Types.OPEN_CONTAINER, container_fact.args[0],
